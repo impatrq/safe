@@ -1,0 +1,98 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SAFE - Login</title>
+
+    <!-- Bulma is included -->
+    <link rel="stylesheet" href="{% static 'css/main.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}" />
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <section class="section hero is-fullheight is-error-section">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-fifths">
+                        <div class="card has-card-header-background">
+                            <div class="box">
+                                <header class="card-header">
+                                    <p class="card-header-title">
+                                        <span class="icon"><i class="mdi mdi-lock default"></i></span>
+                                        <span>Iniciar sesión</span>
+                                    </p>
+                                </header>
+                                <div class="card-content">
+                                    <form action="/login/" method="POST"> {% csrf_token %}
+                                        <div class="field">
+                                            <label class="label">E-mail / Usuario / Teléfono</label>
+                                            <div class="control has-icons-left">
+                                                <input type="text" autocomplete="on" name="identifier" class="input" required autofocus/>
+                                                <span class="icon is-left">
+                                                    <i class="mdi mdi-account"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <label class="label">Contraseña</label>
+                                            <div class="control has-icons-left">
+                                                <input type="password" autocomplete="on" name="password" class="input"
+                                                    required />
+                                                <span class="icon is-left">
+                                                    <i class="mdi mdi-key"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="field is-grouped">
+                                            <div class="control">
+                                                <button type="submit"
+                                                    class="button has-background-color-2 has-text-white">
+                                                    Iniciar sesión
+                                                </button>
+                                            </div>
+                                            <div class="control">
+                                                <a href="password-recovery.html" class="button is-outlined is-black">
+                                                    ¿Olvidaste tu contraseña?
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-foot has-text-centered">
+            <div class="logo">
+                <img src="{% static 'img/Logo_SAFEb.png' %}" alt="SAFE LOGO" style="max-width:
+          100px;"">
+        </div>
+      </div>
+    </section>
+
+    <!-- Icons below are for demo only. Feel free to use any icon pack. Docs: https://bulma.io/documentation/elements/icon/ -->
+    <link
+      rel=" stylesheet" href="https://cdn.materialdesignicons.com/4.9.95/css/materialdesignicons.min.css" />
+
+    {% if user.is_superuser %}
+        <h1>Hola SuperUsuario</h1>
+    {% else %}
+        <h1>Hola Usuario Normal</h1>
+    {% endif %}
+          
+</body>
+
+</html>
