@@ -73,7 +73,7 @@ def init(request):
     pass
 
 @csrf_exempt
-def verify(request):
+def verify(request): #TODO Añadir / eliminar a la persona que pasa por la puerta del campo inside_people de la Door
     
     if request.POST.get('SECRET_KEY') and request.POST['SECRET_KEY'] == os.environ.get('SECRET_KEY'):
         

@@ -47,7 +47,7 @@ class Logs(models.Model):
 
         return f'{self.worker_id.last_name}-{entry_datetime}-{exit_datetime}'
 
-class Door(models.Model):
+class Door(models.Model): #TODO Agregar campo de personas en el interior de la sala. people_inside del tipo ManyToManyField
     user_id = models.ForeignKey('User', on_delete=models.CASCADE)
     mac = models.CharField('MAC', max_length=64, blank=False, null=False, unique=True)
     sector_name = models.CharField('Sector Name', max_length=64, blank=False, null=False)
