@@ -26,7 +26,11 @@ SECRET_KEY = 'django-insecure-c0$+r--de=8r3v**qp7d)sx$66^jshts(-4!bn7_*(j6l-&u%x
 DEBUG = True
 
 ALLOWED_HOSTS = ['181.47.175.128', 'localhost', '127.0.0.1', '0.0.0.0']
+
+# CUSTOM GLOBAL VARIABLES
+
 CURRENT_HOST = 'http://localhost:8000'
+MAX_TEMP = 37
 
 # Application definition
 

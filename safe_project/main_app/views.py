@@ -2,6 +2,7 @@ import os
 import json
 import requests
 from django.http.response import HttpResponse, JsonResponse
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login, logout as auth_logout
@@ -18,7 +19,7 @@ def login(request):
     if request.method == 'POST':
         request.POST = request.POST.copy()
         request.POST['SECRET_KEY'] = os.environ.get("SECRET_KEY")
-        json_response = requests.post('http://localhost:8000/api/auth/login/', data=request.POST).json()
+        json_response = requests.post(settings.CURRENT_HOST + '/api/auth/login/', data=request.POST).json()
 
         if json_response['authorized'] == 'true':
             user = User.objects.get(id=json_response['user_id'])

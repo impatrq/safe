@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -36,6 +37,15 @@ class Logs(models.Model):
     authorized = models.BooleanField('Authorized', blank=False, null=False)
     worker_image =  models.ImageField('worker image', upload_to='logs_images/', height_field=None, width_field=None, max_length=None)
     is_active = models.BooleanField('Is Active', default=True)
+
+    def __str__(self):
+        entry_datetime = datetime.strftime(self.entry_datetime, "%Y/%m/%dat%H:%M:%S")
+        if self.exit_datetime:
+            exit_datetime = datetime.strftime(self.exit_datetime, "%Y/%m/%dat%H:%M:%S")
+        else:
+            exit_datetime = None
+
+        return f'{self.worker_id.last_name}-{entry_datetime}-{exit_datetime}'
 
 class Door(models.Model):
     user_id = models.ForeignKey('User', on_delete=models.CASCADE)
