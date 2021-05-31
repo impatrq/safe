@@ -13,6 +13,8 @@ from .forms import UserForm, LogsForm, WorkerForm, DoorForm
 # Create your views here.
 # TODO revisar si el eliminado sigue siendo logico o no y ver si cambiar el is_active en el update
 
+#Tods los comentarios hechos en la parte de USERS son similares en las demas partes
+
 # USERS
 
 def read_users(request):
@@ -90,31 +92,31 @@ def create_users(request):
 
 @csrf_exempt
 def update_users(request, id):
-    if request.method == 'POST':
+    if request.method == 'POST':                                                                                 #Se fija si se le hizo un POST a la URL correspondiente a esta vista
         if request.POST.get('SECRET_KEY') and request.POST['SECRET_KEY'] == os.environ.get('SECRET_KEY'):
 
             try: 
-                user = User.objects.get(pk=id)     
+                user = User.objects.get(pk=id)                                                                   #Se intenta obtener algun usuario que coincida con el id que se envio por la URL. pk es otra forma de referirse al id    
 
-                form = UserForm(request.POST, instance=user)
-                if form.is_valid():
-                    form.save()
-                    return JsonResponse({
+                form = UserForm(request.POST, instance=user)                                                     #Crea un formulario con la informacion del usuario que se desea actualizar. El instance=user indica que es una instancia asi que no intenta crear otro usuario con una informacion parecida 
+                if form.is_valid():                                                                              #Se fija si el formulario es valido 
+                    form.save()                                                                                  #Si es valido guarda el formulario con la infromacion enviada 
+                    return JsonResponse({                                                                        #Envia la informacion en formato JSON de que se actualizo el usuario
                         'error_message': None,
                         'success_message': 'Succesfully updated.'
                     })
                 else:
-                    return JsonResponse({
+                    return JsonResponse({                                                                        #Envia la informacion en formato JSON de que el formulario no es valido
                         'error_message': f'Form is not valid. {form.errors}',
                         'success_message': None
                     })
             except ObjectDoesNotExist:
-                return JsonResponse({
+                return JsonResponse({                                                                            #Envia la informacion en formato JSON de que no existe un usuario con esa ip
                     'error_message': f'Object with id {id} does not exist.',
                     'success_message': None
                 })
             except Exception as e:
-                return JsonResponse({
+                return JsonResponse({                                                                            #Envia la informacion en formato JSON de que hubo un error
                     'error_message': f'Error: {e}',
                     'success_message': None
                 })
@@ -128,21 +130,21 @@ def delete_users(request, id):
         if request.POST.get('SECRET_KEY') and request.POST['SECRET_KEY'] == os.environ.get('SECRET_KEY'):
 
             try:
-                user = User.objects.get(pk=id)
-                user.is_active = False
-                user.save()
+                user = User.objects.get(pk=id)                                                                    #Se intenta obtener algun usuario que coincida con el id que se envio por la URL    
+                user.is_active = False                                                                            #Si obtiene algun usuario que coincida cambia el estado de actividad como False (eliminado logico) 
+                user.save()                                                                                       #Guarda el usuario con el estado de actividad cambiado
 
-                return JsonResponse({
+                return JsonResponse({                                                                             #Envia la informacion en formato JSON de que se elimino el usuario exitosamente
                     'error_message': None,
                     'success_message': 'Succesfully deleted.'
                 })
             except ObjectDoesNotExist:
-                return JsonResponse({
+                return JsonResponse({                                                                             #Envia la informacion en formato JSON de que no existe un objeto con esa id
                     'error_message': f'Object with id {id} does not exist.',
                     'success_message': None
                 })
             except Exception as e:
-                return JsonResponse({
+                return JsonResponse({                                                                             #Envia la informacion en formato JSON de que hubo un error al intentar elimar
                     'error_message': f'Error: {e}',
                     'success_message': None
                 })
