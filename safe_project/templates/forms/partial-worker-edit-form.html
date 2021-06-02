@@ -1,0 +1,41 @@
+<form id="edit-form" method="POST">
+
+    <input type="hidden" name="id" value="{{id}}">
+
+    <input type="hidden" name="SECRET_KEY" value="{{sk}}">
+
+    <input type="hidden" name="{{ form.user_id.name }}" value="{{ form.user_id.value }}">
+
+    <div>
+        <label>Nombre:</label>
+        <input type="text" name="{{ form.first_name.name }}" id="first_name" value="{{ form.first_name.value }}">
+    </div>
+    <br>
+    <div>
+        <label>Apellido:</label>
+        <input type="text" name="{{ form.last_name.name }}" id="last_name"  value="{{ form.last_name.value }}">
+    </div>
+    <br>
+    <div>
+        <label>Número de Teléfono:</label>
+        <input type="text" name="{{ form.phone_number.name }}" id="phone_number" value="{{ form.phone_number.value }}">
+    </div>
+    <br>
+    <div>
+        <label>Email:</label>
+        <input type="email" name="{{ form.email.name }}" id="email" value="{{ form.email.value }}">
+    </div>
+    <br>
+    <div>
+        <label>Dirección:</label>
+        <input type="text" name="{{ form.address.name }}" id="address" value="{{ form.address.value }}">
+    </div>
+    <br>
+    <div>
+        <label>Código Tarjeta:</label>
+        <input type="text" name="{{ form.card_code.name }}" id="card_code" value="{{ form.card_code.value }}">
+    </div>
+    <br>
+    <input type="submit" value="Enviar">
+    
+</form>

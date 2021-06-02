@@ -1,3 +1,4 @@
+import json
 import os
 from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
@@ -5,10 +6,12 @@ from django.http import JsonResponse, HttpResponseForbidden
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.serializers import serialize
 from django.core.paginator import Paginator
+from django.template.loader import render_to_string
+from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from .models import User, Logs, Worker, Door
-from .forms import UserForm, LogsForm, WorkerForm, DoorForm
+from .forms import UserForm, LogsForm, WorkerForm, DoorForm, EditWorkerForm
 
 # Create your views here.
 # TODO revisar si el eliminado sigue siendo logico o no y ver si cambiar el is_active en el update
@@ -37,6 +40,8 @@ def read_users(request):
 
             response['results'] = serialize('json', page.object_list)
             response['num_pages'] = paginator.num_pages
+
+            response['media_path'] = settings.CURRENT_HOST + '/media/'
 
             return JsonResponse({
                 'error_message': None,
@@ -174,6 +179,8 @@ def read_logs(request):
             response['results'] = serialize('json', page.object_list)
             response['num_pages'] = paginator.num_pages
 
+            response['media_path'] = settings.CURRENT_HOST + '/media/'
+
             return JsonResponse({
                 'error_message': None,
                 'success_message': 'Successfully fetched.',
@@ -291,6 +298,8 @@ def read_doors(request):
             response['results'] = serialize('json', page.object_list)
             response['num_pages'] = paginator.num_pages
 
+            response['media_path'] = settings.CURRENT_HOST + '/media/'
+
             return JsonResponse({
                 'error_message': None,
                 'success_message': 'Successfully fetched.',
@@ -404,7 +413,7 @@ def read_workers(request):
 
             workers_list = Worker.objects.all()
 
-            paginator = Paginator(workers_list, 1)
+            paginator = Paginator(workers_list, 10)
 
             page = paginator.page(request.GET.get('page', 1))
 
@@ -415,6 +424,8 @@ def read_workers(request):
 
             response['results'] = serialize('json', page.object_list)
             response['num_pages'] = paginator.num_pages
+
+            response['media_path'] = settings.CURRENT_HOST + '/media/'
 
             return JsonResponse({
                 'error_message': None,
@@ -470,7 +481,7 @@ def update_workers(request, id):
             try:
                 worker = Worker.objects.get(pk=id)
 
-                form = WorkerForm(request.POST, request.FILES, instance=worker)
+                form = EditWorkerForm(request.POST, instance=worker)
                 if form.is_valid():
                     form.save()
                     return JsonResponse({
@@ -495,11 +506,19 @@ def update_workers(request, id):
 
         else:
             return HttpResponseForbidden()
+    else:
+        worker = Worker.objects.get(pk=id)
+        return JsonResponse({
+            'error_message': None,
+            'success_message': 'Edit Form Fetched Successfully',
+            'data': render_to_string('forms/partial-worker-edit-form.html', {'form': EditWorkerForm(instance=worker), 'sk': os.environ.get('SECRET_KEY'), 'id': id})
+        })
 
 @csrf_exempt
 def delete_workers(request, id):
     if request.method == 'POST':
-        if request.POST.get('SECRET_KEY') and request.POST['SECRET_KEY'] == os.environ.get('SECRET_KEY'):
+        SECRET_KEY = json.loads(request.body.decode('utf-8'))['SECRET_KEY']
+        if SECRET_KEY and SECRET_KEY == os.environ.get('SECRET_KEY'):
 
             try:
                 worker = Worker.objects.get(pk=id)

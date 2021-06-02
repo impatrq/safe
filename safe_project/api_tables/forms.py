@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserChangeForm
+from django.forms import fields
 from .models import User, Door, Worker, Logs
 
 class UserForm(forms.ModelForm):
@@ -24,3 +25,11 @@ class WorkerForm(forms.ModelForm):
         model = Worker
         fields = ['user_id', 'first_name', 'last_name', 'phone_number', 'email', 'address', 
         'card_code', 'worker_image']
+
+# EDIT FORMS
+
+class EditWorkerForm(forms.ModelForm):
+    class Meta:
+        model = Worker
+        fields = ['user_id', 'first_name', 'last_name', 'phone_number', 'email', 'address', 
+        'card_code']
