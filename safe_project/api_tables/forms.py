@@ -18,7 +18,7 @@ class LogsForm(forms.ModelForm):
 class DoorForm(forms.ModelForm):
     class Meta:
         model = Door
-        fields = ['user_id', 'mac', 'sector_name', 'door_name']
+        fields = ['user_id', 'mac', 'sector_name', 'door_name', 'sanitizer_perc', 'people_inside']
 
 class WorkerForm(forms.ModelForm):
     class Meta:

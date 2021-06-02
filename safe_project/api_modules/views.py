@@ -14,7 +14,7 @@ from api_tables.models import Worker, Door, Logs
 
 # Create your views here.
 
-def save_log(request, worker, door, facemask, temperature, authorized):
+def save_log(request, worker, door, facemask, temperature, sanitizer_perc, authorized):
 
     serialized_worker = serializers.serialize('json', [worker, ])
 
@@ -40,6 +40,9 @@ def save_log(request, worker, door, facemask, temperature, authorized):
         else:
             if facemask == 'true':
                 if temperature < settings.MAX_TEMP:
+                    door.people_inside.add(worker)
+                    door.sanitizer_perc = sanitizer_perc
+                    door.save()
                     return JsonResponse({
                         'error_message': None,
                         'success_message': 'Allowed',
@@ -80,22 +83,25 @@ def verify(request): #TODO Añadir / eliminar a la persona que pasa por la puert
         code = request.POST['code']                                                                                                     #Se guarda la informacion enviada por la raspberry en variables   
         temperature = float(request.POST.get('temperature', 0))                                                                         #Se guarda la informacion enviada por la raspberry en variables
         facemask = request.POST.get('facemask')                                                                                         #Se guarda la informacion enviada por la raspberry en variables
-        mac = request.POST['mac']                                                                                                       #Se guarda la informacion enviada por la raspberry en variables
+        mac = request.POST['mac']      
+        sanitizer_perc = request.POST['sanitizer_perc']                                                                                                 #Se guarda la informacion enviada por la raspberry en variables
 
         try:
-            worker = Worker.objects.get(card_code=code)                                                                                 #Intenta obtener el objeto del trabajador que tenga la misma card code 
+            worker = Worker.objects.get(card_code=code,is_active=True)                                                                                 #Intenta obtener el objeto del trabajador que tenga la misma card code 
             door = Door.objects.get(mac=mac)                                                                                            #Intenta obtener el objeto de la puerta que tenga la misma mac que la raspberry que envio el POST
 
             log = Logs.objects.filter(worker_id=worker, door_id=door, exit_datetime=None, authorized=True)
             log_exists = log.exists()
 
             if log_exists:
+                door.people_inside.remove(worker)
+                door.save()
                 return update_logtime(log[0])
             else:
                 if facemask == 'true' and temperature < settings.MAX_TEMP:                                                                             #Se fija si el trabajador tiene el barbijo bien puesto y una temperatura menor a 37
-                    return save_log(request, worker, door, facemask, temperature, 'true')                                               #Envia los datos dentro del parentesis a la funcion save_log y devuelve lo que devuelva esa funcion
+                    return save_log(request, worker, door, facemask, temperature, sanitizer_perc,'true')                                               #Envia los datos dentro del parentesis a la funcion save_log y devuelve lo que devuelva esa funcion
                 else:                                                                                                                   #En caso con no cumplir las condiciones del if ingresa aca
-                    return save_log(request, worker, door, facemask, temperature, 'false')                                              #Envia los datos dentro del parentesis a la funcion save_log y devuelve lo que devuelva esa funcion
+                    return save_log(request, worker, door, facemask, temperature, sanitizer_perc,'false')                                              #Envia los datos dentro del parentesis a la funcion save_log y devuelve lo que devuelva esa funcion
 
 
         except ObjectDoesNotExist:
