@@ -1,0 +1,21 @@
+<form id="edit-form" method="POST">
+
+    <input type="hidden" name="id" value="{{id}}">
+
+    <input type="hidden" name="SECRET_KEY" value="{{sk}}">
+    
+    <input type="hidden" name="{{ form.user_id.name }}" value="{{form.user_id.value}}">
+
+    <div>
+        <label>Nombre del sector:</label>
+        <input type="text" name="{{ form.sector_name.name }}" id="sector_name" value="{{ form.sector_name.value }}">
+    </div>
+    <br>
+    <div>
+        <label>Nombre de la puerta:</label>
+        <input type="text" name="{{ form.door_name.name }}" id="door_name"  value="{{ form.door_name.value }}">
+    </div>
+    <br>
+    <input type="submit" value="Enviar">
+    
+</form>

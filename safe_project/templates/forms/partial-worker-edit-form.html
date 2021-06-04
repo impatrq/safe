@@ -4,8 +4,8 @@
 
     <input type="hidden" name="SECRET_KEY" value="{{sk}}">
 
-    <input type="hidden" name="{{ form.user_id.name }}" value="{{ form.user_id.value }}">
-
+    <input type="hidden" name="{{ form.user_id.name }}" value="{{form.user_id.value}}">
+    
     <div>
         <label>Nombre:</label>
         <input type="text" name="{{ form.first_name.name }}" id="first_name" value="{{ form.first_name.value }}">

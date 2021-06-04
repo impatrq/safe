@@ -11,7 +11,7 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from .models import User, Logs, Worker, Door
-from .forms import UserForm, LogsForm, WorkerForm, DoorForm, EditWorkerForm
+from .forms import UserForm, LogsForm, WorkerForm, DoorForm, EditWorkerForm, EditDoorForm
 
 # Create your views here.
 # TODO revisar si el eliminado sigue siendo logico o no y ver si cambiar el is_active en el update
@@ -165,9 +165,9 @@ def read_logs(request):
         try:
             response = dict()
 
-            logs_list = Logs.objects.all()
+            logs_list = Logs.objects.filter(user_id=request.GET.get('user_id'))
 
-            paginator = Paginator(logs_list, 1)
+            paginator = Paginator(logs_list, 10)
 
             page = paginator.page(request.GET.get('page', 1))
 
@@ -176,7 +176,24 @@ def read_logs(request):
             if page.has_previous():
                 response['prev_page'] = page.previous_page_number()
 
-            response['results'] = serialize('json', page.object_list)
+
+            custom_object_list = []
+            for log in page.object_list:
+                if not log.exit_datetime:
+                    log.exit_datetime = '-'
+                custom_object_list.append({
+                    'worker_full_name': f'{log.worker_id.first_name} {log.worker_id.last_name}',
+                    'door_name': f'{log.door_id.sector_name} - {log.door_id.door_name}',
+                    'facemask': log.facemask,
+                    'temperature': log.temperature,
+                    'authorized': log.authorized,
+                    'entry_datetime': str(log.entry_datetime),
+                    'exit_datetime': str(log.exit_datetime),
+                    'worker_image': log.worker_image.url
+                })
+
+            response['results'] = json.dumps(custom_object_list)
+
             response['num_pages'] = paginator.num_pages
 
             response['media_path'] = settings.CURRENT_HOST + '/media/'
@@ -219,7 +236,7 @@ def update_logs(request, id):
     if request.method == 'POST':
         if request.POST.get('SECRET_KEY') and request.POST['SECRET_KEY'] == os.environ.get('SECRET_KEY'):
             try:
-                log = Logs.objects.get(pk=id)
+                log = Logs.objects.get(pk=id, user_id=request.POST.get('user_id'))
 
                 form = LogsForm(request.POST, request.FILES, instance=log)
                 if form.is_valid():
@@ -253,7 +270,7 @@ def delete_logs(request, id):
         if request.POST.get('SECRET_KEY') and request.POST['SECRET_KEY'] == os.environ.get('SECRET_KEY'):
 
             try:
-                log = Logs.objects.get(pk=id)
+                log = Logs.objects.get(pk=id, user_id=request.POST.get('user_id'))
                 log.is_active = False
                 log.save()
 
@@ -284,9 +301,9 @@ def read_doors(request):
         try:
             response = dict()
 
-            doors_list = Door.objects.all()
+            doors_list = Door.objects.filter(user_id=request.GET.get('user_id'))
 
-            paginator = Paginator(doors_list, 1)
+            paginator = Paginator(doors_list, 10)
 
             page = paginator.page(request.GET.get('page', 1))
 
@@ -347,9 +364,9 @@ def update_doors(request, id):
     if request.method == 'POST':
         if request.POST.get('SECRET_KEY') and request.POST['SECRET_KEY'] == os.environ.get('SECRET_KEY'):
             try:
-                door = Door.objects.get(pk=id)
+                door = Door.objects.get(pk=id, user_id=request.POST.get('user_id'))
 
-                form = DoorForm(request.POST, instance=door)
+                form = EditDoorForm(request.POST, instance=door)
                 if form.is_valid():
                     form.save()
                     return JsonResponse({
@@ -374,14 +391,25 @@ def update_doors(request, id):
 
         else:
             return HttpResponseForbidden()
+    else:
+        if request.GET.get('sk') == os.environ.get('SECRET_KEY'):
+            door = Door.objects.get(pk=id)
+            return JsonResponse({
+                'error_message': None,
+                'success_message': 'Edit Form Fetched Successfully',
+                'data': render_to_string('forms/partial-door-edit-form.html', {'form': EditDoorForm(instance=door), 'sk': os.environ.get('SECRET_KEY'), 'id': id})
+            })
+        else:
+            return HttpResponseForbidden()
 
 @csrf_exempt
 def delete_doors(request, id):
     if request.method == 'POST':
-        if request.POST.get('SECRET_KEY') and request.POST['SECRET_KEY'] == os.environ.get('SECRET_KEY'):
+        SECRET_KEY = json.loads(request.body.decode('utf-8'))['SECRET_KEY']
+        if SECRET_KEY and SECRET_KEY == os.environ.get('SECRET_KEY'):
 
             try:
-                door = Door.objects.get(pk=id)
+                door = Door.objects.get(pk=id, user_id=json.loads(request.body.decode('utf-8'))['user_id'])
                 door.is_active = False
                 door.save()
 
@@ -411,7 +439,7 @@ def read_workers(request):
         try:
             response = dict()
 
-            workers_list = Worker.objects.all()
+            workers_list = Worker.objects.filter(user_id=request.GET.get('user_id'))
 
             paginator = Paginator(workers_list, 10)
 
@@ -447,9 +475,11 @@ def create_workers(request):
         if request.POST.get('SECRET_KEY') and request.POST['SECRET_KEY'] == os.environ.get('SECRET_KEY'):
 
             worker_exists = Worker.objects.filter(
-                Q(email=request.POST['email']) |
-                Q(phone_number=request.POST['phone_number']) |
-                Q(card_code=request.POST['card_code'])
+                (
+                    Q(email=request.POST['email']) |
+                    Q(phone_number=request.POST['phone_number']) |
+                    Q(card_code=request.POST['card_code'])
+                )
             ).exists()
 
             if not worker_exists:
@@ -468,7 +498,7 @@ def create_workers(request):
 
             else:
                 return JsonResponse({
-                    'error_message': 'User with some of those credentials already exists.',
+                    'error_message': 'Worker with some of those credentials already exists.',
                     'success_message': None
                 })
         else:
@@ -479,7 +509,7 @@ def update_workers(request, id):
     if request.method == 'POST':
         if request.POST.get('SECRET_KEY') and request.POST['SECRET_KEY'] == os.environ.get('SECRET_KEY'):
             try:
-                worker = Worker.objects.get(pk=id)
+                worker = Worker.objects.get(pk=id, user_id=request.POST.get('user_id'))
 
                 form = EditWorkerForm(request.POST, instance=worker)
                 if form.is_valid():
@@ -507,12 +537,15 @@ def update_workers(request, id):
         else:
             return HttpResponseForbidden()
     else:
-        worker = Worker.objects.get(pk=id)
-        return JsonResponse({
-            'error_message': None,
-            'success_message': 'Edit Form Fetched Successfully',
-            'data': render_to_string('forms/partial-worker-edit-form.html', {'form': EditWorkerForm(instance=worker), 'sk': os.environ.get('SECRET_KEY'), 'id': id})
-        })
+        if request.GET.get('sk') == os.environ.get('SECRET_KEY'):
+            worker = Worker.objects.get(pk=id, user_id=request.GET.get('user_id'))
+            return JsonResponse({
+                'error_message': None,
+                'success_message': 'Edit Form Fetched Successfully',
+                'data': render_to_string('forms/partial-worker-edit-form.html', {'form': EditWorkerForm(instance=worker), 'sk': os.environ.get('SECRET_KEY'), 'id': id})
+            })
+        else:
+            return HttpResponseForbidden()
 
 @csrf_exempt
 def delete_workers(request, id):
@@ -521,7 +554,7 @@ def delete_workers(request, id):
         if SECRET_KEY and SECRET_KEY == os.environ.get('SECRET_KEY'):
 
             try:
-                worker = Worker.objects.get(pk=id)
+                worker = Worker.objects.get(pk=id, user_id=json.loads(request.body.decode('utf-8'))['user_id'])
                 worker.is_active = False
                 worker.save()
 
@@ -542,3 +575,45 @@ def delete_workers(request, id):
 
         else:
             return HttpResponseForbidden()
+
+# * EXTRA FUNCTIONS
+
+def get_doors_info(request):
+    if request.GET.get('sk') == os.environ.get('SECRET_KEY'):
+
+        def get_logs(door):
+            logs = Logs.objects.filter(door_id=door, user_id=request.GET.get('user_id')).order_by('-id')[:5]
+            log_list = []
+            for log in logs:
+                worker = Worker.objects.get(pk=log.worker_id.id, user_id=request.GET.get('user_id'))
+                log_list.append({
+                    'worker_image': settings.CURRENT_HOST + log.worker_image.url,
+                    'worker_full_name': f'{worker.first_name} {worker.last_name}',
+                    'entry_datetime': str(log.entry_datetime),
+                    'exit_datetime': str(log.exit_datetime),
+                    'authorized': log.authorized,
+                    'facemask': log.facemask,
+                    'temperature': log.temperature,
+                    'sector_name': door.sector_name,
+                    'door_name': door.door_name,
+                })
+            return json.dumps(log_list)
+            
+
+        doors = Door.objects.filter(user_id=request.GET.get('user_id'))
+        response = dict()
+        for door in doors:
+            response[f'{door.id}'] = {
+                    'is_opened': door.is_opened,
+                    'sanitizer_perc': door.sanitizer_perc,
+                    'last_logs': get_logs(door),
+                    'people_inside': serialize('json', door.people_inside.all())
+                }
+
+        return JsonResponse({
+            'error_message': None,
+            'success_message': 'Doors Status Fetched Successfully',
+            'data': json.dumps(response)
+        })
+    else:
+        return HttpResponseForbidden()

@@ -76,7 +76,7 @@ def init(request):
     pass
 
 @csrf_exempt
-def verify(request): #TODO Añadir / eliminar a la persona que pasa por la puerta del campo inside_people de la Door
+def verify(request):
     
     if request.POST.get('SECRET_KEY') and request.POST['SECRET_KEY'] == os.environ.get('SECRET_KEY'):
         
@@ -84,11 +84,11 @@ def verify(request): #TODO Añadir / eliminar a la persona que pasa por la puert
         temperature = float(request.POST.get('temperature', 0))                                                                         #Se guarda la informacion enviada por la raspberry en variables
         facemask = request.POST.get('facemask')                                                                                         #Se guarda la informacion enviada por la raspberry en variables
         mac = request.POST['mac']      
-        sanitizer_perc = request.POST['sanitizer_perc']                                                                                                 #Se guarda la informacion enviada por la raspberry en variables
+        sanitizer_perc = request.POST.get('sanitizer_perc')                                                                                 #Se guarda la informacion enviada por la raspberry en variables
 
         try:
-            worker = Worker.objects.get(card_code=code,is_active=True)                                                                                 #Intenta obtener el objeto del trabajador que tenga la misma card code 
-            door = Door.objects.get(mac=mac)                                                                                            #Intenta obtener el objeto de la puerta que tenga la misma mac que la raspberry que envio el POST
+            worker = Worker.objects.get(card_code=code, is_active=True)                                                                 #Intenta obtener el objeto del trabajador que tenga la misma card code 
+            door = Door.objects.get(mac=mac, is_active=True)                                                                                            #Intenta obtener el objeto de la puerta que tenga la misma mac que la raspberry que envio el POST
 
             log = Logs.objects.filter(worker_id=worker, door_id=door, exit_datetime=None, authorized=True)
             log_exists = log.exists()
@@ -98,10 +98,10 @@ def verify(request): #TODO Añadir / eliminar a la persona que pasa por la puert
                 door.save()
                 return update_logtime(log[0])
             else:
-                if facemask == 'true' and temperature < settings.MAX_TEMP:                                                                             #Se fija si el trabajador tiene el barbijo bien puesto y una temperatura menor a 37
-                    return save_log(request, worker, door, facemask, temperature, sanitizer_perc,'true')                                               #Envia los datos dentro del parentesis a la funcion save_log y devuelve lo que devuelva esa funcion
+                if facemask == 'true' and temperature < settings.MAX_TEMP:                                                              #Se fija si el trabajador tiene el barbijo bien puesto y una temperatura menor a 37
+                    return save_log(request, worker, door, facemask, temperature, sanitizer_perc, 'true')                               #Envia los datos dentro del parentesis a la funcion save_log y devuelve lo que devuelva esa funcion
                 else:                                                                                                                   #En caso con no cumplir las condiciones del if ingresa aca
-                    return save_log(request, worker, door, facemask, temperature, sanitizer_perc,'false')                                              #Envia los datos dentro del parentesis a la funcion save_log y devuelve lo que devuelva esa funcion
+                    return save_log(request, worker, door, facemask, temperature, None, 'false')                                              #Envia los datos dentro del parentesis a la funcion save_log y devuelve lo que devuelva esa funcion
 
 
         except ObjectDoesNotExist:
@@ -116,7 +116,6 @@ def verify(request): #TODO Añadir / eliminar a la persona que pasa por la puert
             })
     else:
         return HttpResponseForbidden()
-
 
 def env_update(request):
     pass

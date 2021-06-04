@@ -8,10 +8,10 @@ class UserAdmin(admin.ModelAdmin):
 
 class LogsAdmin(admin.ModelAdmin):
     list_display = ['user_id', 'worker_id', 'door_id', 'facemask', 'temperature', 'authorized', 'is_active']
-    readonly_fields = ['entry_datetime']
+    readonly_fields = ['entry_datetime', 'exit_datetime']
 
 class DoorAdmin(admin.ModelAdmin):
-    list_display = ['user_id', 'mac', 'sector_name', 'door_name', 'is_active']
+    list_display = ['user_id', 'mac', 'sector_name', 'door_name', 'sanitizer_perc', 'is_active']
     readonly_fields = ['date_created']
 
 class WorkerAdmin(admin.ModelAdmin):

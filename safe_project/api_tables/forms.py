@@ -18,7 +18,7 @@ class LogsForm(forms.ModelForm):
 class DoorForm(forms.ModelForm):
     class Meta:
         model = Door
-        fields = ['user_id', 'mac', 'sector_name', 'door_name', 'sanitizer_perc', 'people_inside']
+        fields = ['user_id', 'mac', 'sector_name', 'door_name', 'sanitizer_perc']
 
 class WorkerForm(forms.ModelForm):
     class Meta:
@@ -33,3 +33,8 @@ class EditWorkerForm(forms.ModelForm):
         model = Worker
         fields = ['user_id', 'first_name', 'last_name', 'phone_number', 'email', 'address', 
         'card_code']
+
+class EditDoorForm(forms.ModelForm):
+    class Meta:
+        model = Door
+        fields = ['user_id', 'sector_name', 'door_name']

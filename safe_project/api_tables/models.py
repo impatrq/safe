@@ -47,15 +47,15 @@ class Logs(models.Model):
 
         return f'{self.worker_id.last_name}-{entry_datetime}-{exit_datetime}'
 
-class Door(models.Model): #TODO Agregar campo de personas en el interior de la sala. people_inside del tipo ManyToManyField
+class Door(models.Model):
     user_id = models.ForeignKey('User', on_delete=models.CASCADE)
     mac = models.CharField('MAC', max_length=64, blank=False, null=False, unique=True)
     sector_name = models.CharField('Sector Name', max_length=64, blank=False, null=False)
     door_name = models.CharField('Door Name', max_length=64, blank=False, null=False)
     is_opened = models.BooleanField('Is Opened', default=False)
     date_created = models.DateTimeField('Date Created', blank=False, null=False, auto_now=False, auto_now_add=True)
-    people_inside = models.ManyToManyField('Worker',blank=True, null=True)
-    sanitizer_perc = models.CharField('Cant Sanitizating', max_length=8, blank=False, null=False)
+    people_inside = models.ManyToManyField('Worker', blank=True, null=True)
+    sanitizer_perc = models.CharField('Sanitizer Percentage', max_length=8, blank=False, null=False)
     is_active = models.BooleanField('Is Active', default=True)
 
     def __str__(self):
