@@ -6,8 +6,10 @@ from django.http import JsonResponse, HttpResponseForbidden
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.serializers import serialize
 from django.core.paginator import Paginator
+from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
+from django.views.decorators import csrf
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from .models import User, Logs, Worker, Door
@@ -167,7 +169,7 @@ def read_logs(request):
 
             logs_list = Logs.objects.filter(user_id=request.GET.get('user_id'))
 
-            paginator = Paginator(logs_list, 10)
+            paginator = Paginator(logs_list, 20)
 
             page = paginator.page(request.GET.get('page', 1))
 
@@ -589,8 +591,8 @@ def get_doors_info(request):
                 log_list.append({
                     'worker_image': settings.CURRENT_HOST + log.worker_image.url,
                     'worker_full_name': f'{worker.first_name} {worker.last_name}',
-                    'entry_datetime': str(log.entry_datetime),
-                    'exit_datetime': str(log.exit_datetime),
+                    'entry_datetime': log.entry_datetime.strftime("%m/%d/%Y, %H:%M:%S"),
+                    'exit_datetime': log.exit_datetime.strftime("%m/%d/%Y, %H:%M:%S"),
                     'authorized': log.authorized,
                     'facemask': log.facemask,
                     'temperature': log.temperature,
@@ -598,16 +600,17 @@ def get_doors_info(request):
                     'door_name': door.door_name,
                 })
             return json.dumps(log_list)
-            
 
         doors = Door.objects.filter(user_id=request.GET.get('user_id'))
         response = dict()
         for door in doors:
             response[f'{door.id}'] = {
+                    'door_name': f"{door.sector_name} - {door.door_name}",
                     'is_opened': door.is_opened,
                     'sanitizer_perc': door.sanitizer_perc,
                     'last_logs': get_logs(door),
-                    'people_inside': serialize('json', door.people_inside.all())
+                    'people_inside': serialize('json', door.people_inside.all()),
+                    'is_safe': door.is_safe,
                 }
 
         return JsonResponse({
@@ -617,3 +620,25 @@ def get_doors_info(request):
         })
     else:
         return HttpResponseForbidden()
+
+@csrf_exempt
+def report(request):
+
+    if request.method == 'POST':
+
+        try:
+
+            sender = settings.EMAIL_HOST_USER
+            body = json.loads(request.body.decode('utf-8'))
+            send_mail(body['kor'], body['message'], sender, [os.environ.get('EMAIL_HOST_USER')])
+
+            return JsonResponse({
+                'error_message': None,
+                'success_message': 'Email Sent Successfully.'
+            })
+
+        except Exception as e:
+            return JsonResponse({
+                'error_message': f'Error: {e}',
+                'success_message': None
+            })

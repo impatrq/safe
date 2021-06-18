@@ -23,4 +23,6 @@ urlpatterns = [
     path('workers/delete/<int:id>/', views.delete_workers),
 
     path('doors/get_doors_status/', views.get_doors_info),
+
+    path('report/', views.report),
 ]

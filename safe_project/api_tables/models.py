@@ -4,6 +4,8 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
+#TODO Agregar al modelo Logs los campos de ambiente seguro y ventilado (Boolean)
+
 class User(AbstractUser): 
     username = models.CharField('username', max_length=64, blank=False, null=False, unique=True,
         error_messages={
@@ -57,6 +59,24 @@ class Door(models.Model):
     people_inside = models.ManyToManyField('Worker', blank=True, null=True)
     sanitizer_perc = models.CharField('Sanitizer Percentage', max_length=8, blank=False, null=False)
     is_active = models.BooleanField('Is Active', default=True)
+
+    _co2_level = models.FloatField('CO2 Level', blank=True, null=True)
+    _co_level = models.FloatField('CO Level', blank=True, null=True)
+    _metano_level = models.FloatField('Metano Level', blank=True, null=True)
+
+    @property
+    def is_safe(self):
+        # TODO if(self._co2_level < ... and self._co_level < ... and self._metano_level < ...):
+        # TODO    pass
+        # TODO else:
+        # TODO    pass
+        return True
+
+    def update_env(self, co2_level, co_level, metano_level):
+        self._co2_level = co2_level
+        self._co_level = co_level
+        self._metano_level = metano_level
+
 
     def __str__(self):
         return f"{self.sector_name} - {self.door_name}"

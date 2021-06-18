@@ -1,3 +1,11 @@
+.bg-color1{
+    background-color: #10529E !important;
+}
+
+table > tr > td > img {
+    width: 200px !important;
+}
+
 .has-background-color-1{
     background-color: #021B3B;
 }
@@ -12,4 +20,43 @@
 
 .has-text-color-2{
     color: #10529E;
+}
+
+.log_button{
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    cursor: pointer;
+    z-index: 20;
+}
+
+.log_button:hover{
+    background-color: rgba(0, 0, 0, 0.0005);
+}
+
+.initial-logo{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    position: relative;
+}
+
+.initial-logo > span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    transform: translateX(-50%) translateY(-50%);
+    color: #f2f2f2;
+}
+
+.full-height-footer{
+    position: fixed;
+    left: 14rem;
+    bottom: 0;
+}
+
+@media (max-width: 1024px){
+    .full-height-footer{
+        left: 0;
+    }
 }

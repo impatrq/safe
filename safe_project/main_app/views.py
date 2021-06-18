@@ -12,7 +12,7 @@ from api_tables.models import User
 
 @login_required(login_url='/login/')
 def index(request):
-    return render(request, 'index.html', {})
+    return render(request, 'index.html', {'sk': os.environ.get('SECRET_KEY')})
 
 def login(request):
 
