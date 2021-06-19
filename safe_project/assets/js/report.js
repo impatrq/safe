@@ -26,16 +26,19 @@ document.getElementById('kind-of-report').addEventListener('change', (e) => {
 
 document.getElementById('report-form').addEventListener('submit', (e) => {
     e.preventDefault()
+
     const email = e.target.email.value
     const name = e.target.name.value
     const kor = e.target.kor.options[e.target.kor.selectedIndex].text
-
+    
     const personal_report = e.target.persrep.value == "-" ? null:e.target.persrep.value
     const gerencial_report = e.target.gerrep.value == "-" ? null:e.target.gerrep.value
-
+    
     const message = e.target.message.value
-
+    
     const response_text = document.getElementById('response-text')
+
+    document.getElementById('report-submit-btn').classList.add('is-loading')
 
     fetch('http://localhost:8000/api/tables/report/', {
         method: 'POST',
@@ -49,6 +52,7 @@ document.getElementById('report-form').addEventListener('submit', (e) => {
     })
         .then(res => res.json())
             .then(res_json => {
+                document.getElementById('report-submit-btn').classList.remove('is-loading')
                 if(res_json.error_message != null){
                     response_text.style = "color: red;"
                     response_text.innerHTML = res_json.error_message

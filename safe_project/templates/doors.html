@@ -1,280 +1,66 @@
-<!DOCTYPE html>
-<html lang="en" class="has-aside-left has-aside-mobile-transition has-navbar-fixed-top has-aside-expanded">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1,">
-    <title>SAFE Project</title>
+{% load static %}
 
-    <!-- Bulma is included -->
-    <link rel="stylesheet" href="css/bulma.min.css">
-    <link rel="stylesheet" href="css/main.min.css">
-    <link rel="stylesheet" href="css/custom.css">
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="../fontawesome-free-5.15.3-web/css/all.css">
-</head>
+{% block page_name %} Puertas {% endblock page_name %}
+{% block page_hero %} Puertas {% endblock page_hero %}
+    
+{% block content %}
 
-<body>
-    <div id="app">
-        <nav id="navbar-main" class="navbar is-fixed-top">
-            <div class="navbar-brand">
-                <a class="navbar-item is-hidden-desktop jb-aside-mobile-toggle">
-                    <span class="icon"><i class="mdi mdi-forwardburger mdi-24px"></i></span>
-                </a>
-            </div>
-            <div class="navbar-brand is-right">
-                <a class="navbar-item is-hidden-desktop jb-navbar-menu-toggle" data-target="navbar-menu">
-                    <span class="icon"><i class="mdi mdi-dots-vertical"></i></span>
-                </a>
-            </div>
-            <div class="navbar-menu fadeIn animated faster" id="navbar-menu">
-                <div class="navbar-end">
-                    <div
-                        class="navbar-item has-dropdown has-dropdown-with-icons has-divider has-user-avatar is-hoverable">
-                        <a class="navbar-link is-arrowless">
-                            <div class="is-user-avatar">
-                                <img src="https://avatars.dicebear.com/v2/initials/john-doe.svg" alt="Jane Doe">
-                            </div>
-                            <div class="is-user-name"><span>Jane Doe</span></div>
-                            <span class="icon"><i class="mdi mdi-chevron-down"></i></span>
-                        </a>
-                        <div class="navbar-dropdown">
-                            <a href="profile.html" class="navbar-item">
-                                <span class="icon"><i class="mdi mdi-account"></i></span>
-                                <span>Perfil</span>
-                            </a>
-                            <a class="navbar-item">
-                                <span class="icon"><i class="mdi mdi-settings"></i></span>
-                                <span>Opciones</span>
-                            </a>
-                            <hr class="navbar-divider">
-                            <a class="navbar-item">
-                                <span class="icon"><i class="mdi mdi-logout"></i></span>
-                                <span>Cerrar Sesión</span>
-                            </a>
-                        </div>
-                    </div>
-                    <a href="https://justboil.me/bulma-admin-template/one-html" title="About"
-                        class="navbar-item has-divider is-desktop-icon-only">
-                        <span class="icon"><i class="mdi mdi-help-circle-outline"></i></span>
-                        <span>Ayuda</span>
-                    </a>
-                </div>
-            </div>
-        </nav>
-        <aside class="aside is-placed-left is-expanded">
-            <div class="aside-tools bg-color1">
-                <div class="aside-tools-label">
-                    <span><b>SAFE</b> Project</span>
-                </div>
-            </div>
-            <div class="menu is-menu-main">
-                <p class="menu-label">General</p>
-                <ul class="menu-list">
-                    <li>
-                        <a href="index.html" class="router-link-active has-icon">
-                            <span class="icon"><i class="fas fa-desktop"></i></span>
-                            <span class="menu-item-label">Dashboard</span>
-                        </a>
-                    </li>
-                </ul>
-                <p class="menu-label">Examples</p>
-                <ul class="menu-list">
-                    <li>
-                        <a href="tables.html" class="has-icon">
-                            <span class="icon"><i class="fas fa-address-book"></i></span>
-                            <span class="menu-item-label">Lista de empleados</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="forms.html" class="has-icon is-active">
-                            <span class="icon"><i class="fas fa-list-alt"></i></span>
-                            <span class="menu-item-label">Lista de puertas</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="profile.html" class="has-icon">
-                            <span class="icon"><i class="mdi mdi-account-circle"></i></span>
-                            <span class="menu-item-label">Perfil</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="has-icon has-dropdown-icon">
-                            <span class="icon"><i class="mdi mdi-view-list"></i></span>
-                            <span class="menu-item-label">Submenus</span>
-                            <div class="dropdown-icon">
-                                <span class="icon"><i class="mdi mdi-plus"></i></span>
-                            </div>
-                        </a>
-                        <ul>
-                            <li>
-                                <a href="#void">
-                                    <span>Sub-item One</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#void">
-                                    <span>Sub-item Two</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-                <p class="menu-label">About</p>
-                <ul class="menu-list">
-                    <li>
-                        <a href="https://justboil.me/bulma-admin-template/one-html" class="has-icon">
-                            <span class="icon"><i class="mdi mdi-help-circle"></i></span>
-                            <span class="menu-item-label">About</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </aside>
-        <section class="section is-title-bar">
-            <div class="level">
-                <div class="level-left">
-                    <div class="level-item">
-                        <ul>
-                            <li>Admin</li>
-                            <li>Lista de puertas</li>
-                        </ul>
+<!-- Tabla -->
+
+<br>
+
+<div class="field has-addons px-5">
+    <div class="control is-expanded">
+      <input id="search-bar" class="input" type="text" placeholder="Buscar por nombre / sector">
+    </div>
+</div>
+
+<section class="section is-main-section">
+    <table class="table is-fullwidth is-bordered is-striped is-hoverable is-fullwidth has-text-centered">
+        <thead class="is-size-5">
+            <tr>
+                <th>Puerta</th>
+                <th>Sector</th>
+                <th>Abierta</th>
+                <th>% Sanitizante</th>
+                <th>Fecha de creación</th>
+                <th>Acciones</th>
+                <!-- <th>Activo</th> -->
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            <!-- Loaded in JS -->
+        </tbody>
+    </table>
+    <div class="notification">
+        <div class="level">
+            <div class="level-left">
+                <div class="level-item">
+                    <div id="paginator-btns" class="buttons has-addons">
+                        
                     </div>
                 </div>
             </div>
-        </section>
-        <section class="hero is-hero-bar">
-            <div class="hero-body">
-                <div class="level">
-                    <div class="level-left">
-                        <div class="level-item">
-                            <h1 class="title">
-                                Puertas
-                            </h1>
-                        </div>
-                    </div>
+            <div class="level-right">
+                <div class="level-item">
+                    <medium><span id="page_list"></span></medium>
                 </div>
-            </div>
-        </section>
-
-        <!-- Tabla -->
-        <section class="section is-main-section">
-            <table class="table is-fullwidth is-bordered is-striped is-hoverable is-fullwidth has-text-centered">
-                <thead class="is-size-5">
-                    <tr>
-                        <th>Puerta</th>
-                        <th>Sector</th>
-                        <th>Fecha de creación</th>
-                        <th>Acciones</th>
-                        <!-- <th>Activo</th> -->
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td data-label="Puerta">
-                            <span>
-                                Oficina RRHH
-                            </span>
-                        </td>
-                        <td data-label="Sector">
-                            <span>
-                                Oficinas
-                            </span>
-                        </td>
-                        <td data-label="Fecha de creación">
-                            14/06/2020
-                        </td>
-                        <td>
-                            <button class="button is-primary">
-                                <span class="icon is-small">
-                                    <i class="fas fa-pencil-alt"></i>
-                                </span>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="notification">
-                <div class="level">
-                  <div class="level-left">
-                    <div class="level-item">
-                      <div class="buttons has-addons">
-                        <button type="button" class="button">1</button>
-                        <button type="button" class="button">2</button>
-                        <button type="button" class="button">3</button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="level-right">
-                    <div class="level-item">
-                      <medium>Página 1 de 3</medium>
-                    </div>
-                  </div>
-                </div>
-              </div>
-        </section>
-
-        <!-- Modal edit door-->
-        <div class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content has-background-white py-5 px-5">
-                <h3 class="title">Edite los campos</h3>
-                <hr>
-                <form>
-                    <div class="field">
-                        <label class="label">Puerta</label>
-                        <div class="control has-icons-left">
-                            <input type="text" class="input" value="Ofinica RRHH" placeholder="Nombre de la puerta">
-                            <span class="icon is-left">
-                                <i class="mdi mdi-door is-size-4"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="field mt-5">
-                        <label class="label">Sector</label>
-                        <div class="control has-icons-left">
-                            <input type="text" class="input" placeholder="Sector de la puerta" value="Oficinas">
-                            <span class="icon is-small is-left">
-                                <i class="mdi mdi-map-marker is-size-4"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <hr>
-                   <div class="field is-grouped is-grouped-right">
-                        <div class="control">
-                            <button class="button is-success">Enviar</button>
-                            <button class="button is-danger is-light">Cancelar</button>
-                        </div>
-                   </div>
-                </form>
             </div>
         </div>
-
-
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="container-fluid">
-                <div class="level">
-                    <div class="level-left">
-                        <div class="level-item">
-                            © 2021, Safe Project.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
     </div>
+</section>
+
+<!-- Modal edit door-->
+<div id="door-edit-modal" class="modal">
+    
+</div>
+{% endblock content %}
 
 
-    <!-- Javascript-->
-    <script type="text/javascript" src="js/main.min.js"></script>
-
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.9.95/css/materialdesignicons.min.css">
-</body>
-
-</html>
+{% block js %}
+    <script src="{% static 'js/door.js' %}"></script>
+{% endblock js %}
+    

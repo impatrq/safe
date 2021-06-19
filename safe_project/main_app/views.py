@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from api_tables.models import User
-from api_tables.forms import WorkerForm
+from api_tables.forms import WorkerForm, DoorForm
 
 # Create your views here.
 
@@ -40,3 +40,8 @@ def logout(request):
 def workers(request):
     form = WorkerForm()
     return render(request, 'workers.html', {'form': form, 'sk': os.environ.get('SECRET_KEY')})
+
+@login_required(login_url='/login/')
+def doors(request):
+    form = DoorForm()
+    return render(request, 'doors.html', {'form': form, 'sk': os.environ.get('SECRET_KEY')})

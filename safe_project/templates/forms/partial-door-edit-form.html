@@ -1,21 +1,40 @@
-<form id="edit-form" method="POST">
+<div class="modal-background"></div>
+    <div class="modal-content has-background-white py-5 px-5">
+        <h3 class="title">Edite los campos</h3>
+        <hr>
+        <form id="edit-form">
 
-    <input type="hidden" name="id" value="{{id}}">
+            <input type="hidden" name="id" value="{{id}}">
 
-    <input type="hidden" name="SECRET_KEY" value="{{sk}}">
-    
-    <input type="hidden" name="{{ form.user_id.name }}" value="{{form.user_id.value}}">
+            <input type="hidden" name="SECRET_KEY" value="{{sk}}">
 
-    <div>
-        <label>Nombre del sector:</label>
-        <input type="text" name="{{ form.sector_name.name }}" id="sector_name" value="{{ form.sector_name.value }}">
-    </div>
-    <br>
-    <div>
-        <label>Nombre de la puerta:</label>
-        <input type="text" name="{{ form.door_name.name }}" id="door_name"  value="{{ form.door_name.value }}">
-    </div>
-    <br>
-    <input type="submit" value="Enviar">
-    
-</form>
+            <input type="hidden" name="{{ form.user_id.name }}" value="{{form.user_id.value}}">
+            
+            <div class="field mt-5">
+                <label class="label">Sector</label>
+                <div class="control has-icons-left">
+                    <input type="text" class="input" placeholder="Sector de la puerta" name="{{ form.sector_name.name }}" id="sector_name" value="{{ form.sector_name.value }}">
+                    <span class="icon is-small is-left">
+                        <i class="mdi mdi-map-marker is-size-4"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Puerta</label>
+                <div class="control has-icons-left">
+                    <input type="text" class="input" name="{{ form.door_name.name }}" id="door_name"  value="{{ form.door_name.value }}" placeholder="Nombre de la puerta">
+                    <span class="icon is-left">
+                        <i class="mdi mdi-door is-size-4"></i>
+                    </span>
+                </div>
+            </div>
+            <p id="edit-response-text"></p>
+            <hr>
+            <div class="field is-grouped is-grouped-right">
+                <div class="control">
+                    <button type="submit" class="button is-success">Enviar</button>
+                    <button type="button" id="btn-close-edit-modal" class="button is-danger is-light">Cancelar</button>
+                </div>
+            </div>
+        </form>
+</div>

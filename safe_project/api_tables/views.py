@@ -329,7 +329,7 @@ def read_doors(request):
 
             doors_list = Door.objects.filter(user_id=request.GET.get('user_id'))
 
-            paginator = Paginator(doors_list, 10)
+            paginator = Paginator(doors_list, 2)
 
             page = paginator.page(request.GET.get('page', 1))
 
@@ -437,7 +437,7 @@ def delete_doors(request, id):
 
             try:
                 door = Door.objects.get(pk=id, user_id=json.loads(request.body.decode('utf-8'))['user_id'])
-                door.is_active = False
+                door.is_active = False # del(door)
                 door.save()
 
                 return JsonResponse({
@@ -457,6 +457,31 @@ def delete_doors(request, id):
 
         else:
             return HttpResponseForbidden()
+
+def search_doors(request):
+    if request.GET.get('sk') == os.environ.get('SECRET_KEY'):
+        
+        first_word = request.GET.get('first_word', '###')
+        second_word = request.GET.get('second_word', '###')
+        user_id = request.GET.get('user_id')
+
+        doors_list = Door.objects.filter(
+            (
+                Q(sector_name__icontains=first_word) | Q(sector_name__icontains=second_word) |
+                Q(door_name__icontains=first_word) | Q(door_name__icontains=second_word) 
+            ) & Q(user_id=user_id)
+        )
+
+        return JsonResponse({
+            'error_message': None,
+            'success_message': 'Fetched successfully',
+            'data': {
+                'results': serialize('json', doors_list),
+            }
+        })
+
+    else:
+        return HttpResponseForbidden()
 
 # WORKERS
 
@@ -607,8 +632,8 @@ def delete_workers(request, id):
 def search_workers(request):
     if request.GET.get('sk') == os.environ.get('SECRET_KEY'):
         
-        first_word = request.GET.get('first_word', '-')
-        second_word = request.GET.get('second_word', '-')
+        first_word = request.GET.get('first_word', '###')
+        second_word = request.GET.get('second_word', '###')
         user_id = request.GET.get('user_id')
 
         workers_list = Worker.objects.filter(

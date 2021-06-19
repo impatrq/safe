@@ -22,6 +22,10 @@ table > tr > td > img {
     color: #10529E;
 }
 
+.worker_image_cell{
+    cursor: pointer;
+}
+
 .log_button{
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 3px;

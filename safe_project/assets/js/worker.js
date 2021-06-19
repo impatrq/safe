@@ -21,14 +21,12 @@ function loadData(page = 1) {
                     <tr>
                         <td>
                             <figure class="image">
-                                <img class="is-rounded worker_image_cell" src="${media_path}${worker.fields.worker_image
-                    }">
+                                <img class="is-rounded worker_image_cell" src="${media_path}${worker.fields.worker_image}">
                             </figure>
                         </td>
                         <td data-label="Nombre">
                             <span>
-                                ${worker.fields.first_name}&nbsp;${worker.fields.last_name
-                    }
+                                ${worker.fields.first_name}&nbsp;${worker.fields.last_name}
                             </span>
                         </td>
                         <td data-label="Número de teléfono">
@@ -55,14 +53,12 @@ function loadData(page = 1) {
                             ${worker.fields.date_created.substring(0, 10)}
                         </td>
                         <td>
-                            <button value="${worker.pk
-                    }" class="button is-primary btn-edit">
+                            <button value="${worker.pk}" class="button is-primary btn-edit">
                                 <span class="icon is-small">
                                     <i class="fas fa-pencil-alt"></i>
                                 </span>
                             </button>
-                            <button value="${worker.pk
-                    }" class="button is-danger btn-remove">
+                            <button value="${worker.pk}" class="button is-danger btn-remove">
                                 <span class="icon is-small">
                                     <i class="fas fa-trash-alt"></i>
                                 </span>
@@ -74,37 +70,14 @@ function loadData(page = 1) {
 
             // * PAGINATOR
 
-            document.getElementById(
-                "page_list"
-            ).innerHTML = `Página ${res_json.data.cur_page} de ${res_json.data.num_pages}`;
+            document.getElementById("page_list").innerHTML = `Página ${res_json.data.cur_page} de ${res_json.data.num_pages}`;
 
             document.getElementById("paginator-btns").innerHTML = "";
             for (var i = 1; i <= res_json.data.num_pages; i++) {
-                document.getElementById(
-                    "paginator-btns"
-                ).innerHTML += `<button value="${i}" type="button" class="button paginator-btn">${i}</button>`;
+                document.getElementById("paginator-btns").innerHTML += `<button value="${i}" type="button" class="button paginator-btn pagination-link ${i == res_json.data.cur_page ? "is-current":""}">${i}</button>`;
             }
 
-            // * IMAGE MODAL
-
-            document.querySelectorAll(".worker_image_cell").forEach((image) => {
-                image.addEventListener("click", (e) => {
-                    document.getElementById("image_modal").classList.add("is-active");
-                    document.getElementById("image_modal_tag").src = image.src;
-                });
-            });
-
-            document
-                .getElementById("close_image_modal")
-                .addEventListener("click", (e) => {
-                    document.getElementById("image_modal").classList.remove("is-active");
-                });
-
-            document
-                .getElementById("background_image_modal")
-                .addEventListener("click", (e) => {
-                    document.getElementById("image_modal").classList.remove("is-active");
-                });
+            loadImageModal()
 
             paginatorBtns();
             editButtonEvents();
@@ -202,21 +175,14 @@ function editFormEvents() {
         });
     }
 
-    document
-        .getElementById("btn-close-edit-modal")
-        .addEventListener("click", (e) => {
-            document
-                .getElementById("worker-edit-modal")
-                .classList.remove("is-active");
+    document.getElementById("btn-close-edit-modal").addEventListener("click", (e) => {
+            document.getElementById("worker-edit-modal").classList.remove("is-active");
         });
 
     // * EXTRA
 
-    document
-        .getElementById("edit_worker_image_input")
-        .addEventListener("change", (e) => {
-            document.getElementById("edit_worker_image_filename").innerHTML =
-                e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
+    document.getElementById("edit_worker_image_input").addEventListener("change", (e) => {
+            document.getElementById("edit_worker_image_filename").innerHTML = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
         });
 }
 
@@ -273,14 +239,12 @@ document.getElementById('search-bar').addEventListener('keyup', (e) => {
                             <tr>
                                 <td>
                                     <figure class="image">
-                                        <img class="is-rounded worker_image_cell" src="${media_path}${worker.fields.worker_image
-                            }">
+                                        <img class="is-rounded worker_image_cell" src="${media_path}${worker.fields.worker_image}">
                                     </figure>
                                 </td>
                                 <td data-label="Nombre">
                                     <span>
-                                        ${worker.fields.first_name}&nbsp;${worker.fields.last_name
-                            }
+                                        ${worker.fields.first_name}&nbsp;${worker.fields.last_name}
                                     </span>
                                 </td>
                                 <td data-label="Número de teléfono">
@@ -307,14 +271,12 @@ document.getElementById('search-bar').addEventListener('keyup', (e) => {
                                     ${worker.fields.date_created.substring(0, 10)}
                                 </td>
                                 <td>
-                                    <button value="${worker.pk
-                            }" class="button is-primary btn-edit">
+                                    <button value="${worker.pk}" class="button is-primary btn-edit">
                                         <span class="icon is-small">
                                             <i class="fas fa-pencil-alt"></i>
                                         </span>
                                     </button>
-                                    <button value="${worker.pk
-                            }" class="button is-danger btn-remove">
+                                    <button value="${worker.pk}" class="button is-danger btn-remove">
                                         <span class="icon is-small">
                                             <i class="fas fa-trash-alt"></i>
                                         </span>
@@ -327,8 +289,12 @@ document.getElementById('search-bar').addEventListener('keyup', (e) => {
                     // * PAGINATOR
 
                     document.getElementById("page_list").innerHTML = "";
-
                     document.getElementById("paginator-btns").innerHTML = "";
+
+                    loadImageModal()
+
+                    editButtonEvents();
+                    removeButtonEvents();
 
                 })
             .catch(console.log)
@@ -339,9 +305,25 @@ document.getElementById('search-bar').addEventListener('keyup', (e) => {
 
 // * EXTRA
 
-document
-    .getElementById("create_worker_image_input")
-    .addEventListener("change", (e) => {
-        document.getElementById("create_worker_image_filename").innerHTML =
-            e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
+function loadImageModal(){
+    // * IMAGE MODAL
+
+    document.querySelectorAll(".worker_image_cell").forEach((image) => {
+        image.addEventListener("click", (e) => {
+            document.getElementById("image_modal").classList.add("is-active");
+            document.getElementById("image_modal_tag").src = image.src;
+        });
     });
+
+    document.getElementById("close_image_modal").addEventListener("click", (e) => {
+            document.getElementById("image_modal").classList.remove("is-active");
+        });
+
+    document.getElementById("background_image_modal").addEventListener("click", (e) => {
+            document.getElementById("image_modal").classList.remove("is-active");
+        });
+}
+
+document.getElementById("create_worker_image_input").addEventListener("change", (e) => {
+        document.getElementById("create_worker_image_filename").innerHTML = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
+});
