@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from api_tables.models import User
+from api_tables.forms import WorkerForm
 
 # Create your views here.
 
@@ -34,3 +35,8 @@ def login(request):
 def logout(request):
     auth_logout(request)
     return redirect('main-login')
+
+@login_required(login_url='/login/')
+def workers(request):
+    form = WorkerForm()
+    return render(request, 'workers.html', {'form': form, 'sk': os.environ.get('SECRET_KEY')})

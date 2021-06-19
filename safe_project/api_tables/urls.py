@@ -16,11 +16,13 @@ urlpatterns = [
     path('doors/create/', views.create_doors),
     path('doors/update/<int:id>/', views.update_doors),
     path('doors/delete/<int:id>/', views.delete_doors),
+    path('doors/all/', views.read_all_doors),
 
     path('workers/', views.read_workers),
     path('workers/create/', views.create_workers),
     path('workers/update/<int:id>/', views.update_workers),
     path('workers/delete/<int:id>/', views.delete_workers),
+    path('workers/search/', views.search_workers),
 
     path('doors/get_doors_status/', views.get_doors_info),
 

@@ -1,0 +1,326 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" class="
+    has-aside-left
+    has-aside-mobile-transition
+    has-navbar-fixed-top
+    has-aside-expanded
+  ">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1," />
+  <title>SAFE Project</title>
+
+  <!-- Bulma is included -->
+  <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/custom.css' %}" />
+
+  <!-- Fonts -->
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="{% static 'fontawesome-free-5.15.3-web/css/all.css' %}" />
+</head>
+
+<body>
+
+  <input type="hidden" name="sk" id="sk" value="{{ sk }}">
+  <input type="hidden" name="uid" id="uid" value="{{ user.id }}">
+
+  <div id="app">
+    <nav id="navbar-main" class="navbar is-fixed-top">
+      <div class="navbar-brand">
+        <a class="navbar-item is-hidden-desktop jb-aside-mobile-toggle">
+          <span class="icon"><i class="mdi mdi-forwardburger mdi-24px"></i></span>
+        </a>
+      </div>
+      <div class="navbar-brand is-right">
+        <a class="navbar-item is-hidden-desktop jb-navbar-menu-toggle" data-target="navbar-menu">
+          <span class="icon"><i class="mdi mdi-dots-vertical"></i></span>
+        </a>
+      </div>
+      <div class="navbar-menu fadeIn animated faster" id="navbar-menu">
+        <div class="navbar-end">
+          <div class="
+                navbar-item
+                has-dropdown has-dropdown-with-icons has-divider has-user-avatar
+                is-hoverable
+              ">
+            <a class="navbar-link is-arrowless">
+              <div class="is-user-avatar initial-logo has-background-color-2">
+                <!-- <img
+                    src="https://avatars.dicebear.com/v2/initials/john-doe.svg"
+                    alt="Jane Doe"
+                  /> -->
+                <span> {{ user.first_name|slice:"0:1" }} </span>
+              </div>
+              <div class="is-user-name"><span>{{ user.first_name }} {{ user.last_name }}</span></div>
+              <span class="icon"><i class="mdi mdi-chevron-down"></i></span>
+            </a>
+            <div class="navbar-dropdown">
+              <!-- <a href="profile.html" class="navbar-item">
+                  <span class="icon"><i class="mdi mdi-account"></i></span>
+                  <span>Perfil</span>
+                </a>
+                <a class="navbar-item">
+                  <span class="icon"><i class="mdi mdi-settings"></i></span>
+                  <span>Opciones</span>
+                </a> -->
+              <hr class="navbar-divider" />
+              <a class="navbar-item" href="/logout">
+                <span class="icon"><i class="mdi mdi-logout"></i></span>
+                <span>Cerrar Sesión</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <aside class="aside is-placed-left is-expanded">
+      <div class="aside-tools bg-color1">
+        <div class="aside-tools-label">
+          <span><b>SAFE</b> Project</span>
+        </div>
+      </div>
+      <div class="menu is-menu-main">
+        <p class="menu-label">General</p>
+        <ul class="menu-list">
+          <li>
+            <a href="/" class="
+            {% if request.path == "/" %}
+              is-active router-link-active
+            {% endif %}
+               has-icon">
+              <span class="icon"><i class="fas fa-desktop"></i></span>
+              <span class="menu-item-label">Dashboard</span>
+            </a>
+          </li>
+        </ul>
+        <p class="menu-label">Registros</p>
+        <ul class="menu-list">
+          <li>
+            <a href="/workers" class="
+            {% if request.path == "/workers/" %}
+              is-active router-link-active
+            {% endif %}
+            has-icon">
+              <span class="icon"><i class="fas fa-address-book"></i></span>
+              <span class="menu-item-label">Empleados</span>
+            </a>
+          </li>
+          <li>
+            <a href="/doors" class="
+            {% if request.path == "/doors/" %}
+              is-active router-link-active
+            {% endif %}
+            has-icon">
+              <span class="icon"><i class="fas fa-list-alt"></i></span>
+              <span class="menu-item-label">Puertas</span>
+            </a>
+          </li>
+          <li>
+            <a href="/logs" class="
+            {% if request.path == "/logs/" %}
+              is-active router-link-active
+            {% endif %}
+            has-icon">
+              <span class="icon"><i class="fas fa-list-alt"></i></span>
+              <span class="menu-item-label">Logs</span>
+            </a>
+          </li>
+          <p class="menu-label">Configuración</p>
+          <ul class="menu-list">
+            <li>
+              <a href="/profile" class="
+              {% if request.path == "/profile/" %}
+                is-active router-link-active
+              {% endif %}
+              has-icon">
+                <span class="icon"><i class="mdi mdi-account-circle"></i></span>
+                <span class="menu-item-label">Perfil</span>
+              </a>
+            </li>
+            <li>
+              <a href="/about-us" class="
+              {% if request.path == "/about-us/" %}
+                is-active router-link-active
+              {% endif %}
+              has-icon">
+                <span class="icon"><i class="mdi mdi-help-circle"></i></span>
+                <span class="menu-item-label">About Us</span>
+              </a>
+            </li>
+          </ul>
+      </div>
+    </aside>
+    <section class="section is-title-bar">
+      <div class="level">
+        <div class="level-left">
+          <div class="level-item">
+            <ul>
+              <li>Admin</li>
+              <li>
+                {% block page_name %}
+
+                {% endblock page_name %}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <div class="buttons is-right">
+              <button id="btn-modal-report" href="" target="_blank" class="button is-danger">
+                <span class="icon"><i class="mdi mdi-alert-circle"></i></span>
+                <span>Generar reporte</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    {% block hero %}
+    <section class="hero is-hero-bar">
+      <div class="hero-body">
+        <div class="level">
+          <div class="level-left">
+            <div class="level-item">
+              <h1 class="title">
+                {% block page_hero %}
+
+                {% endblock page_hero %}
+              </h1>
+            </div>
+          </div>
+          <div class="level-right" style="display: none">
+            <div class="level-item"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% endblock hero %}
+
+
+
+    {% block content %}
+
+    {% endblock content %}
+
+
+    <!--Footer-->
+    <footer class="footer full-height-footer">
+      <div class="container-fluid">
+        <div class="level">
+          <div class="level-left">
+            <div class="level-item">© 2021, Safe Project.</div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Modal report-->
+  <div id="modal-report" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content has-background-white py-5 px-5">
+      <h3 class="title">Reporte de error</h3>
+      <hr />
+      <form id="report-form">
+        <div class="field mt-5">
+          <label class="label">Email:</label>
+          <div class="control has-icons-left">
+            <input name="email" type="email" class="input" placeholder="Email" />
+            <span class="icon is-small is-left">
+              <i class="fas fa-envelope"></i>
+            </span>
+          </div>
+        </div>
+        <div class="field mt-5">
+          <label class="label">Nombre de quien envía el reporte:</label>
+          <div class="control has-icons-left">
+            <input name="name" type="text" class="input" placeholder="Nombre completo" />
+            <span class="icon is-small is-left">
+              <i class="fas fa-user"></i>
+            </span>
+          </div>
+        </div>
+        <div class="field mt-5">
+          <div id="kind-of-report">
+            <label class="label">Tipo de reporte:</label>
+            <div class="select">
+              <select name="kor">
+                <option value="0">-</option>
+                <option value="1">Reporte de personal</option>
+                <option value="2">Reporte de gerencia</option>
+              </select>
+            </div>
+          </div>
+          <br>
+          <div id="report-personal" hidden>
+            <label class="label">Reportes de personal:</label>
+            <div class="select">
+              <select name="persrep">
+                <option value="">-</option>
+                <option value="La puerta no abre.">La puerta no abre</option>
+                <option value="El reconocimiento facial no funciona.">El reconocimiento facial no funciona</option>
+                <option value="No funciona la cámara.">No funciona la cámara</option>
+                <option value="No sirve el dispenser de alcohol en gel.">No sirve el dispenser de alcohol en gel
+                </option>
+                <option value="El lector no me reconoce la tarjeta.">El lector no me reconoce la tarjeta</option>
+                <option value="No me toma la temperatura.">No me toma la temperatura</option>
+                <option value="El aire del ambiente se siente extraño.">El aire del ambiente se siente extraño</option>
+                <option value="La información que aparece en la pantalla no es la mía.">La información que aparece en la
+                  pantalla no es la mía</option>
+              </select>
+            </div>
+          </div>
+          <div id="report-gerencia" hidden>
+            <label class="label">Reportes de gerencia:</label>
+            <div class="select">
+              <select name="gerrep">
+                <option value="">-</option>
+                <option value="No me informa el estado de las puertas en tiempo real.">No me informa el estado de las
+                  puertas en tiempo real</option>
+                <option value="No se actualiza la información de las personas que entran al sector.">No se actualiza la
+                  información de las personas que entran al sector</option>
+                <option value="No funcionan las alertas de seguridad.">No funcionan las alertas de seguridad</option>
+                <option value="No me deja registrar nuevas tarjetas.">No me deja registrar nuevas tarjetas</option>
+                <option value="Los informes del personal llegan incompletos.">Los informes del personal llegan
+                  incompletos</option>
+              </select>
+            </div>
+          </div>
+          <textarea name="message" class="textarea mt-5" placeholder="Describa brevemente la falla"></textarea>
+        </div>
+        <p id="response-text"></p>
+        <hr />
+        <div class="field is-grouped is-grouped-right">
+          <div class="control">
+            <button class="button is-success">Enviar</button>
+            <button type="button" id="btn-close-modal-report" class="button is-danger is-light">Cancelar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Javascript -->
+  <script type="text/javascript" src="{% static 'js/main.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/report.js' %}"></script>
+
+
+  {% block js %}
+
+  {% endblock js %}
+
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.9.95/css/materialdesignicons.min.css" />
+</body>
+
+</html>

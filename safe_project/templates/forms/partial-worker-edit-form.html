@@ -1,41 +1,97 @@
-<form id="edit-form" method="POST">
+<div class="modal-background"></div>
+    <div class="modal-content has-background-white py-5 px-5">
+        <h3 class="title">Edite los campos</h3>
+        <hr>
+        <form id="edit-form">
 
-    <input type="hidden" name="id" value="{{id}}">
+            <input type="hidden" name="id" value="{{id}}">
 
-    <input type="hidden" name="SECRET_KEY" value="{{sk}}">
+            <input type="hidden" name="SECRET_KEY" value="{{sk}}">
 
-    <input type="hidden" name="{{ form.user_id.name }}" value="{{form.user_id.value}}">
-    
-    <div>
-        <label>Nombre:</label>
-        <input type="text" name="{{ form.first_name.name }}" id="first_name" value="{{ form.first_name.value }}">
+            <input type="hidden" name="{{ form.user_id.name }}" value="{{form.user_id.value}}">
+
+            <div class="field">
+                <label class="label">Nombre</label>
+                <div class="control has-icons-left">
+                    <input type="text" class="input" name="{{ form.first_name.name }}" id="first_name" value="{{ form.first_name.value }}" placeholder="Nombre">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-user"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Apellido</label>
+                <div class="control has-icons-left">
+                    <input type="text" class="input" name="{{ form.last_name.name }}" id="last_name"  value="{{ form.last_name.value }}" placeholder="Apellido">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-user"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="field mt-5">
+                <label class="label">Número de teléfono</label>
+                <div class="control has-icons-left">
+                    <input class="input" placeholder="Número de teléfono" name="{{ form.phone_number.name }}" id="phone_number" value="{{ form.phone_number.value }}">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-mobile-alt"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="field mt-5">
+                <label class="label">Email</label>
+                <div class="control has-icons-left">
+                    <input type="email" class="input" placeholder="Email" name="{{ form.email.name }}" id="email" value="{{ form.email.value }}">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-envelope"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="field mt-5">
+                <label class="label">Dirección</label>
+                <div class="control has-icons-left">
+                    <input type="text" class="input" placeholder="Dirección" name="{{ form.address.name }}" id="address" value="{{ form.address.value }}">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="field mt-5">
+                <label class="label">ID Tarjeta</label>
+                <div class="control has-icons-left">
+                    <input type="number" class="input" placeholder="ID Tarjeta" name="{{ form.card_code.name }}" id="card_code" value="{{ form.card_code.value }}">
+                    <span class="icon is-small is-left">
+                        <i class="far fa-id-card"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="field mt-5">
+                <label class="label">Foto</label>
+                <div class="control">
+                    <div class="file is-info has-name">
+                        <label class="file-label">
+                            <input class="file-input" type="file" name="{{ form.worker_image.name }}" id="edit_worker_image_input" value="{{ form.worker_image.value }}">
+                            <span class="file-cta">
+                                <span class="file-icon">
+                                    <i class="fas fa-upload"></i>
+                                </span>
+                                <span class="file-label">
+                                    Seleccione un archivo...
+                                </span>
+                            </span>
+                            <span id="edit_worker_image_filename" class="file-name">
+                                -
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <p id="edit-response-text"></p>
+            <hr>
+            <div class="field is-grouped is-grouped-right">
+                <div class="control">
+                    <button type="submit" class="button is-success">Enviar</button>
+                    <button type="button" id="btn-close-edit-modal" class="button is-danger is-light">Cancelar</button>
+                </div>
+            </div>
+        </form>
     </div>
-    <br>
-    <div>
-        <label>Apellido:</label>
-        <input type="text" name="{{ form.last_name.name }}" id="last_name"  value="{{ form.last_name.value }}">
-    </div>
-    <br>
-    <div>
-        <label>Número de Teléfono:</label>
-        <input type="text" name="{{ form.phone_number.name }}" id="phone_number" value="{{ form.phone_number.value }}">
-    </div>
-    <br>
-    <div>
-        <label>Email:</label>
-        <input type="email" name="{{ form.email.name }}" id="email" value="{{ form.email.value }}">
-    </div>
-    <br>
-    <div>
-        <label>Dirección:</label>
-        <input type="text" name="{{ form.address.name }}" id="address" value="{{ form.address.value }}">
-    </div>
-    <br>
-    <div>
-        <label>Código Tarjeta:</label>
-        <input type="text" name="{{ form.card_code.name }}" id="card_code" value="{{ form.card_code.value }}">
-    </div>
-    <br>
-    <input type="submit" value="Enviar">
-    
-</form>

@@ -42,6 +42,7 @@ def read_users(request):
 
             response['results'] = serialize('json', page.object_list)
             response['num_pages'] = paginator.num_pages
+            response['cur_page'] = page.number
 
             response['media_path'] = settings.CURRENT_HOST + '/media/'
 
@@ -199,6 +200,7 @@ def read_logs(request):
             response['num_pages'] = paginator.num_pages
 
             response['media_path'] = settings.CURRENT_HOST + '/media/'
+            response['cur_page'] = page.number
 
             return JsonResponse({
                 'error_message': None,
@@ -297,6 +299,28 @@ def delete_logs(request, id):
 
 # DOORS
 
+def read_all_doors(request):
+    if request.GET.get('sk') == os.environ.get('SECRET_KEY'):
+
+        try:
+
+            doors_list = Door.objects.filter(user_id=request.GET.get('user_id'))
+
+            return JsonResponse({
+                'error_message': None,
+                'success_message': 'Successfully fetched.',
+                'data': serialize('json', doors_list)
+            })
+
+        except Exception as e:
+            return JsonResponse({
+                'error_message': f'Error: {e}',
+                'success_message': None,
+            })
+
+    else:
+        return HttpResponseForbidden()
+
 def read_doors(request):
     if request.GET.get('sk') == os.environ.get('SECRET_KEY'):
 
@@ -316,6 +340,7 @@ def read_doors(request):
 
             response['results'] = serialize('json', page.object_list)
             response['num_pages'] = paginator.num_pages
+            response['cur_page'] = page.number
 
             response['media_path'] = settings.CURRENT_HOST + '/media/'
 
@@ -443,7 +468,7 @@ def read_workers(request):
 
             workers_list = Worker.objects.filter(user_id=request.GET.get('user_id'))
 
-            paginator = Paginator(workers_list, 10)
+            paginator = Paginator(workers_list, 2)
 
             page = paginator.page(request.GET.get('page', 1))
 
@@ -454,6 +479,7 @@ def read_workers(request):
 
             response['results'] = serialize('json', page.object_list)
             response['num_pages'] = paginator.num_pages
+            response['cur_page'] = page.number
 
             response['media_path'] = settings.CURRENT_HOST + '/media/'
 
@@ -513,7 +539,7 @@ def update_workers(request, id):
             try:
                 worker = Worker.objects.get(pk=id, user_id=request.POST.get('user_id'))
 
-                form = EditWorkerForm(request.POST, instance=worker)
+                form = EditWorkerForm(request.POST, request.FILES, instance=worker)
                 if form.is_valid():
                     form.save()
                     return JsonResponse({
@@ -577,6 +603,32 @@ def delete_workers(request, id):
 
         else:
             return HttpResponseForbidden()
+
+def search_workers(request):
+    if request.GET.get('sk') == os.environ.get('SECRET_KEY'):
+        
+        first_word = request.GET.get('first_word', '-')
+        second_word = request.GET.get('second_word', '-')
+        user_id = request.GET.get('user_id')
+
+        workers_list = Worker.objects.filter(
+            (
+                Q(first_name__icontains=first_word) | Q(last_name__icontains=first_word) | Q(card_code__icontains=first_word) |
+                Q(first_name__icontains=second_word) | Q(last_name__icontains=second_word) | Q(card_code__icontains=second_word)
+            ) & Q(user_id=user_id)
+        )
+
+        return JsonResponse({
+            'error_message': None,
+            'success_message': 'Fetched successfully',
+            'data': {
+                'results': serialize('json', workers_list),
+                'media_path': settings.CURRENT_HOST + '/media/',
+            }
+        })
+
+    else:
+        return HttpResponseForbidden()
 
 # * EXTRA FUNCTIONS
 

@@ -1,453 +1,202 @@
-<!DOCTYPE html>
-<html lang="en" class="has-aside-left has-aside-mobile-transition has-navbar-fixed-top has-aside-expanded">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1,">
-    <title>SAFE Project</title>
+{% load static %}
 
-    <!-- Bulma is included -->
-    <link rel="stylesheet" href="css/bulma.min.css">
-    <link rel="stylesheet" href="css/main.min.css">
-    <link rel="stylesheet" href="css/custom.css">
+{% block page_name %} Trabajadores {% endblock page_name %}
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="../fontawesome-free-5.15.3-web/css/all.css">
-</head>
+{% block hero %} {% endblock hero %}
+    
 
-<body>
-    <div id="app">
-        <nav id="navbar-main" class="navbar is-fixed-top">
-            <div class="navbar-brand">
-                <a class="navbar-item is-hidden-desktop jb-aside-mobile-toggle">
-                    <span class="icon"><i class="mdi mdi-forwardburger mdi-24px"></i></span>
-                </a>
-            </div>
-            <div class="navbar-brand is-right">
-                <a class="navbar-item is-hidden-desktop jb-navbar-menu-toggle" data-target="navbar-menu">
-                    <span class="icon"><i class="mdi mdi-dots-vertical"></i></span>
-                </a>
-            </div>
-            <div class="navbar-menu fadeIn animated faster" id="navbar-menu">
-                <div class="navbar-end">
-                    <div
-                        class="navbar-item has-dropdown has-dropdown-with-icons has-divider has-user-avatar is-hoverable">
-                        <a class="navbar-link is-arrowless">
-                            <div class="is-user-avatar">
-                                <img src="https://avatars.dicebear.com/v2/initials/john-doe.svg" alt="Jane Doe">
-                            </div>
-                            <div class="is-user-name"><span>Jane Doe</span></div>
-                            <span class="icon"><i class="mdi mdi-chevron-down"></i></span>
-                        </a>
-                        <div class="navbar-dropdown">
-                            <a href="profile.html" class="navbar-item">
-                                <span class="icon"><i class="mdi mdi-account"></i></span>
-                                <span>Perfil</span>
-                            </a>
-                            <a class="navbar-item">
-                                <span class="icon"><i class="mdi mdi-settings"></i></span>
-                                <span>Opciones</span>
-                            </a>
-                            <hr class="navbar-divider">
-                            <a class="navbar-item">
-                                <span class="icon"><i class="mdi mdi-logout"></i></span>
-                                <span>Cerrar Sesión</span>
-                            </a>
-                        </div>
-                    </div>
-                    <a href="https://justboil.me/bulma-admin-template/one-html" title="About"
-                        class="navbar-item has-divider is-desktop-icon-only">
-                        <span class="icon"><i class="mdi mdi-help-circle-outline"></i></span>
-                        <span>Ayuda</span>
-                    </a>
+{% block content %}
+<section class="hero is-hero-bar">
+    <div class="hero-body">
+        <div class="level">
+            <div class="level-left">
+                <div class="level-item">
+                    <h1 class="title">
+                        Trabajadores
+                    </h1>
                 </div>
             </div>
-        </nav>
-        <aside class="aside is-placed-left is-expanded">
-            <div class="aside-tools bg-color1">
-                <div class="aside-tools-label">
-                    <span><b>SAFE</b> Project</span>
+            <div class="level-right">
+                <div class="level-item">
+                    <button id="btn-add" class="button is-success">
+                        <span class="icon is-small">
+                            <i class="fas fa-user-plus"></i>
+                        </span>
+                        <span>
+                            Agregar trabajador
+                        </span>
+                    </button>
                 </div>
-            </div>
-            <div class="menu is-menu-main">
-                <p class="menu-label">General</p>
-                <ul class="menu-list">
-                    <li>
-                        <a href="index.html" class="router-link-active has-icon">
-                            <span class="icon"><i class="fas fa-desktop"></i></span>
-                            <span class="menu-item-label">Dashboard</span>
-                        </a>
-                    </li>
-                </ul>
-                <p class="menu-label">Examples</p>
-                <ul class="menu-list">
-                    <li>
-                        <a href="tables.html" class="has-icon is-active">
-                            <span class="icon"><i class="fas fa-address-book"></i></span>
-                            <span class="menu-item-label">Lista de empleados</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="forms.html" class="has-icon">
-                            <span class="icon"><i class="fas fa-list-alt"></i></span>
-                            <span class="menu-item-label">Lista de puertas</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="profile.html" class="has-icon">
-                            <span class="icon"><i class="mdi mdi-account-circle"></i></span>
-                            <span class="menu-item-label">Perfil</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="has-icon has-dropdown-icon">
-                            <span class="icon"><i class="mdi mdi-view-list"></i></span>
-                            <span class="menu-item-label">Submenus</span>
-                            <div class="dropdown-icon">
-                                <span class="icon"><i class="mdi mdi-plus"></i></span>
-                            </div>
-                        </a>
-                        <ul>
-                            <li>
-                                <a href="#void">
-                                    <span>Sub-item One</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#void">
-                                    <span>Sub-item Two</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-                <p class="menu-label">About</p>
-                <ul class="menu-list">
-                    <li>
-                        <a href="https://justboil.me/bulma-admin-template/one-html" class="has-icon">
-                            <span class="icon"><i class="mdi mdi-help-circle"></i></span>
-                            <span class="menu-item-label">About</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </aside>
-        <section class="section is-title-bar">
-            <div class="level">
-                <div class="level-left">
-                    <div class="level-item">
-                        <ul>
-                            <li>Admin</li>
-                            <li>Lista de empleados</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="hero is-hero-bar">
-            <div class="hero-body">
-                <div class="level">
-                    <div class="level-left">
-                        <div class="level-item">
-                            <h1 class="title">
-                                Empleados
-                            </h1>
-                        </div>
-                    </div>
-                    <div class="level-right">
-                        <div class="level-item">
-                            <button class="button is-success">
-                                <span class="icon is-small">
-                                    <i class="fas fa-user-plus"></i>
-                                </span>
-                                <span>
-                                    Agregar trabajador
-                                </span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Table -->
-        <section class="section is-main-section">
-            <table class="table is-fullwidth is-bordered is-striped is-hoverable is-fullwidth has-text-centered">
-                <thead>
-                    <tr>
-                        <th>Foto</th>
-                        <th>Nombre</th>
-                        <th>Número de teléfono</th>
-                        <th>Email</th>
-                        <th>Dirección</th>
-                        <th>ID Tarjeta</th>
-                        <th>Fecha de creación</th>
-                        <!-- <th>Activo</th> -->
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <figure class="image">
-                                <img class="is-rounded" src="../Mendito.png">
-                            </figure>
-                        </td>
-                        <td data-label="Nombre">
-                            <span>
-                                Julián Mendoza
-                            </span>
-                        </td>
-                        <td data-label="Número de teléfono">
-                            <span>
-                                1131175517
-                            </span>
-                        </td>
-                        <td data-label="Email">
-                            <span>
-                                julianlionelmendoza@impatrq.com
-                            </span>
-                        </td>
-                        <td data-label="Dirección">
-                            <span>
-                                Calle Siempre Viva 1234
-                            </span>
-                        </td>
-                        <td data-label="ID Tarjeta">
-                            <span>
-                                123456789
-                            </span>
-                        </td>
-                        <td data-label="Fecha de creación">
-                            14/06/2020
-                        </td>
-                        <td>
-                            <button class="button is-primary">
-                                <span class="icon is-small">
-                                    <i class="fas fa-pencil-alt"></i>
-                                </span>
-                            </button>
-                            <button class="button is-danger">
-                                <span class="icon is-small">
-                                    <i class="fas fa-trash-alt"></i>
-                                </span>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="notification">
-                <div class="level">
-                  <div class="level-left">
-                    <div class="level-item">
-                      <div class="buttons has-addons">
-                        <button type="button" class="button">1</button>
-                        <button type="button" class="button">2</button>
-                        <button type="button" class="button">3</button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="level-right">
-                    <div class="level-item">
-                      <medium>Página 1 de 3</medium>
-                    </div>
-                  </div>
-                </div>
-              </div>
-        </section>
-
-        <!-- Modal add worker -->
-        <div class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content has-background-white py-5 px-5">
-                <h3 class="title">Complete los campos</h3>
-                <hr>
-                <form>
-                    <div class="field">
-                        <label class="label">Nombre completo</label>
-                        <div class="control has-icons-left">
-                            <input type="text" class="input" placeholder="Nombre completo">
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-user"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="field mt-5">
-                        <label class="label">Número de teléfono</label>
-                        <div class="control has-icons-left">
-                            <input type="tel" class="input" placeholder="Número de teléfono" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}">
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-mobile-alt"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="field mt-5">
-                        <label class="label">Email</label>
-                        <div class="control has-icons-left">
-                            <input type="email" class="input" placeholder="Email">
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-envelope"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="field mt-5">
-                        <label class="label">Dirección</label>
-                        <div class="control has-icons-left">
-                            <input type="text" class="input" placeholder="Dirección">
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-map-marker-alt"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="field mt-5">
-                        <label class="label">ID Tarjeta</label>
-                        <div class="control has-icons-left">
-                            <input type="number" class="input" placeholder="ID Tarjeta">
-                            <span class="icon is-small is-left">
-                                <i class="far fa-id-card"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="field mt-5">
-                        <label class="label">Foto</label>
-                        <div class="control">
-                            <div class="file is-info has-name">
-                                <label class="file-label">
-                                  <input class="file-input" type="file" name="resume">
-                                  <span class="file-cta">
-                                    <span class="file-icon">
-                                      <i class="fas fa-upload"></i>
-                                    </span>
-                                    <span class="file-label">
-                                      Seleccione un archivo...
-                                    </span>
-                                  </span>
-                                  <span class="file-name">
-                                    Screen Shot 2017-07-29 at 15.54.25.png
-                                  </span>
-                                </label>
-                              </div>
-                        </div>
-                    </div>
-                    <hr>
-                   <div class="field is-grouped is-grouped-right">
-                        <div class="control">
-                            <button class="button is-success">Enviar</button>
-                            <button class="button is-danger is-light">Cancelar</button>
-                        </div>
-                   </div>
-                </form>
             </div>
         </div>
-
-        <!-- Modal edit worker-->
-        <div class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content has-background-white py-5 px-5">
-                <h3 class="title">Edite los campos</h3>
-                <hr>
-                <form>
-                    <div class="field">
-                        <label class="label">Nombre completo</label>
-                        <div class="control has-icons-left">
-                            <input type="text" class="input" value="Julián Mendoza" placeholder="Nombre completo">
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-user"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="field mt-5">
-                        <label class="label">Número de teléfono</label>
-                        <div class="control has-icons-left">
-                            <input type="tel" class="input" placeholder="Número de teléfono" value="1131175517" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}">
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-mobile-alt"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="field mt-5">
-                        <label class="label">Email</label>
-                        <div class="control has-icons-left">
-                            <input type="email" class="input" placeholder="Email" value="julianlionelmendoza@gmail.com">
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-envelope"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="field mt-5">
-                        <label class="label">Dirección</label>
-                        <div class="control has-icons-left">
-                            <input type="text" class="input" placeholder="Dirección" value="Calle Siempre Viva 1234">
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-map-marker-alt"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="field mt-5">
-                        <label class="label">ID Tarjeta</label>
-                        <div class="control has-icons-left">
-                            <input type="number" class="input" placeholder="ID Tarjeta" value="123456789">
-                            <span class="icon is-small is-left">
-                                <i class="far fa-id-card"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="field mt-5">
-                        <label class="label">Foto</label>
-                        <div class="control">
-                            <div class="file is-info has-name">
-                                <label class="file-label">
-                                  <input class="file-input" type="file" name="resume">
-                                  <span class="file-cta">
-                                    <span class="file-icon">
-                                      <i class="fas fa-upload"></i>
-                                    </span>
-                                    <span class="file-label">
-                                      Seleccione un archivo...
-                                    </span>
-                                  </span>
-                                  <span class="file-name">
-                                    Screen Shot 2017-07-29 at 15.54.25.png
-                                  </span>
-                                </label>
-                              </div>
-                        </div>
-                    </div>
-                    <hr>
-                   <div class="field is-grouped is-grouped-right">
-                        <div class="control">
-                            <button class="button is-success">Enviar</button>
-                            <button class="button is-danger is-light">Cancelar</button>
-                        </div>
-                   </div>
-                </form>
-            </div>
-        </div>
-
-
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="container-fluid">
-                <div class="level">
-                    <div class="level-left">
-                        <div class="level-item">
-                            © 2021, Safe Project.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
     </div>
+</section>
+<br>
+<div class="field has-addons px-5">
+    <div class="control is-expanded">
+      <input id="search-bar" class="input" type="text" placeholder="Buscar por nombre / apellido / tarjeta">
+    </div>
+</div>
+
+<!-- Table -->
+<section class="section is-main-section">
+    <table class="table is-fullwidth is-bordered is-striped is-hoverable is-fullwidth has-text-centered">
+        <thead>
+            <tr>
+                <th>Foto</th>
+                <th>Nombre</th>
+                <th>Número de teléfono</th>
+                <th>Email</th>
+                <th>Dirección</th>
+                <th>ID Tarjeta</th>
+                <th>Fecha de creación</th>
+                <!-- <th>Activo</th> -->
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            <!-- Loaded in JS -->
+        </tbody>
+    </table>
+    <div class="notification">
+        <div class="level">
+            <div class="level-left">
+                <div class="level-item">
+                    <div id="paginator-btns" class="buttons has-addons">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="level-right">
+                <div class="level-item">
+                    <medium><span id="page_list"></span></medium>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal add worker -->
+<div id="worker-add-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content has-background-white py-5 px-5">
+        <h3 class="title">Complete los campos</h3>
+        <hr>
+        <form id="create-form">
+
+            <input type="hidden" name="SECRET_KEY" value="{{sk}}">
+            <input type="hidden" name="{{ form.user_id.name }}" value="{{ user.id }}">
+
+            <div class="field">
+                <label class="label">Nombre</label>
+                <div class="control has-icons-left">
+                    <input name="{{ form.first_name.name }}" type="text" class="input" placeholder="Nombre">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-user"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Apellido</label>
+                <div class="control has-icons-left">
+                    <input name="{{ form.last_name.name }}" type="text" class="input" placeholder="Apellido">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-user"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="field mt-5">
+                <label class="label">Número de teléfono</label>
+                <div class="control has-icons-left">
+                    <input name="{{ form.phone_number.name }}" class="input" placeholder="Número de teléfono">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-mobile-alt"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="field mt-5">
+                <label class="label">Email</label>
+                <div class="control has-icons-left">
+                    <input name="{{ form.email.name }}" type="email" class="input" placeholder="Email">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-envelope"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="field mt-5">
+                <label class="label">Dirección</label>
+                <div class="control has-icons-left">
+                    <input name="{{ form.address.name }}" type="text" class="input" placeholder="Dirección">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="field mt-5">
+                <label class="label">ID Tarjeta</label>
+                <div class="control has-icons-left">
+                    <input name="{{ form.card_code.name }}" type="number" class="input" placeholder="ID Tarjeta">
+                    <span class="icon is-small is-left">
+                        <i class="far fa-id-card"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="field mt-5">
+                <label class="label">Foto</label>
+                <div class="control">
+                    <div class="file is-info has-name">
+                        <label class="file-label">
+                            <input id="create_worker_image_input" name="{{ form.worker_image.name }}" class="file-input" type="file" name="resume">
+                            <span class="file-cta">
+                                <span class="file-icon">
+                                    <i class="fas fa-upload"></i>
+                                </span>
+                                <span class="file-label">
+                                    Seleccione un archivo...
+                                </span>
+                            </span>
+                            <span id="create_worker_image_filename" class="file-name">
+                                -
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <p id="create-response-text"></p>
+            <hr>
+            <div class="field is-grouped is-grouped-right">
+                <div class="control">
+                    <button type="submit" class="button is-success">Enviar</button>
+                    <button id="btn-close-add-modal" type="button" class="button is-danger is-light">Cancelar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal edit worker-->
+<div id="worker-edit-modal" class="modal">
+    
+</div>
+
+<!-- IMAGE MODAL -->
+
+<div id="image_modal" class="modal">
+    <div id="background_image_modal" class="modal-background"></div>
+    <div class="modal-content">
+      <p class="image">
+        <img id="image_modal_tag" alt="Imagen de perfil">
+      </p>
+    </div>
+    <button id="close_image_modal" class="modal-close is-large" aria-label="close"></button>
+</div>
+
+{% endblock content %}
 
 
-    <!-- Javascript-->
-    <script type="text/javascript" src="js/main.min.js"></script>
-
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.9.95/css/materialdesignicons.min.css">
-</body>
-
-</html>
+{% block js %}
+    <script src="{% static 'js/worker.js' %}"></script>
+{% endblock js %}
+    

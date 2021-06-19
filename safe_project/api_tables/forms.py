@@ -32,7 +32,7 @@ class EditWorkerForm(forms.ModelForm):
     class Meta:
         model = Worker
         fields = ['user_id', 'first_name', 'last_name', 'phone_number', 'email', 'address', 
-        'card_code']
+        'card_code', 'worker_image']
 
 class EditDoorForm(forms.ModelForm):
     class Meta:
