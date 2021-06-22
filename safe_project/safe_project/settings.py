@@ -28,12 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost',]
 
-CORS_ORIGIN_ALLOW_ALL = True #! Borrar luego de usarla
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:8001',
-    'http://localhost:8000',
-] #! Borrar luego de usarla
-
 # CUSTOM GLOBAL VARIABLES
 
 CURRENT_HOST = 'http://localhost:8000'
@@ -52,13 +46,9 @@ INSTALLED_APPS = [
     'api_login',
     'api_tables',
     'api_modules',
-
-    'corsheaders', #! Borrar luego de usarla
-
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware', #! Borrar luego de usarla
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -132,7 +122,8 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+# ! USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

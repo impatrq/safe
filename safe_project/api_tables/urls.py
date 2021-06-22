@@ -11,6 +11,7 @@ urlpatterns = [
     path('logs/create/', views.create_logs),
     path('logs/update/<int:id>/', views.update_logs),
     path('logs/delete/<int:id>/', views.delete_logs),
+    path('logs/search/', views.search_logs),
 
     path('doors/', views.read_doors),
     path('doors/create/', views.create_doors),

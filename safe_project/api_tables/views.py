@@ -12,6 +12,7 @@ from django.conf import settings
 from django.views.decorators import csrf
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
+from datetime import date, datetime
 from .models import User, Logs, Worker, Door
 from .forms import UserForm, LogsForm, WorkerForm, DoorForm, EditWorkerForm, EditDoorForm
 
@@ -28,7 +29,7 @@ def read_users(request):
         try:
             response = dict()
 
-            users_list = User.objects.all()
+            users_list = User.objects.all()[::-1]
             # users_list = User.objects.filter(is_active=True)
 
             paginator = Paginator(users_list, 1)
@@ -168,9 +169,9 @@ def read_logs(request):
         try:
             response = dict()
 
-            logs_list = Logs.objects.filter(user_id=request.GET.get('user_id'))
+            logs_list = Logs.objects.filter(user_id=request.GET.get('user_id'))[::-1]
 
-            paginator = Paginator(logs_list, 20)
+            paginator = Paginator(logs_list, 5)
 
             page = paginator.page(request.GET.get('page', 1))
 
@@ -179,23 +180,7 @@ def read_logs(request):
             if page.has_previous():
                 response['prev_page'] = page.previous_page_number()
 
-
-            custom_object_list = []
-            for log in page.object_list:
-                if not log.exit_datetime:
-                    log.exit_datetime = '-'
-                custom_object_list.append({
-                    'worker_full_name': f'{log.worker_id.first_name} {log.worker_id.last_name}',
-                    'door_name': f'{log.door_id.sector_name} - {log.door_id.door_name}',
-                    'facemask': log.facemask,
-                    'temperature': log.temperature,
-                    'authorized': log.authorized,
-                    'entry_datetime': str(log.entry_datetime),
-                    'exit_datetime': str(log.exit_datetime),
-                    'worker_image': log.worker_image.url
-                })
-
-            response['results'] = json.dumps(custom_object_list)
+            response['results'] = json.dumps(serialize_logs(page.object_list))
 
             response['num_pages'] = paginator.num_pages
 
@@ -297,6 +282,119 @@ def delete_logs(request, id):
         else:
             return HttpResponseForbidden()
 
+def search_logs(request):
+    if request.GET.get('sk') == os.environ.get('SECRET_KEY'):
+
+        first_word = request.GET.get('first_word', '###')
+        second_word = request.GET.get('second_word', '###')
+
+        from_search_date = request.GET.get('from_search_date')
+        from_search_time = request.GET.get('from_search_time')
+
+        to_search_date = request.GET.get('to_search_date')
+        to_search_time = request.GET.get('to_search_time')
+        
+
+        if(first_word != "###" or second_word != "###"):
+            if(from_search_date and to_search_date):
+                if(from_search_time and to_search_time): # * Search with search bar, dates and times
+                    object_list = Logs.objects.filter(
+                        (
+                            Q(worker_id__first_name__icontains=first_word) | Q(worker_id__first_name__icontains=second_word) |
+                            Q(worker_id__last_name__icontains=first_word) | Q(worker_id__last_name__icontains=second_word)
+                        ) & Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} {from_search_time}:00', "%Y-%m-%d %H:%M:%S")) & Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} {to_search_time}:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
+                    )[::-1]
+
+                    return JsonResponse({
+                        'error_message': None,
+                        'success_message': 'Successfully fetched.',
+                        'data': {
+                            'results': json.dumps(serialize_logs(object_list)),
+                            'media_path': settings.CURRENT_HOST + '/media/'
+                        }
+                    })
+                else: # * Search with search bar and dates
+                    object_list = Logs.objects.filter(
+                        (
+                            Q(worker_id__first_name__icontains=first_word) | Q(worker_id__first_name__icontains=second_word) |
+                            Q(worker_id__last_name__icontains=first_word) | Q(worker_id__last_name__icontains=second_word)
+                        ) & Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} 00:00:00', "%Y-%m-%d %H:%M:%S")) & Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} 23:59:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
+                    )[::-1]
+
+                    return JsonResponse({
+                        'error_message': None,
+                        'success_message': 'Successfully fetched.',
+                        'data': {
+                            'results': json.dumps(serialize_logs(object_list)),
+                            'media_path': settings.CURRENT_HOST + '/media/'
+                        }
+                    })
+            else: # * Search with bar
+                object_list = Logs.objects.filter(
+                    (
+                        Q(worker_id__first_name__icontains=first_word) | Q(worker_id__first_name__icontains=second_word) |
+                        Q(worker_id__last_name__icontains=first_word) | Q(worker_id__last_name__icontains=second_word)
+                    ) & Q(user_id=request.GET.get('user_id'))
+                )[::-1]
+
+                return JsonResponse({
+                    'error_message': None,
+                    'success_message': 'Successfully fetched.',
+                    'data': {
+                        'results': json.dumps(serialize_logs(object_list)),
+                        'media_path': settings.CURRENT_HOST + '/media/'
+                    }
+                })
+        else:
+            if(from_search_date and to_search_date):
+                if(from_search_time and to_search_time): # * Search with dates and times
+                    object_list = Logs.objects.filter(
+                        Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} {from_search_time}:00', "%Y-%m-%d %H:%M:%S")) & Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} {to_search_time}:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
+                    )[::-1]
+
+                    return JsonResponse({
+                        'error_message': None,
+                        'success_message': 'Successfully fetched.',
+                        'data': {
+                            'results': json.dumps(serialize_logs(object_list)),
+                            'media_path': settings.CURRENT_HOST + '/media/'
+                        }
+                    })
+                else: # * Search with dates
+                    object_list = Logs.objects.filter(
+                        Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} 00:00:00', "%Y-%m-%d %H:%M:%S")) & Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} 23:59:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
+                    )[::-1]
+
+                    return JsonResponse({
+                        'error_message': None,
+                        'success_message': 'Successfully fetched.',
+                        'data': {
+                            'results': json.dumps(serialize_logs(object_list)),
+                            'media_path': settings.CURRENT_HOST + '/media/'
+                        }
+                    })
+                
+    else:
+        return HttpResponseForbidden()
+
+def serialize_logs(object_list):
+    custom_object_list = []
+    for log in object_list:
+        if not log.exit_datetime:
+            log.exit_datetime = '-'
+        custom_object_list.append({
+            'worker_full_name': f'{log.worker_id.first_name} {log.worker_id.last_name}',
+            'door_name': f'{log.door_id.sector_name} - {log.door_id.door_name}',
+            'facemask': log.facemask,
+            'temperature': log.temperature,
+            'authorized': log.authorized,
+            'entry_datetime': str(log.entry_datetime),
+            'exit_datetime': str(log.exit_datetime),
+            'worker_image': log.worker_image.url
+        })
+
+    return custom_object_list
+
 # DOORS
 
 def read_all_doors(request):
@@ -327,9 +425,9 @@ def read_doors(request):
         try:
             response = dict()
 
-            doors_list = Door.objects.filter(user_id=request.GET.get('user_id'))
+            doors_list = Door.objects.filter(user_id=request.GET.get('user_id'))[::-1]
 
-            paginator = Paginator(doors_list, 2)
+            paginator = Paginator(doors_list, 5)
 
             page = paginator.page(request.GET.get('page', 1))
 
@@ -491,9 +589,9 @@ def read_workers(request):
         try:
             response = dict()
 
-            workers_list = Worker.objects.filter(user_id=request.GET.get('user_id'))
+            workers_list = Worker.objects.filter(user_id=request.GET.get('user_id'))[::-1]
 
-            paginator = Paginator(workers_list, 2)
+            paginator = Paginator(workers_list, 5)
 
             page = paginator.page(request.GET.get('page', 1))
 
@@ -660,6 +758,12 @@ def search_workers(request):
 def get_doors_info(request):
     if request.GET.get('sk') == os.environ.get('SECRET_KEY'):
 
+        def check_time(datetime):
+            if datetime:
+                return datetime.strftime("%m/%d/%Y, %H:%M:%S")
+            else:
+                return '-'
+
         def get_logs(door):
             logs = Logs.objects.filter(door_id=door, user_id=request.GET.get('user_id')).order_by('-id')[:5]
             log_list = []
@@ -668,8 +772,8 @@ def get_doors_info(request):
                 log_list.append({
                     'worker_image': settings.CURRENT_HOST + log.worker_image.url,
                     'worker_full_name': f'{worker.first_name} {worker.last_name}',
-                    'entry_datetime': log.entry_datetime.strftime("%m/%d/%Y, %H:%M:%S"),
-                    'exit_datetime': log.exit_datetime.strftime("%m/%d/%Y, %H:%M:%S"),
+                    'entry_datetime': check_time(log.entry_datetime),
+                    'exit_datetime': check_time(log.exit_datetime),
                     'authorized': log.authorized,
                     'facemask': log.facemask,
                     'temperature': log.temperature,

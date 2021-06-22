@@ -45,3 +45,7 @@ def workers(request):
 def doors(request):
     form = DoorForm()
     return render(request, 'doors.html', {'form': form, 'sk': os.environ.get('SECRET_KEY')})
+
+@login_required(login_url='/login/')
+def logs(request):
+    return render(request, 'logs.html', {'sk': os.environ.get('SECRET_KEY')})

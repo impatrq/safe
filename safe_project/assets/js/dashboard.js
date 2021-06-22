@@ -92,6 +92,8 @@ function loadBtns(){
     logs_btns.forEach(button => {
         button.addEventListener('click', async (e) => {
             const door_info = await get_door_info(button.id)
+
+            console.log(door_info);
             
             document.getElementById('modal-log').classList.add('is-active')
 

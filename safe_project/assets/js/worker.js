@@ -228,6 +228,7 @@ document.getElementById('search-bar').addEventListener('keyup', (e) => {
     const second_word = document.getElementById('search-bar').value.split(' ')[1]
 
     if(e.target.value){
+        const tbody = document.getElementById('tbody')
         fetch(`http://localhost:8000/api/tables/workers/search?sk=${sk}&user_id=${uid}${first_word ? `&first_word=${first_word}`:''}${second_word ? `&second_word=${second_word}`:''}`)
             .then(res => res.json())
                 .then(res_json => {
