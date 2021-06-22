@@ -521,7 +521,7 @@ def create_doors(request):
     if request.method == 'POST':
         if request.POST.get('SECRET_KEY') and request.POST['SECRET_KEY'] == os.environ.get('SECRET_KEY'):
 
-            door_exists = Door.objects.filter(mac=request.POST['mac']).exists()
+            door_exists = Door.objects.filter(mac=request.POST['mac'], user_id=request.POST.get('user_id')).exists()
 
             if not door_exists:
                 form = DoorForm(request.POST)
@@ -690,7 +690,7 @@ def create_workers(request):
                     Q(email=request.POST['email']) |
                     Q(phone_number=request.POST['phone_number']) |
                     Q(card_code=request.POST['card_code'])
-                )
+                ) & Q(user_id=request.POST.get('user_id'))
             ).exists()
 
             if not worker_exists:

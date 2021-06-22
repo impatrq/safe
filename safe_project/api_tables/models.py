@@ -51,7 +51,7 @@ class Logs(models.Model):
 
 class Door(models.Model):
     user_id = models.ForeignKey('User', on_delete=models.CASCADE)
-    mac = models.CharField('MAC', max_length=64, blank=False, null=False, unique=True)
+    mac = models.CharField('MAC', max_length=64, blank=False, null=False)
     sector_name = models.CharField('Sector Name', max_length=64, blank=False, null=False)
     door_name = models.CharField('Door Name', max_length=64, blank=False, null=False)
     is_opened = models.BooleanField('Is Opened', default=False)
@@ -85,10 +85,10 @@ class Worker(models.Model):
     user_id = models.ForeignKey('User', on_delete=models.CASCADE)
     first_name = models.CharField('First Name', max_length=64, blank=False, null=False)
     last_name = models.CharField('Last Name', max_length=64, blank=False, null=False)
-    phone_number = models.CharField('Phone Number', max_length=20, blank=False, null=False, unique=True)
-    email = models.EmailField('Email', blank=False, null=False, unique=True)
+    phone_number = models.CharField('Phone Number', max_length=20, blank=False, null=False)
+    email = models.EmailField('Email', blank=False, null=False)
     address = models.CharField('Address', max_length=64, blank=False, null=False)
-    card_code = models.CharField('Card Code', max_length=64, blank=False, null=False, unique=True)
+    card_code = models.CharField('Card Code', max_length=64, blank=False, null=False)
     worker_image = models.ImageField('worker image', upload_to='workers_images/', height_field=None, width_field=None, max_length=None)
     date_created = models.DateTimeField('Date Created', blank=False, null=False, auto_now=False, auto_now_add=True)
     is_active = models.BooleanField('Is Active', default=True)
