@@ -128,63 +128,72 @@ document.getElementById('search-btn').addEventListener('click', (e) => {
     var to_search_time = document.getElementById('to_search_time').value
 
     if(to_search_date == '' && from_search_date != ''){
-        to_search_date = formatDateMilis(Date.now())
+        // to_search_date = formatDateMilis(Date.now())
+        to_search_date = 'null'
     }
 
     if(from_search_date == '' && to_search_date != ''){
-        from_search_date = '2000-01-01'
+        // from_search_date = '2000-01-01'
+        from_search_date = 'null'
     }
 
     if(to_search_time == '' && from_search_time != ''){
         to_search_time = '23:59'
+        // to_search_time = 'none'
     }
     
     if(from_search_time == '' && to_search_time != ''){
         from_search_time = '00:00'
+        // from_search_time = 'none'
     }
 
-    const tbody = document.getElementById('tbody')
-    fetch(`http://localhost:8000/api/tables/logs/search?sk=${sk}&user_id=${uid}${first_word ? `&first_word=${first_word}`:''}${second_word ? `&second_word=${second_word}`:''}${from_search_date ? `&from_search_date=${from_search_date}`:''}${from_search_time ? `&from_search_time=${from_search_time}`:''}${to_search_date ? `&to_search_date=${to_search_date}`:''}${to_search_time ? `&to_search_time=${to_search_time}`:''}`)
-        .then(res => res.json())
-            .then(res_json => {
-                console.log(res_json);
-                const media_path = res_json.data.media_path 
-                const logs = JSON.parse(res_json.data.results)
-                console.log(logs);
-                tbody.innerHTML = ''
-                logs.forEach(log => {
-                    tbody.innerHTML += `
-                    <tr>
-                        <td>
-                            <figure class="image">
-                                <img class="is-rounded worker_image_cell" src="${media_path}${log.worker_image.substring(7)}">
-                            </figure>
-                        </td>
-                        <td data-label="Nombre">${log.worker_full_name}</td>
-                        <td data-label="Puerta">${log.door_name}</td>
-                        <!-- <td data-label="Sector">Oficinas</td> -->
-                        <td data-label="Temperatura">${log.temperature}°c</td>
-                        <td data-label="Barbijo">${log.facemask == true ? "Si":"No"}</td>
-                        <td data-label="Hora de entrada">${formatDateTime(log.entry_datetime)}</td>
-                        <td data-label="Hora de salida">${formatDateTime(log.exit_datetime)}</td>
-                        <td data-label="Autorizado">
-                            <span class="icon ${log.authorized == true ? 'has-text-success':'has-text-danger'}">
-                                <i class="far ${log.authorized == true ? 'fa-check-circle':'fa-times-circle'}"></i>
-                            </span>
-                        </td>
-                    </tr>
-                    `
+    if(search_bar || from_search_date){
+        const tbody = document.getElementById('tbody')
+        fetch(`http://localhost:8000/api/tables/logs/search?sk=${sk}&user_id=${uid}${first_word ? `&first_word=${first_word}`:''}${second_word ? `&second_word=${second_word}`:''}${from_search_date ? `&from_search_date=${from_search_date}`:''}${from_search_time ? `&from_search_time=${from_search_time}`:''}${to_search_date ? `&to_search_date=${to_search_date}`:''}${to_search_time ? `&to_search_time=${to_search_time}`:''}`)
+            .then(res => res.json())
+                .then(res_json => {
+                    console.log(res_json);
+                    const media_path = res_json.data.media_path 
+                    const logs = JSON.parse(res_json.data.results)
+                    console.log(logs);
+                    tbody.innerHTML = ''
+                    logs.forEach(log => {
+                        tbody.innerHTML += `
+                        <tr>
+                            <td>
+                                <figure class="image">
+                                    <img class="is-rounded worker_image_cell" src="${media_path}${log.worker_image.substring(7)}">
+                                </figure>
+                            </td>
+                            <td data-label="Nombre">${log.worker_full_name}</td>
+                            <td data-label="Puerta">${log.door_name}</td>
+                            <!-- <td data-label="Sector">Oficinas</td> -->
+                            <td data-label="Temperatura">${log.temperature}°c</td>
+                            <td data-label="Barbijo">${log.facemask == true ? "Si":"No"}</td>
+                            <td data-label="Hora de entrada">${formatDateTime(log.entry_datetime)}</td>
+                            <td data-label="Hora de salida">${formatDateTime(log.exit_datetime)}</td>
+                            <td data-label="Autorizado">
+                                <span class="icon ${log.authorized == true ? 'has-text-success':'has-text-danger'}">
+                                    <i class="far ${log.authorized == true ? 'fa-check-circle':'fa-times-circle'}"></i>
+                                </span>
+                            </td>
+                        </tr>
+                        `
+                    })
+
+                    // * PAGINATOR
+
+                    document.getElementById("page_list").innerHTML = "";
+                    document.getElementById("paginator-btns").innerHTML = "";
+
+                    loadImageModal()
+
                 })
+            .catch(console.log)
+    } else {
+        loadData()
+    }
 
-                // * PAGINATOR
-
-                document.getElementById("page_list").innerHTML = "";
-                document.getElementById("paginator-btns").innerHTML = "";
-
-                loadImageModal()
-
-            })
-        .catch(console.log)
 })
 
 document.getElementById('reset-btn').addEventListener('click', (e) => {

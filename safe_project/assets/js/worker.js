@@ -328,3 +328,10 @@ function loadImageModal(){
 document.getElementById("create_worker_image_input").addEventListener("change", (e) => {
         document.getElementById("create_worker_image_filename").innerHTML = e.target.value.substring(e.target.value.lastIndexOf("\\") + 1);
 });
+
+document.getElementById('card-code').addEventListener('keydown', (e) => {
+    if(e.code == 'Enter'){
+        e.preventDefault()
+        return false
+    }
+})

@@ -298,12 +298,27 @@ def search_logs(request):
         if(first_word != "###" or second_word != "###"):
             if(from_search_date and to_search_date):
                 if(from_search_time and to_search_time): # * Search with search bar, dates and times
-                    object_list = Logs.objects.filter(
-                        (
-                            Q(worker_id__first_name__icontains=first_word) | Q(worker_id__first_name__icontains=second_word) |
-                            Q(worker_id__last_name__icontains=first_word) | Q(worker_id__last_name__icontains=second_word)
-                        ) & Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} {from_search_time}:00', "%Y-%m-%d %H:%M:%S")) & Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} {to_search_time}:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
-                    )[::-1]
+                    if(from_search_date != 'null' and to_search_date != 'null'):
+                        object_list = Logs.objects.filter(
+                            (
+                                Q(worker_id__first_name__icontains=first_word) | Q(worker_id__first_name__icontains=second_word) |
+                                Q(worker_id__last_name__icontains=first_word) | Q(worker_id__last_name__icontains=second_word)
+                            ) & Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} {from_search_time}:00', "%Y-%m-%d %H:%M:%S")) & Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} {to_search_time}:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
+                        )[::-1]
+                    elif(from_search_date != 'null' and to_search_date == 'null'):
+                        object_list = Logs.objects.filter(
+                            (
+                                Q(worker_id__first_name__icontains=first_word) | Q(worker_id__first_name__icontains=second_word) |
+                                Q(worker_id__last_name__icontains=first_word) | Q(worker_id__last_name__icontains=second_word)
+                            ) & Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} {from_search_time}:00', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
+                        )[::-1]
+                    elif(from_search_date == 'null' and to_search_date != 'null'):
+                        object_list = Logs.objects.filter(
+                            (
+                                Q(worker_id__first_name__icontains=first_word) | Q(worker_id__first_name__icontains=second_word) |
+                                Q(worker_id__last_name__icontains=first_word) | Q(worker_id__last_name__icontains=second_word)
+                            ) & Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} {to_search_time}:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
+                        )[::-1]
 
                     return JsonResponse({
                         'error_message': None,
@@ -314,12 +329,27 @@ def search_logs(request):
                         }
                     })
                 else: # * Search with search bar and dates
-                    object_list = Logs.objects.filter(
-                        (
-                            Q(worker_id__first_name__icontains=first_word) | Q(worker_id__first_name__icontains=second_word) |
-                            Q(worker_id__last_name__icontains=first_word) | Q(worker_id__last_name__icontains=second_word)
-                        ) & Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} 00:00:00', "%Y-%m-%d %H:%M:%S")) & Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} 23:59:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
-                    )[::-1]
+                    if(from_search_date != 'null' and to_search_date != 'null'):
+                        object_list = Logs.objects.filter(
+                            (
+                                Q(worker_id__first_name__icontains=first_word) | Q(worker_id__first_name__icontains=second_word) |
+                                Q(worker_id__last_name__icontains=first_word) | Q(worker_id__last_name__icontains=second_word)
+                            ) & Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} 00:00:00', "%Y-%m-%d %H:%M:%S")) & Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} 23:59:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
+                        )[::-1]
+                    elif(from_search_date != 'null' and to_search_date == 'null'):
+                        object_list = Logs.objects.filter(
+                            (
+                                Q(worker_id__first_name__icontains=first_word) | Q(worker_id__first_name__icontains=second_word) |
+                                Q(worker_id__last_name__icontains=first_word) | Q(worker_id__last_name__icontains=second_word)
+                            ) & Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} 00:00:00', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
+                        )[::-1]
+                    elif(from_search_date == 'null' and to_search_date != 'null'):
+                        object_list = Logs.objects.filter(
+                            (
+                                Q(worker_id__first_name__icontains=first_word) | Q(worker_id__first_name__icontains=second_word) |
+                                Q(worker_id__last_name__icontains=first_word) | Q(worker_id__last_name__icontains=second_word)
+                            ) & Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} 23:59:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
+                        )[::-1]
 
                     return JsonResponse({
                         'error_message': None,
@@ -348,9 +378,24 @@ def search_logs(request):
         else:
             if(from_search_date and to_search_date):
                 if(from_search_time and to_search_time): # * Search with dates and times
-                    object_list = Logs.objects.filter(
-                        Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} {from_search_time}:00', "%Y-%m-%d %H:%M:%S")) & Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} {to_search_time}:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
-                    )[::-1]
+                    if(from_search_date != 'null' and to_search_date != 'null'):
+                        object_list = Logs.objects.filter(
+                            (
+                                Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} {from_search_time}:00', "%Y-%m-%d %H:%M:%S")) & Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} {to_search_time}:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
+                            )
+                        )[::-1]
+                    elif(from_search_date != 'null' and to_search_date == 'null'):
+                        object_list = Logs.objects.filter(
+                            (
+                                Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} {from_search_time}:00', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
+                            )
+                        )[::-1]
+                    elif(from_search_date == 'null' and to_search_date != 'null'):
+                        object_list = Logs.objects.filter(
+                            (
+                                Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} {to_search_time}:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
+                            )
+                        )[::-1]
 
                     return JsonResponse({
                         'error_message': None,
@@ -361,9 +406,24 @@ def search_logs(request):
                         }
                     })
                 else: # * Search with dates
-                    object_list = Logs.objects.filter(
-                        Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} 00:00:00', "%Y-%m-%d %H:%M:%S")) & Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} 23:59:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
-                    )[::-1]
+                    if(from_search_date != 'null' and to_search_date != 'null'):
+                        object_list = Logs.objects.filter(
+                            (
+                                Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} 00:00:00', "%Y-%m-%d %H:%M:%S")) & Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} 23:59:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
+                            )
+                        )[::-1]
+                    elif(from_search_date != 'null' and to_search_date == 'null'):
+                        object_list = Logs.objects.filter(
+                            (
+                                Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} 00:00:00', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
+                            )
+                        )[::-1]
+                    elif(from_search_date == 'null' and to_search_date != 'null'):
+                        object_list = Logs.objects.filter(
+                            (
+                                Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} 23:59:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
+                            )
+                        )[::-1]
 
                     return JsonResponse({
                         'error_message': None,
@@ -373,7 +433,7 @@ def search_logs(request):
                             'media_path': settings.CURRENT_HOST + '/media/'
                         }
                     })
-                
+
     else:
         return HttpResponseForbidden()
 
