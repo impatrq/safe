@@ -4,6 +4,7 @@
 {% block page_hero %} Dashboard {%endblock page_hero %} 
 
 {% block content %}
+
 <section class="section is-main-section">
   <div id="doors-container" class="columns is-multiline">
     <!-- Doors loaded in JS -->
@@ -54,6 +55,19 @@
     </table>
   </div>
 </div>
+
+<!-- IMAGE MODAL -->
+
+<div id="image_modal" class="modal">
+  <div id="background_image_modal" class="modal-background"></div>
+  <div class="modal-content">
+    <p class="image">
+      <img id="image_modal_tag" alt="Imagen de perfil">
+    </p>
+  </div>
+  <button id="close_image_modal" class="modal-close is-large" aria-label="close"></button>
+</div>
+
 {% endblock content %}
 
 

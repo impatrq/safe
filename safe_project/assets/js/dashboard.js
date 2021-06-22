@@ -111,7 +111,7 @@ function loadBtns(){
                     <tr>
                         <td class="is-image-cell">
                             <div class="image">
-                            <img src="${log.worker_image}" class="is-rounded" />
+                                <img src="${log.worker_image}" class="is-rounded worker_image_cell"/>
                             </div>
                         </td>
                         <td data-label="Nombre">${log.worker_full_name}</td>
@@ -127,6 +127,9 @@ function loadBtns(){
                     </tr>
 
                 `
+
+                loadImageModal()
+
             })
 
         })
@@ -136,4 +139,23 @@ function loadBtns(){
         document.getElementById('modal-log').classList.remove('is-active')
     })
 
+}
+
+function loadImageModal(){
+    // * IMAGE MODAL
+
+    document.querySelectorAll(".worker_image_cell").forEach((image) => {
+        image.addEventListener("click", (e) => {
+            document.getElementById("image_modal").classList.add("is-active");
+            document.getElementById("image_modal_tag").src = image.src;
+        });
+    });
+
+    document.getElementById("close_image_modal").addEventListener("click", (e) => {
+            document.getElementById("image_modal").classList.remove("is-active");
+        });
+
+    document.getElementById("background_image_modal").addEventListener("click", (e) => {
+            document.getElementById("image_modal").classList.remove("is-active");
+        });
 }
