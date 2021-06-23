@@ -11,6 +11,7 @@ class User(AbstractUser):
         error_messages={
             'unique': "Ya existe un usuario con este nombre de usuario.",
         })
+    token = models.CharField('Token', max_length=7, null=False, blank=False)
     first_name = models.CharField('first name', max_length=64, blank=False, null=False)
     last_name = models.CharField('last name', max_length=64, blank=False, null=False)
     email = models.EmailField('email address', unique=True, blank=False, null=False,
