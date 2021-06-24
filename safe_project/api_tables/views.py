@@ -828,10 +828,9 @@ def get_doors_info(request):
             logs = Logs.objects.filter(door_id=door, user_id=request.GET.get('user_id')).order_by('-id')[:5]
             log_list = []
             for log in logs:
-                worker = Worker.objects.get(pk=log.worker_id.id, user_id=request.GET.get('user_id'))
                 log_list.append({
                     'worker_image': settings.CURRENT_HOST + log.worker_image.url,
-                    'worker_full_name': f'{worker.first_name} {worker.last_name}',
+                    'worker_full_name': f'{log.worker_id.first_name} {log.worker_id.last_name}',
                     'entry_datetime': check_time(log.entry_datetime),
                     'exit_datetime': check_time(log.exit_datetime),
                     'authorized': log.authorized,

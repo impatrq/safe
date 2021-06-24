@@ -40,7 +40,7 @@ def save_log(request, worker, door, facemask, temperature, sanitizer_perc, autho
         if json_response['error_message']:
             return JsonResponse(json_response)
         else:
-            if facemask == 'true':
+            if facemask:
                 if temperature < settings.MAX_TEMP:
                     # Se registra la persona dentro de la puerta y se la deja entrar
                     door.people_inside.add(worker)
@@ -89,7 +89,7 @@ def verify(request):
 
         code = request.POST['code']
         temperature = float(request.POST.get('temperature', 0))
-        facemask = request.POST.get('facemask')
+        facemask = request.POST.get('facemask') == 'True'
         mac = request.POST['mac']
         sanitizer_perc = request.POST.get('sanitizer_perc')
         token = request.POST.get('token')             
@@ -110,10 +110,10 @@ def verify(request):
                 return update_logtime(log[0])
             else:
                 # Verificamos si el trabajador tiene el barbijo bien puesto y una temperatura menor a 37 y registramos mediante save_log el intento de entrada o la entrada
-                if facemask == 'true' and temperature < settings.MAX_TEMP:                                       
-                    return save_log(request, worker, door, facemask, temperature, sanitizer_perc, 'true')                          
+                if facemask and temperature < settings.MAX_TEMP:                                       
+                    return save_log(request, worker, door, facemask, temperature, sanitizer_perc, True)                          
                 else:
-                    return save_log(request, worker, door, facemask, temperature, None, 'false')                                        
+                    return save_log(request, worker, door, facemask, temperature, None, False)                                        
 
 
         # En caso de que no exista un trabajador con ese codigo de tarjeta o una puerta con esa mac devuelve una respuesta en formato JSON de que no le esta permitido ingresar
