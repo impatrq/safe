@@ -22,7 +22,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://github.com/impatrq/safe">
     <img src="media/Logo%20SAFE.png" alt="Logo" width="100" height="100">
   </a>
 
@@ -35,11 +35,11 @@
     <a href="https://github.com/impatrq/safe"><strong>Explora el proyecto »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">Demo WEB</a>
+    <a href="https://github.com/impatrq/safe">Demo WEB</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Reportar Bug</a>
+    <a href="https://github.com/impatrq/safe/issues">Reportar Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Sugerir Cambio</a>
+    <a href="https://github.com/impatrq/safe/issues">Sugerir Cambio</a>
   </p>
 </p>
 
@@ -54,17 +54,17 @@
         <li><a href="#frameworks">Frameworks</a></li>
       </ul>
     </li>
-    <li>
+    <!-- <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
-    </li>
+    </li> -->
     <li><a href="#manual-de-uso">Manual de Uso</a></li>
     <li><a href="#licencia">Licencia</a></li>
     <li><a href="#contacto">Contacto</a></li>
-    <li><a href="#agradecimientos">Agradecimientos</a></li>
+    <!-- <li><a href="#agradecimientos">Agradecimientos</a></li> -->
   </ol>
 </details>
 
@@ -90,7 +90,13 @@ Debido a la situación sanitaria que atravesamos, decidimos implementar controle
 
 
 ## Módulo Principal
+Descripción del Módulo Principal...
 
+## Módulo Interno
+Descripción del Módulo Interno...
+
+## Servidor Web
+Descripción del Servidor Web...
 
 
 ### Frameworks
@@ -103,7 +109,7 @@ Debido a la situación sanitaria que atravesamos, decidimos implementar controle
 
 
 <!-- GETTING STARTED -->
-## Getting Started
+<!-- ## Getting Started
 
 This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
@@ -130,16 +136,15 @@ This is an example of how to list things you need to use the software and how to
 4. Enter your API in `config.js`
    ```JS
    const API_KEY = 'ENTER YOUR API';
-   ```
+   ``` -->
 
 
 
 <!-- USAGE EXAMPLES -->
 ## Manual de Uso
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
+Acá vá la futura documentación...
+[Documentation](https://example.com)
 
 
 <!-- LICENSE -->
@@ -157,7 +162,7 @@ Link del Proyecto: [github.com/impatrq/safe](https://github.com/impatrq/safe)
 
 
 <!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
+<!-- ## Acknowledgements
 * [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
 * [Img Shields](https://shields.io)
 * [Choose an Open Source License](https://choosealicense.com)
@@ -169,7 +174,7 @@ Link del Proyecto: [github.com/impatrq/safe](https://github.com/impatrq/safe)
 * [Sticky Kit](http://leafo.net/sticky-kit)
 * [JVectorMap](http://jvectormap.com)
 * [Font Awesome](https://fontawesome.com)
-
+ -->
 
 
 
