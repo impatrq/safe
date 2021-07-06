@@ -1,13 +1,13 @@
-safe_project/api_login/__pycache__
-safe_project/api_login/migrations/__pycache__
+server/api_login/__pycache__
+server/api_login/migrations/__pycache__
 
-safe_project/api_modules/__pycache__
-safe_project/api_modules/migrations/__pycache__
+server/api_modules/__pycache__
+server/api_modules/migrations/__pycache__
 
-safe_project/api_tables/__pycache__
-safe_project/api_tables/migrations/__pycache__
+server/api_tables/__pycache__
+server/api_tables/migrations/__pycache__
 
-safe_project/main_app/__pycache__
-safe_project/main_app/migrations/__pycache__
+server/main_app/__pycache__
+server/main_app/migrations/__pycache__
 
-safe_project/safe_project/__pycache__
+server/safe_project/__pycache__
