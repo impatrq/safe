@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-c0$+r--de=8r3v**qp7d)sx$66^jshts(-4!bn7_*(j6l-&u%x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost',]
+ALLOWED_HOSTS = ['localhost', ]
 
 # CUSTOM GLOBAL VARIABLES
 
@@ -84,10 +84,21 @@ WSGI_APPLICATION = 'safe_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'db_safe',
+        'USER': 'db_safe_user1',
+        'PASSWORD': 'JhXK0tUBQxJv',
+        'HOST': '200.68.105.195',
+        'PORT': '3306',
     }
 }
 
@@ -135,7 +146,7 @@ STATICFILES_DIRS = [
     BASE_DIR / 'assets',
 ]
 
-#Configuracion de las imagenes subidas
+# Configuracion de las imagenes subidas
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'assets/img'
