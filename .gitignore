@@ -11,3 +11,5 @@ server/main_app/__pycache__
 server/main_app/migrations/__pycache__
 
 server/safe_project/__pycache__
+
+server/.env

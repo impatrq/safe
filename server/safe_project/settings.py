@@ -11,17 +11,18 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-import os
+import os, dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+dotenv.load_dotenv(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-c0$+r--de=8r3v**qp7d)sx$66^jshts(-4!bn7_*(j6l-&u%x'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -94,10 +95,10 @@ WSGI_APPLICATION = 'safe_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'db_safe',
-        'USER': 'db_safe_user1',
-        'PASSWORD': 'JhXK0tUBQxJv',
-        'HOST': '200.68.105.195',
+        'NAME': os.environ.get('SAFE_DB_NAME'),
+        'USER': os.environ.get('SAFE_DB_USER'),
+        'PASSWORD': os.environ.get('SAFE_DB_PASSWORD'),
+        'HOST': os.environ.get('SAFE_DB_HOST'),
         'PORT': '3306',
     }
 }
