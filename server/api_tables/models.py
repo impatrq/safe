@@ -80,6 +80,9 @@ class Door(models.Model):
         self._metano_level = metano_level
         self._lpg_level = lpg_level
 
+    @property
+    def get_gases_values(self):
+        return {'co2_level': self._co2_level, 'co_level': self._co_level, 'metano_level': self._metano_level, 'lpg_level': self._lpg_level}
 
     def __str__(self):
         return f"{self.sector_name} - {self.door_name}"
