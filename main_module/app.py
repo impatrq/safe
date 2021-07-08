@@ -7,12 +7,16 @@ import random
 
 from data import Data
 
-# * CONFIG DATA VARIABLES
+# * ▼ CONFIG DATA VARIABLES ▼
 url = "http://www.safeproject.com.ar"
 init = "/api/modules/init"
 verify = "/api/modules/verify"
 
 sk = "qlswpZD6rvyCxkd4jrAkZf2gf5pWI5zn"
+# * ▲ CONFIG DATA VARIABLES ▲
+
+# TODO: run flask web server here.
+
 
 if __name__ == "__main__":
     print ("Ready...")
