@@ -149,6 +149,7 @@ def env_update(request):
             return JsonResponse({                                                                                                       
                 'error_message': None,
                 'success_message': 'Successfully Updated',
+                'is_safe': door.is_safe,
                 'co2_level': door.get_gases_values['co2_level'],
                 'co_level': door.get_gases_values['co_level'],
                 'metano_level': door.get_gases_values['metano_level'],

@@ -66,6 +66,7 @@ class Door(models.Model):
     _metano_level = models.FloatField('Metano Level', blank=True, null=True)
     _lpg_level = models.FloatField('lpg Level', blank=True, null=True)
 
+    #TODO investigtar los valores que determinan si es seguro o no
     @property
     def is_safe(self):
         if(self._co2_level < 700 and self._co_level < 50 and self._metano_level < 100 and self._lpg_level < 100):
