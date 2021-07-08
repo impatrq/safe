@@ -34,6 +34,9 @@ class Data:
 
         self.stage = numpy.full(4, False)
 
+
+        self.info_type_data = dict()
+
         #self.__dict__.update(dict1)
 
     def analize(self, dictionary): 
@@ -130,18 +133,32 @@ class Data:
 
         return string_response.encode()
 
-    def showInfo(self, InfoType):   # ? Info Types: - Default
-                                    # ?             - Card
-                                    # ?                 > Card + Temp
-                                    # ?                 > Card + Temp + Dis%
-                                    # ?             - Only Temp
-                                    # ?             - Only Dis%
-                                    # ?             - Access allowed
-                                    # ?             - Access denied
+    def showInfo(self, InfoType):   # * Info Types: - Default ✓
+                                    # *             - Card ✓
+                                    # *             - Only Temp ✓
+                                    # *             - Only Dis% ✓
+                                    # *             - Access allowed ✓
+                                    # *             - Access denied ✓
                                     # ?             - Config
                                     # ?                 > Pairing Mode
-                                    # !                  > Token Change
-        pass # TODO: modify the server's html according to the TypeInfo
+                                    # ?                 > WiFi Settings
+                                    # ?                 > Reset
+                                    # !                 > Token Change
+        with open('data.json') as json_file:
+            self.info_type_data = json.load(json_file)
+            json_file.close()
+        file_name = self.info_type_data[InfoType].get('file')
+        new_content = ""
+        with open(f'templates/{file_name}', 'r') as file:
+            content = file.read()
+            for variable in self.info_type_data[InfoType]['variables']:
+                content = content.replace(variable , locals()[self.info_type_data[InfoType]['variables'][variable]])
+            new_content = content
+            file.close()
+        with open(f'templates/index.html', 'w') as file:
+            file.write(new_content)
+            file.close()
+        
 
 
 
