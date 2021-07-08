@@ -5,11 +5,19 @@
 
 [Complete Tutorial](https://learn.sparkfun.com/tutorials/how-to-load-micropython-on-a-microcontroller-board/esp32-thing)
 
+### Linux:
 - ```ls -l /dev/ttyUSB0```
 - [Download MicroPython](https://micropython.org/download/esp32/) 
 - ```pip install --upgrade esptool```
 - ```esptool.py --chip esp32 -p /dev/ttyUSB0 erase_flash```
 - ```esptool.py --chip esp32 -p /dev/ttyUSB0 write_flash -z 0x1000 <path to .bin>```
+
+### Windows:
+- ```ls -l /dev/ttyUSB0```
+- [Download MicroPython](https://micropython.org/download/esp32/) 
+- ```pip install --upgrade esptool```
+- ```esptool --chip esp32 -p COM4 erase_flash```
+- ```esptool --chip esp32 -p COM4 write_flash -z 0x1000 <path to .bin>```
 
 ## Load MicroPython Program to ESP32:
 
