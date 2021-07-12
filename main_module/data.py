@@ -7,17 +7,22 @@ import requests
 class Data:
     def __init__(self, url , init , verify , secret_key):
 
+        # * ▼ WEB DATA VARIABLES ▼
         self.url = url
         self.url_init = self.url + init
         self.url_verify = self.url + verify
 
         self.secret_key = secret_key
-
         #self.mac = gma()
 
-        self.email = str()
-
+        # * ▼ WORKER DATA VARIABLES ▼
+        # ! self.email = str()
+        self.allowed = bool()
         self.code = str()
+        self.face_mask = bool()
+        self.face_mask_image = str()
+        
+        # * ▼ MICRO DATA VARIABLES ▼
         self.led_color = str()
         self.temperature = str()
         self.dispenser_percentage = str()
@@ -25,15 +30,11 @@ class Data:
         self.dispenser = bool()
         self.proximity_temp = bool()
         self.proximity_dispenser = bool()
-        self.face_mask = bool()
-        self.face_mask_image = str()
 
-        self.allowed = bool()
 
         self.prueba = True
 
         self.stage = numpy.full(4, False)
-
 
         self.info_type_data = dict()
 
@@ -66,7 +67,7 @@ class Data:
                 pass # TODO: Show Dispenser %
 
         else:
-            pass # ! NI LA MAS PUTA IDEA
+            pass # ! NOT THE MOST FUCKING IDEA
         
         if numpy.all(self.stage[0:3]):
             pass # TODO: Face Mask Detect
@@ -90,11 +91,23 @@ class Data:
                     self.allowed = True
                     self.led_color = "Green"
                     pass # TODO: Show Allowed Info
-                    pass # TODO: Preparar respuesta
-                else:
+                elif response_dict["error_code"] == 0:
                     self.allowed = False
                     self.led_color = "Red"
-                    pass # TODO: Show NOT Allowd Info
+                    pass # TODO: Show NOT Allowd Info (Invalid Card)
+                elif response_dict["error_code"] == 1:
+                    self.allowed = False
+                    self.led_color = "Red"
+                    pass # TODO: Show NOT Allowd Info (High Temperature) 
+                elif response_dict["error_code"] == 2:
+                    self.allowed = False
+                    self.led_color = "Red"
+                    pass # TODO: Show NOT Allowd Info (Not FaceMask Detected)
+                self.stage[0] = False
+                self.stage[1] = False
+                self.stage[2]= False
+            else:
+                print(r.status_code)
         else:
             values = {'SECRET_KEY': self.secret_key,
                         'token': 'hkaAJD2',
@@ -112,7 +125,7 @@ class Data:
                 if response_dict["success_message"] == "Allowed":
                     self.allowed = True
                     self.led_color = "Green"
-                    pass # TODO: Show Allowed Info
+                    self.showInfo("AccessAllowed")
                     pass # TODO: Preparar respuesta
                 else:
                     self.allowed = False
@@ -139,10 +152,11 @@ class Data:
                                     # *             - Only Dis% ✓
                                     # *             - Access allowed ✓
                                     # *             - Access denied ✓
+                                    # ?             - Error Screen
                                     # ?             - Config
                                     # ?                 > Pairing Mode
                                     # ?                 > WiFi Settings
-                                    # ?                 > Reset
+                                    # ?                 > Factory Restoration
                                     # !                 > Token Change
         with open('data.json') as json_file:
             self.info_type_data = json.load(json_file)
