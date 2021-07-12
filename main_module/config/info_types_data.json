@@ -54,7 +54,15 @@
             "%last_name%": "self.last_name",
             "%card_code%": "self.card_code",
             "%worker_image%": "self.worker_image",
+            "%env_safe%": "self.env_safe",
+            "%message%":"self.message",
             "%__time%": "self.time"
         }
-    }  
+    },
+    "Error":{
+        "file":"error.html",
+        "variables":{
+            "%error_message%": "self.error_message"
+        }
+    } 
 }
