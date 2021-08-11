@@ -162,3 +162,5 @@ def env_update(request):
                 'error_message': f'Error: {e}',
                 'success_message': None,
             })
+    else:
+        return HttpResponseForbidden()
