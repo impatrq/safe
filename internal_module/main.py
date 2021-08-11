@@ -1,152 +1,97 @@
 import machine, time
 
-mq4_pin = machine.ADC(machine.Pin(36))
-mq7_pin = machine.ADC(machine.Pin(39))
+mq4_pin = machine.ADC(machine.Pin(32))
+mq7_pin = machine.ADC(machine.Pin(35))
 mq135_pin = machine.ADC(machine.Pin(34))
 
 RL_MQ4 = 20000 # 20K
 RL_MQ7 = 10000 # 10K
 RL_MQ135 = 20000 # 20K
 
-R0_MQ4 = None
-R0_MQ7 = None
-R0_MQ135 = None
-
 RCA_MQ4 = 4.452
 RCA_MQ7 = 26.402
 RCA_MQ135 = 3.597
 
-# Calibration
+RESOLUTION = 4095
+MAX_INPUT_VOLTAGE = 3.3
 
-def calibrate_mq4():
+MQ4_VALUES = {'pin': mq4_pin, 'rl': RL_MQ4, 'r0': 0, 'rca': RCA_MQ4, 'name': 'MQ4'}
+MQ7_VALUES = {'pin': mq7_pin, 'rl': RL_MQ7, 'r0': 0, 'rca': RCA_MQ7, 'name': 'MQ7'}
+MQ135_VALUES = {'pin': mq135_pin, 'rl': RL_MQ135, 'r0': 0, 'rca': RCA_MQ135, 'name': 'MQ135'}
 
-    global R0_MQ4
+CH4_VALUES = {'sensor': MQ4_VALUES, 'a': 11.5, 'b': 1/-0.353}
+LPG_VALUES = {'sensor': MQ4_VALUES, 'a': 13.6, 'b': 1/-0.317}
+CO_VALUES = {'sensor': MQ7_VALUES, 'a': 19.1, 'b': 1/-0.645}
+CO2_VALUES = {'sensor': MQ135_VALUES, 'a': 5.11, 'b': 1/-0.343}
 
-    avg_voltage = None
-    
+
+def calibrate(mq_values):
+
+    # Calibration
+
+    avg_voltage = 0
+
     for i in range(0, 50):
-        avg_voltage += mq4_pin.read() * 5 / 1023
-        time.sleep(0.5)
+        avg_voltage += mq_values['pin'].read() * MAX_INPUT_VOLTAGE / RESOLUTION
+        print(mq_values['name'] + ' Calibration: ' + str(i*2) + '%')
+        time.sleep(1)
 
     avg_voltage = avg_voltage / 50
 
-    rs = RL_MQ4 * (5-avg_voltage) / avg_voltage
+    if avg_voltage >= MAX_INPUT_VOLTAGE:
+        avg_voltage = 3.2999
 
-    R0_MQ4 = rs / RCA_MQ4
+    rs = mq_values['rl'] * (MAX_INPUT_VOLTAGE-avg_voltage) / avg_voltage
 
-    print(f'MQ4 Sensor Calibrated Successfully, R0 = {R0_MQ4}')
-
-def calibrate_mq7():
+    mq_values['r0'] = rs / mq_values['rca']
     
-    global R0_MQ7
+    print(mq_values['name'] + ' Sensor Calibrated Successfully, R0 = ' + str(mq_values['r0']))
 
-    avg_voltage = None
+def get_ppm(gas_value):
+
+    # PPM Calculation
+
+    voltage = 0
     
-    for i in range(0, 50):
-        avg_voltage += mq7_pin.read() * 5 / 1023
-        time.sleep(0.5)
+    for i in range(0, 25):
+        voltage += gas_value['sensor']['pin'].read() * MAX_INPUT_VOLTAGE / RESOLUTION
+        time.sleep(0.1)
 
-    avg_voltage = avg_voltage / 50
+    voltage = voltage / 25
 
-    rs = RL_MQ7 * (5-avg_voltage) / avg_voltage
+    if voltage >= MAX_INPUT_VOLTAGE:
+        voltage = 3.2999
 
-    R0_MQ7 = rs / RCA_MQ7
+    rs = gas_value['sensor']['rl'] * (MAX_INPUT_VOLTAGE-voltage) / voltage
 
-    print(f'MQ7 Sensor Calibrated Successfully, R0 = {R0_MQ7}')
+    rs_r0_ratio = rs/gas_value['sensor']['r0']
 
-def calibrate_mq135():
-    
-    global R0_MQ135
+    gas = pow(rs_r0_ratio/gas_value['a'], gas_value['b'])
 
-    avg_voltage = None
-    
-    for i in range(0, 50):
-        avg_voltage += mq135_pin.read() * 5 / 1023
-        time.sleep(0.5)
+    if(gas > 10000):
+        gas = '+10K'
+    else:
+        if(gas >= 1000):
+            gas = str(round(gas/1000, 2)) + 'K'
 
-    avg_voltage = avg_voltage / 50
-
-    rs = RL_MQ135 * (5-avg_voltage) / avg_voltage
-
-    R0_MQ135 = rs / RCA_MQ135
-
-    print(f'MQ135 Sensor Calibrated Successfully, R0 = {R0_MQ135}')
-
-# MQ4
-
-def get_ch4_ppm():
-
-    # MQ4 CH4 Calculation
-
-    mq4_voltage = mq4_pin.read() * (5.0 / 1023.0)
-
-    rs = RL_MQ4 * (5-mq4_voltage) / mq4_voltage
-
-    rs_r0_ratio = rs/R0_MQ4
-
-    ch4 = pow(rs_r0_ratio/11.5, 1/-0.353)
-
-    return ch4
-
-def get_lpg_ppm():
-
-    # MQ4 LPG Calculation
-
-    mq4_voltage = mq4_pin.read() * (5.0 / 1023.0)
-
-    rs = RL_MQ4 * (5-mq4_voltage) / mq4_voltage
-    
-    rs_r0_ratio = rs/R0_MQ4
-
-    lpg = pow(rs_r0_ratio/13.6, 1/-0.317)
-
-    return lpg
-
-# MQ7
-
-def get_co_ppm():
-    # MQ7 CO Calculation
-
-    mq7_voltaje = mq7_pin.read() * (5.0 / 1023.0)
-
-    rs = RL_MQ7 * (5-mq7_voltaje) / mq7_voltaje
-    
-    rs_r0_ratio = rs/R0_MQ7
-
-    co = pow(rs_r0_ratio/19.1, 1/-0.645)
-
-    return co
-
-# MQ135
-
-def get_co2_ppm():
-    # MQ135 CO2 Calculation
-
-    mq135_voltage = mq135_pin.read() * (5.0 / 1023.0)
-
-    rs = RL_MQ135 * (5-mq135_voltage) / mq135_voltage
-    
-    rs_r0_ratio = rs/R0_MQ135
-
-    co2 = pow(rs_r0_ratio/5.11, 1/-0.343)
-
-    return co2
-
-
+    return gas
 
 # * Calibration
 
-calibrate_mq4()
-calibrate_mq7()
-calibrate_mq135()
+calibrate(MQ4_VALUES)
+print(MQ4_VALUES)
+calibrate(MQ7_VALUES)
+print(MQ7_VALUES)
+calibrate(MQ135_VALUES)
+print(MQ135_VALUES)
 
-# * Calculations every 10 seconds
+# * Calculations every 3.5 seconds (sensors read in 2.5 seconds due to the 25 times loop to increase accuracy)
 
 while(True):
 
-    print(f'CH4 PPM: {get_ch4_ppm()}')
-    print(f'LPG PPM: {get_lpg_ppm()}')
-    print(f'CO PPM: {get_co_ppm()}')
-    print(f'CO2 PPM: {get_co2_ppm()}')
+    print('CH4 PPM: ' + str(get_ppm(CH4_VALUES)))
+    print('LPG PPM: ' + str(get_ppm(LPG_VALUES)))
+    print('CO PPM: ' + str(get_ppm(CO_VALUES)))
+    print('CO2 PPM: ' + str(get_ppm(CO2_VALUES)))
 
-    time.sleep(10)
+    time.sleep(1)
