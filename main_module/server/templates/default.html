@@ -1,24 +1,43 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Safe Project</title>
-        <link rel="stylesheet" href="../assets/css/bulma.css">
-</head>
-
-<body>
+{% block body %}
         <section class="section">
-                <div class="container">
-                        <h1 class="title">
-                                Safe Project
-                        </h1>
-                        <p class="subtitle">
-                                Nombre <strong>%name%</strong>!
-                        </p>
+                <div class="block has-text-centered">
+                        <div class="content is-center">
+                                <img src="{{ url_for('static', filename ='img/SAFE.png') }}" width="400" height="175">
+                        </div>
+                </div>
+                <nav class="level">
+                        <div class="level-item has-text-centered">
+                                <div>
+                                        <h2 class="title is-2">Ambiente: <span class="title is-2 has-text-success-dark">SEGURO</span> </h2>
+                                </div>
+                        </div>
+                        <div class="level-item has-text-centered">
+                                <div>
+                                        <h2 class="title is-2">Personas dentro: <span class="title is-2 has-text-danger-dark">8</span> </h2>
+                                </div>
+                        </div>
+                </nav>
+                
+                <hr style="background-color:black" class="mt-5 md-5">
+                <h2 class="title is-1 has-text-centered">NIVEL DE GASES</h2>
+                <div class="">
+                        <div class="has-text-centered">
+                                <div class="mt-5">
+                                        <h2 class="title is-2">Metano: <span class="title is-2 has-text-success-dark">BAJO</span></h2>
+                                </div>
+                        </div>
+                        <div class="has-text-centered">
+                                <div class="mt-5">
+                                        <h2 class="title is-2">Dióxido de Carbono: <span class="title is-2 has-text-warning">MEDIO</span></h2>
+                                </div>
+                        </div>
+                        <div class="has-text-centered">
+                                <div class="mt-5">
+                                        <h2 class="title is-2">Monóxido de Carbono: <span class="title is-2 has-text-danger-dark">ALTO</span></h2>
+                                </div>
+                        </div>
                 </div>
         </section>
-</body>
-
-</html>
+{% endblock %}
