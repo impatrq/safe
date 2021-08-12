@@ -2,6 +2,7 @@ import network
 
 WIFI_SSID = 'Paletta_WiFi'
 WIFI_PASSWORD = 'tele-2979543'
+DOOR_MAC = 1
 
 def connect_to_wifi():
     sta_if = network.WLAN(network.STA_IF)
