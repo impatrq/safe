@@ -81,7 +81,6 @@ def init(request):
 
 @csrf_exempt
 def verify(request):
-    
     if request.POST.get('SECRET_KEY') and request.POST['SECRET_KEY'] == os.environ.get('SECRET_KEY'):
         
 
@@ -131,20 +130,22 @@ def verify(request):
     else:
         return HttpResponseForbidden()
 
+@csrf_exempt
 def env_update(request):
+    request.POST = json.loads(request.body.decode('utf-8'))
     if request.POST.get('SECRET_KEY') and request.POST['SECRET_KEY'] == os.environ.get('SECRET_KEY'):
 
-        door_id = request.POST['door_id']                                                               #Obtenemos el id de la puerta que nos llego
+        door_mac = request.POST['door_mac']                                                             #Obtenemos el id de la puerta que nos llego
         co2_level = request.POST['co2_level']                                                           #Obtenemos el nivel de co2 que nos llego
         co_level = request.POST['co_level']                                                             #Obtenemos el nivel de co que nos llego
         metano_level = request.POST['metano_level']                                                     #Obtenemos el nivel de metano que nos llego
         lpg_level = request.POST['lpg_level']                                                           #Obtenemos el nivel de lpg que nos llego
     
         try:                                
-            door = Door.objects.get(id=door_id)                                                         #Obtenemos la instancia del objeto al que corresponda ese id
+            door = Door.objects.get(mac=door_mac)                                                       #Obtenemos la instancia del objeto al que corresponda ese id
 
-            door.update_env(co2_level, co_level, metano_level, lpg_level)                               #Guardamos los valores de los sensores en servidor 
-
+            door.update_env(co2_level, co_level, metano_level, lpg_level)                               #Guardamos los valores de los sensores en servidor     
+            
             # Enviamos la informacion en formato JSON de que todo salio bien y los valores de cada gas
             return JsonResponse({                                                                                                       
                 'error_message': None,

@@ -1,4 +1,5 @@
 import machine, time
+from networking import connect_to_wifi, env_update
 
 mq4_pin = machine.ADC(machine.Pin(32))
 mq7_pin = machine.ADC(machine.Pin(35))
@@ -79,19 +80,27 @@ def get_ppm(gas_value):
 # * Calibration
 
 calibrate(MQ4_VALUES)
-print(MQ4_VALUES)
 calibrate(MQ7_VALUES)
-print(MQ7_VALUES)
 calibrate(MQ135_VALUES)
-print(MQ135_VALUES)
 
-# * Calculations every 3.5 seconds (sensors read in 2.5 seconds due to the 25 times loop to increase accuracy)
+# * WiFi Connection
+
+connect_to_wifi()
+
+# * Calculations every 5 minutes (sensors read in 2.5 seconds due to the 25 times loop to increase accuracy)
 
 while(True):
 
-    print('CH4 PPM: ' + str(get_ppm(CH4_VALUES)))
-    print('LPG PPM: ' + str(get_ppm(LPG_VALUES)))
-    print('CO PPM: ' + str(get_ppm(CO_VALUES)))
-    print('CO2 PPM: ' + str(get_ppm(CO2_VALUES)))
+    co2_ppm = get_ppm(CO2_VALUES)
+    lpg_ppm = get_ppm(LPG_VALUES)
+    co_ppm = get_ppm(CO_VALUES)
+    ch4_ppm = get_ppm(CH4_VALUES)
 
-    time.sleep(1)
+    print('CO2 PPM: ' + str(co2_ppm))
+    print('LPG PPM: ' + str(lpg_ppm))
+    print('CO PPM: ' + str(co_ppm))
+    print('CH4 PPM: ' + str(ch4_ppm))
+
+    env_update(co2_ppm, co_ppm, ch4_ppm, lpg_ppm)
+
+    time.sleep(300)

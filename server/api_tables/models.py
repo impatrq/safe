@@ -80,6 +80,7 @@ class Door(models.Model):
         self._co_level = co_level
         self._metano_level = metano_level
         self._lpg_level = lpg_level
+        self.save()
 
     @property
     def get_gases_values(self):
