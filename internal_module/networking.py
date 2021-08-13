@@ -38,6 +38,3 @@ def env_update(co2_level, co_level, metano_level, lpg_level):
 
     except Exception as e:
         print('Error: ' + str(e))
-
-connect_to_wifi()
-env_update(4000, 4000, 4000, 4000)
