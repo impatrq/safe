@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', (e) => {
 
 function loadData(page = 1){
     const tbody = document.getElementById('tbody')
-    fetch(`http://localhost:8000/api/tables/logs?sk=${sk}&user_id=${uid}&page=${page}`)
+    fetch(`${host}/api/tables/logs?sk=${sk}&user_id=${uid}&page=${page}`)
         .then(res => res.json())
             .then(res_json => {
                 console.log(res_json);
@@ -149,7 +149,7 @@ document.getElementById('search-btn').addEventListener('click', (e) => {
 
     if(search_bar || from_search_date){
         const tbody = document.getElementById('tbody')
-        fetch(`http://localhost:8000/api/tables/logs/search?sk=${sk}&user_id=${uid}${first_word ? `&first_word=${first_word}`:''}${second_word ? `&second_word=${second_word}`:''}${from_search_date ? `&from_search_date=${from_search_date}`:''}${from_search_time ? `&from_search_time=${from_search_time}`:''}${to_search_date ? `&to_search_date=${to_search_date}`:''}${to_search_time ? `&to_search_time=${to_search_time}`:''}`)
+        fetch(`${host}/api/tables/logs/search?sk=${sk}&user_id=${uid}${first_word ? `&first_word=${first_word}`:''}${second_word ? `&second_word=${second_word}`:''}${from_search_date ? `&from_search_date=${from_search_date}`:''}${from_search_time ? `&from_search_time=${from_search_time}`:''}${to_search_date ? `&to_search_date=${to_search_date}`:''}${to_search_time ? `&to_search_time=${to_search_time}`:''}`)
             .then(res => res.json())
                 .then(res_json => {
                     console.log(res_json);

@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 function loadData(page = 1) {
     const tbody = document.getElementById("tbody");
     fetch(
-        `http://localhost:8000/api/tables/workers?sk=${sk}&user_id=${uid}&page=${page}`
+        `${host}/api/tables/workers?sk=${sk}&user_id=${uid}&page=${page}`
     )
         .then((res) => res.json())
         .then((res_json) => {
@@ -129,7 +129,7 @@ function editButtonEvents() {
     editButtons.forEach((button) => {
         button.addEventListener("click", (e) => {
             fetch(
-                `http://localhost:8000/api/tables/workers/update/${button.value}?sk=${sk}&user_id=${uid}`
+                `${host}/api/tables/workers/update/${button.value}?sk=${sk}&user_id=${uid}`
             )
                 .then((res) => res.json())
                 .then((res_json) => {
@@ -154,7 +154,7 @@ function editFormEvents() {
             const response_text = document.getElementById("edit-response-text");
 
             fetch(
-                `http://localhost:8000/api/tables/workers/update/${edit_form.id.value}/`,
+                `${host}/api/tables/workers/update/${edit_form.id.value}/`,
                 {
                     method: "POST",
                     body: new FormData(edit_form),
@@ -192,7 +192,7 @@ function removeButtonEvents() {
         button.addEventListener("click", (e) => {
             if (confirm("¿Seguro que desea eliminar el registro?")) {
                 fetch(
-                    `http://localhost:8000/api/tables/workers/delete/${button.value}/`,
+                    `${host}/api/tables/workers/delete/${button.value}/`,
                     {
                         method: "POST",
                         body: JSON.stringify({
@@ -229,7 +229,7 @@ document.getElementById('search-bar').addEventListener('keyup', (e) => {
 
     if(e.target.value){
         const tbody = document.getElementById('tbody')
-        fetch(`http://localhost:8000/api/tables/workers/search?sk=${sk}&user_id=${uid}${first_word ? `&first_word=${first_word}`:''}${second_word ? `&second_word=${second_word}`:''}`)
+        fetch(`${host}/api/tables/workers/search?sk=${sk}&user_id=${uid}${first_word ? `&first_word=${first_word}`:''}${second_word ? `&second_word=${second_word}`:''}`)
             .then(res => res.json())
                 .then(res_json => {
                     const media_path = res_json.data.media_path;

@@ -40,7 +40,7 @@ document.getElementById('report-form').addEventListener('submit', (e) => {
 
     document.getElementById('report-submit-btn').classList.add('is-loading')
 
-    fetch('http://localhost:8000/api/tables/report/', {
+    fetch(`${host}/api/tables/report/`, {
         method: 'POST',
         body: JSON.stringify({
             message: `${name} (${email}) tiene un ${kor}: ${personal_report}${gerencial_report}\n${message}`,

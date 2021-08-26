@@ -61,10 +61,10 @@ class Door(models.Model):
     sanitizer_perc = models.CharField('Sanitizer Percentage', max_length=8, blank=False, null=False)
     is_active = models.BooleanField('Is Active', default=True)
 
-    _co2_level = models.FloatField('CO2 Level', blank=True, null=True)
-    _co_level = models.FloatField('CO Level', blank=True, null=True)
-    _metano_level = models.FloatField('Metano Level', blank=True, null=True)
-    _lpg_level = models.FloatField('lpg Level', blank=True, null=True)
+    _co2_level = models.FloatField('CO2 Level', default = 0, blank=True, null=True)
+    _co_level = models.FloatField('CO Level', default = 0, blank=True, null=True)
+    _metano_level = models.FloatField('Metano Level', default = 0, blank=True, null=True)
+    _lpg_level = models.FloatField('lpg Level', default = 0, blank=True, null=True)
 
     #TODO investigtar los valores que determinan si es seguro o no
     @property
