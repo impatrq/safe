@@ -103,7 +103,7 @@ function createFormEvents() {
         e.preventDefault();
         const response_text = document.getElementById("create-response-text");
 
-        fetch("http://localhost:8000/api/tables/workers/create/", {
+        fetch(`${host}/api/tables/workers/create/`, {
             method: "POST",
             body: new FormData(create_form),
         })
