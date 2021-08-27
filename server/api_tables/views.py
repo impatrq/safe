@@ -29,7 +29,7 @@ def read_users(request):
         try:
             response = dict()
 
-            users_list = User.objects.all()[::-1]
+            users_list = User.objects.all().order_by('-id')
             # users_list = User.objects.filter(is_active=True)
 
             paginator = Paginator(users_list, 1)
@@ -172,7 +172,7 @@ def read_logs(request):
         try:
             response = dict()
 
-            logs_list = Logs.objects.filter(user_id=request.GET.get('user_id'))[::-1]
+            logs_list = Logs.objects.filter(user_id=request.GET.get('user_id')).order_by('-id')
 
             paginator = Paginator(logs_list, 5)
 
@@ -310,21 +310,21 @@ def search_logs(request):
                                 Q(worker_id__first_name__icontains=first_word) | Q(worker_id__first_name__icontains=second_word) |
                                 Q(worker_id__last_name__icontains=first_word) | Q(worker_id__last_name__icontains=second_word)
                             ) & Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} {from_search_time}:00', "%Y-%m-%d %H:%M:%S")) & Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} {to_search_time}:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
-                        )[::-1]
+                        ).order_by('-id')
                     elif(from_search_date != 'null' and to_search_date == 'null'):
                         object_list = Logs.objects.filter(
                             (
                                 Q(worker_id__first_name__icontains=first_word) | Q(worker_id__first_name__icontains=second_word) |
                                 Q(worker_id__last_name__icontains=first_word) | Q(worker_id__last_name__icontains=second_word)
                             ) & Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} {from_search_time}:00', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
-                        )[::-1]
+                        ).order_by('-id')
                     elif(from_search_date == 'null' and to_search_date != 'null'):
                         object_list = Logs.objects.filter(
                             (
                                 Q(worker_id__first_name__icontains=first_word) | Q(worker_id__first_name__icontains=second_word) |
                                 Q(worker_id__last_name__icontains=first_word) | Q(worker_id__last_name__icontains=second_word)
                             ) & Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} {to_search_time}:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
-                        )[::-1]
+                        ).order_by('-id')
 
                     return JsonResponse({
                         'error_message': None,
@@ -341,21 +341,21 @@ def search_logs(request):
                                 Q(worker_id__first_name__icontains=first_word) | Q(worker_id__first_name__icontains=second_word) |
                                 Q(worker_id__last_name__icontains=first_word) | Q(worker_id__last_name__icontains=second_word)
                             ) & Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} 00:00:00', "%Y-%m-%d %H:%M:%S")) & Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} 23:59:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
-                        )[::-1]
+                        ).order_by('-id')
                     elif(from_search_date != 'null' and to_search_date == 'null'):
                         object_list = Logs.objects.filter(
                             (
                                 Q(worker_id__first_name__icontains=first_word) | Q(worker_id__first_name__icontains=second_word) |
                                 Q(worker_id__last_name__icontains=first_word) | Q(worker_id__last_name__icontains=second_word)
                             ) & Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} 00:00:00', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
-                        )[::-1]
+                        ).order_by('-id')
                     elif(from_search_date == 'null' and to_search_date != 'null'):
                         object_list = Logs.objects.filter(
                             (
                                 Q(worker_id__first_name__icontains=first_word) | Q(worker_id__first_name__icontains=second_word) |
                                 Q(worker_id__last_name__icontains=first_word) | Q(worker_id__last_name__icontains=second_word)
                             ) & Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} 23:59:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
-                        )[::-1]
+                        ).order_by('-id')
 
                     return JsonResponse({
                         'error_message': None,
@@ -371,7 +371,7 @@ def search_logs(request):
                         Q(worker_id__first_name__icontains=first_word) | Q(worker_id__first_name__icontains=second_word) |
                         Q(worker_id__last_name__icontains=first_word) | Q(worker_id__last_name__icontains=second_word)
                     ) & Q(user_id=request.GET.get('user_id'))
-                )[::-1]
+                ).order_by('-id')
 
                 return JsonResponse({
                     'error_message': None,
@@ -389,19 +389,19 @@ def search_logs(request):
                             (
                                 Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} {from_search_time}:00', "%Y-%m-%d %H:%M:%S")) & Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} {to_search_time}:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
                             )
-                        )[::-1]
+                        ).order_by('-id')
                     elif(from_search_date != 'null' and to_search_date == 'null'):
                         object_list = Logs.objects.filter(
                             (
                                 Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} {from_search_time}:00', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
                             )
-                        )[::-1]
+                        ).order_by('-id')
                     elif(from_search_date == 'null' and to_search_date != 'null'):
                         object_list = Logs.objects.filter(
                             (
                                 Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} {to_search_time}:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
                             )
-                        )[::-1]
+                        ).order_by('-id')
 
                     return JsonResponse({
                         'error_message': None,
@@ -417,20 +417,19 @@ def search_logs(request):
                             (
                                 Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} 00:00:00', "%Y-%m-%d %H:%M:%S")) & Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} 23:59:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
                             )
-                        )[::-1]
+                        ).order_by('-id')
                     elif(from_search_date != 'null' and to_search_date == 'null'):
                         object_list = Logs.objects.filter(
                             (
                                 Q(entry_datetime__gte=datetime.strptime(f'{from_search_date} 00:00:00', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
                             )
-                        )[::-1]
+                        ).order_by('-id')
                     elif(from_search_date == 'null' and to_search_date != 'null'):
                         object_list = Logs.objects.filter(
                             (
                                 Q(exit_datetime__lte=datetime.strptime(f'{to_search_date} 23:59:59', "%Y-%m-%d %H:%M:%S")) & Q(user_id=request.GET.get('user_id'))
                             )
-                        )[::-1]
-
+                        ).order_by('-id')
                     return JsonResponse({
                         'error_message': None,
                         'success_message': 'Successfully fetched.',
@@ -472,7 +471,7 @@ def read_all_doors(request):
 
         try:
 
-            doors_list = Door.objects.filter(user_id=request.GET.get('user_id'))
+            doors_list = Door.objects.filter(user_id=request.GET.get('user_id')).order_by('-id')
 
             return JsonResponse({
                 'error_message': None,
@@ -495,7 +494,7 @@ def read_doors(request):
         try:
             response = dict()
 
-            doors_list = Door.objects.filter(user_id=request.GET.get('user_id'))[::-1]
+            doors_list = Door.objects.filter(user_id=request.GET.get('user_id')).order_by('-id')
 
             paginator = Paginator(doors_list, 5)
 
@@ -641,7 +640,7 @@ def search_doors(request):
                 Q(sector_name__icontains=first_word) | Q(sector_name__icontains=second_word) |
                 Q(door_name__icontains=first_word) | Q(door_name__icontains=second_word) 
             ) & Q(user_id=user_id)
-        )
+        ).order_by('-id')
 
         response = dict()
         for door in doors_list:
@@ -674,7 +673,7 @@ def read_all_workers(request):
 
         try:
 
-            workers_list = Worker.objects.filter(user_id=request.GET.get('user_id'))
+            workers_list = Worker.objects.filter(user_id=request.GET.get('user_id')).order_by('-id')
 
             return JsonResponse({
                 'error_message': None,
@@ -697,7 +696,7 @@ def read_workers(request):
         try:
             response = dict()
 
-            workers_list = Worker.objects.filter(user_id=request.GET.get('user_id'))[::-1]
+            workers_list = Worker.objects.filter(user_id=request.GET.get('user_id')).order_by('-id')
 
             paginator = Paginator(workers_list, 5)
 
@@ -851,7 +850,7 @@ def search_workers(request):
                 Q(first_name__icontains=first_word) | Q(last_name__icontains=first_word) | Q(card_code__icontains=first_word) |
                 Q(first_name__icontains=second_word) | Q(last_name__icontains=second_word) | Q(card_code__icontains=second_word)
             ) & Q(user_id=user_id)
-        )
+        ).order_by('-id')
 
         return JsonResponse({
             'error_message': None,
@@ -926,7 +925,7 @@ def get_logs(request, door, amount = None):
 def get_doors_info(request):
     if request.GET.get('sk') == os.environ.get('SECRET_KEY'):
 
-        doors = Door.objects.filter(user_id=request.GET.get('user_id'))
+        doors = Door.objects.filter(user_id=request.GET.get('user_id')).order_by('-id')
         response = dict()
         for door in doors:
             response[f'{door.id}'] = {
