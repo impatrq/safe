@@ -8,7 +8,7 @@ import random
 from data import Data
 
 # * ▼ CONFIG DATA VARIABLES ▼
-url = "http://www.safeproject.com.ar"
+url = "http://www.safe.com.ar"
 init = "/api/modules/init"
 verify = "/api/modules/verify"
 
@@ -33,7 +33,7 @@ if __name__ == "__main__":
             serialString = serialPort.readline().decode('Ascii')
             # Print the contents of the serial data
             data_dict = json.loads(serialString)
-            print(data_dict)
+            # print(data_dict)
             
             if obj_data.analize(data_dict):
                 print(obj_data.sendData2Micro())
