@@ -29,6 +29,14 @@ def login(request):
                     return JsonResponse({
                         'authorized': 'true',
                         'user_id': user.id,
+                        'user': {
+                            'username': user.username,
+                            'name': f'{user.first_name} {user.last_name}',
+                            'email': user.email,
+                            'phone_number': user.phone_number,
+                            'company_name': user.company_name,
+                            'company_address': user.company_address,
+                        },
                         'error_message': None,
                         'success_message': 'Succesfully logged in.'
                     })

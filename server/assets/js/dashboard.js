@@ -7,8 +7,10 @@ document.addEventListener('DOMContentLoaded', (e) => {
     loadCards()
 })
 
+
+
 function loadCards(){
-        fetch(`http://localhost:8000/api/tables/doors/all?sk=${sk}&user_id=${uid}`)
+        fetch(`${host}/api/tables/doors/all?sk=${sk}&user_id=${uid}`)
             .then(res => res.json())
                 .then(res_json => {
                     doors = JSON.parse(res_json.data)
@@ -50,7 +52,7 @@ async function updateCards(){
 
     const doors = undefined
     
-    await fetch(`http://localhost:8000/api/tables/doors/get_doors_status?sk=${sk}&user_id=${uid}`)
+    await fetch(`${host}/api/tables/doors/get_doors_status?sk=${sk}&user_id=${uid}`)
             .then(res => res.json())
                 .then(res_json => {
                     this.doors = JSON.parse(res_json.data)
@@ -66,7 +68,7 @@ async function updateCards(){
 
 async function get_door_info(id){
     
-    return await fetch(`http://localhost:8000/api/tables/doors/get_doors_status?sk=${sk}&user_id=${uid}`)
+    return await fetch(`${host}/api/tables/doors/get_doors_status?sk=${sk}&user_id=${uid}`)
         .then(res => res.json())
             .then(res_json => {
                 const data = JSON.parse(res_json.data)[id]

@@ -76,9 +76,33 @@ def update_logtime(log):
         'success_message': 'Allowed',
     })
 
+@csrf_exempt
 def init(request):
-    pass
+    
+    if request.POST.get('SECRET_KEY') and request.POST['SECRET_KEY'] == os.environ.get('SECRET_KEY'):
+        
+        mac = request.POST.get('mac', '')
 
+        try:
+            
+            door = Door.objects.get(mac=mac)
+
+            return JsonResponse({
+                'error_message': None,
+                'success_message': 'Successfully fetched Token.',
+                'token': door.user_id.token,
+            })
+
+        except ObjectDoesNotExist:
+            
+            return JsonResponse({
+                'error_message': 'Door with that MAC was not found.',
+                'success_message': None,
+            })
+
+    else:
+        return HttpResponseForbidden()
+    
 @csrf_exempt
 def verify(request):
     if request.POST.get('SECRET_KEY') and request.POST['SECRET_KEY'] == os.environ.get('SECRET_KEY'):
@@ -163,5 +187,37 @@ def env_update(request):
                 'error_message': f'Error: {e}',
                 'success_message': None,
             })
+    else:
+        return HttpResponseForbidden()
+
+def get_door_status(request):
+
+    if request.GET.get('sk') and request.GET['sk'] == os.environ.get('SECRET_KEY'):
+        
+        mac = request.GET.get('mac', '')
+
+        try:
+            
+            door = Door.objects.get(mac=mac)
+
+            return JsonResponse({                                                                                                       
+                'error_message': None,
+                'success_message': 'Successfully Fetched Door Data',
+                'people_inside': door.people_inside.count(),
+                'sanitizer_perc': door.sanitizer_perc,
+                'is_safe': door.is_safe,
+                'co2_level': door.get_gases_values['co2_level'],
+                'co_level': door.get_gases_values['co_level'],
+                'metano_level': door.get_gases_values['metano_level'],
+                'lpg_level': door.get_gases_values['lpg_level'],
+            })
+
+        except ObjectDoesNotExist:
+            
+            return JsonResponse({
+                'error_message': 'Door with that MAC was not found.',
+                'success_message': None,
+            })
+
     else:
         return HttpResponseForbidden()

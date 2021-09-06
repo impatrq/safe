@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', (e) => {
 
 function loadData(page = 1){
     const tbody = document.getElementById('tbody')
-    fetch(`http://localhost:8000/api/tables/doors?sk=${sk}&user_id=${uid}&page=${page}`)
+    fetch(`${host}/api/tables/doors?sk=${sk}&user_id=${uid}&page=${page}`)
         .then(res => res.json())
             .then(res_json => {
                 const doors = JSON.parse(res_json.data.results)
@@ -77,7 +77,7 @@ function editButtonEvents(){
     
     editButtons.forEach(button => {
         button.addEventListener('click', (e) => {
-            fetch(`http://localhost:8000/api/tables/doors/update/${button.value}?sk=${sk}&user_id=${uid}`)
+            fetch(`${host}/api/tables/doors/update/${button.value}?sk=${sk}&user_id=${uid}`)
                 .then(res => res.json())
                     .then(res_json => {
                         document.getElementById('door-edit-modal').innerHTML = res_json.data
@@ -98,7 +98,7 @@ function editFormEvents(){
             e.preventDefault()
             const response_text = document.getElementById("edit-response-text");
     
-            fetch(`http://localhost:8000/api/tables/doors/update/${edit_form.id.value}/`, {
+            fetch(`${host}/api/tables/doors/update/${edit_form.id.value}/`, {
                 method: 'POST',
                 body: new FormData(edit_form),
             })
@@ -128,7 +128,7 @@ function removeButtonEvents(){
     removeButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             if(confirm('¿Seguro que quieres eliminar el registro?')){
-                fetch(`http://localhost:8000/api/tables/doors/delete/${button.value}/`, {
+                fetch(`${host}/api/tables/doors/delete/${button.value}/`, {
                     method: 'POST',
                     body: JSON.stringify({
                         SECRET_KEY: sk,
@@ -163,7 +163,7 @@ document.getElementById('search-bar').addEventListener('keyup', (e) => {
     const second_word = document.getElementById('search-bar').value.split(' ')[1]
 
     if(e.target.value){
-        fetch(`http://localhost:8000/api/tables/doors/search?sk=${sk}&user_id=${uid}${first_word ? `&first_word=${first_word}`:''}${second_word ? `&second_word=${second_word}`:''}`)
+        fetch(`${host}/api/tables/doors/search?sk=${sk}&user_id=${uid}${first_word ? `&first_word=${first_word}`:''}${second_word ? `&second_word=${second_word}`:''}`)
             .then(res => res.json())
                 .then(res_json => {
                     const doors = JSON.parse(res_json.data.results);
