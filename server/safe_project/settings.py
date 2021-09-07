@@ -27,11 +27,11 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '181.47.175.128']
+ALLOWED_HOSTS = ['localhost',]
 
 # CUSTOM GLOBAL VARIABLES
 
-CURRENT_HOST = 'http://181.47.175.128:8000'
+CURRENT_HOST = 'http://localhost:8000'
 MAX_TEMP = 37
 
 # CORS
