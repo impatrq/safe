@@ -54,8 +54,10 @@ table > tr > td > img {
 }
 
 .full-height-footer{
+    width: 100%;
     position: fixed;
     left: 14rem;
+    background-color: #f8f8f8;
     bottom: 0;
 }
 
@@ -63,4 +65,83 @@ table > tr > td > img {
     .full-height-footer{
         left: 0;
     }
+}
+
+/* About us CSS */
+
+.about-us-container{
+    margin: 50px 0;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.about-us-info{
+    width: 50%;
+    text-align: justify;
+}
+
+.about-us-title{
+    color: #363636;
+    font-weight: lighter;
+    font-size: 34px;
+    padding-bottom: 15px;
+    text-align: center;
+}
+
+.about-us-image{
+    width: 30%;
+    text-align: center;
+}
+
+.about-us-image > img{
+    width: 70%;
+}
+
+.about-us-benefits-container{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.about-us-benefits-col{
+    width: 45%;
+    font-size: 1rem;
+}
+
+.sponsor-container{
+    margin-bottom: 70px; 
+}
+
+.sponsor-content{
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.sponsor-info{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.sponsor-title{
+    color: #363636;
+    font-size: 40px;
+}
+
+.sponsor-image{
+    width: 30%;
+}
+
+.sponsor-image > img {
+    width: 300px;
+}
+
+.sponsor-icon{
+    color: #4A4A4A;
+    text-decoration: none;
 }

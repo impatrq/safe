@@ -49,3 +49,7 @@ def doors(request):
 @login_required(login_url='/login/')
 def logs(request):
     return render(request, 'logs.html', {'sk': os.environ.get('SECRET_KEY')})
+
+@login_required(login_url='/login/')
+def about_us(request):
+    return render(request, 'about-us.html', {})
