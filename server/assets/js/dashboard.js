@@ -20,13 +20,13 @@ function loadCards(){
                         <div class="column is-4">
                             <div class="card get_logs log_button" id="${door.pk}">
                                 <div class="card-content has-text-centered">
+                                    <h3>${door.fields.sector_name} - ${door.fields.door_name}</h3>
                                     <div class="level is-mobile">
                                         <div class="level-item">
                                             <div class="is-widget-label">
-                                            <h3 class="subtitle is-spaced">${door.fields.sector_name} - ${door.fields.door_name}</h3>
-                                            <h1 class="title is-opened-flag">${door.fields.is_opened == true ? "Abierta":"Cerrada"}</h1>
-                                            <h1>Sanitizante: <span>${door.fields.sanitizer_perc}</span></h1>
-                                            <input type="hidden" name="id" value="${door.pk}">
+                                                <h1 class="title is-opened-flag">${door.fields.is_opened == true ? "Abierta":"Cerrada"}</h1>
+                                                <h1>Sanitizante: <span>${door.fields.sanitizer_perc}</span></h1>
+                                                <input type="hidden" name="id" value="${door.pk}">
                                             </div>
                                         </div>
                                         <div class="level-item has-widget-icon">
