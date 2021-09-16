@@ -220,3 +220,13 @@ def get_door_status(request):
 
     else:
         return HttpResponseForbidden()
+
+# Extra functions
+
+def get_gases_level(gas_value, low, medium, high):
+    if (gas_value > 0 and gas_value < low):
+        return "Low" 
+    elif (gas_value > low and gas_value < medium):
+        return "Medium" 
+    elif (gas_value > medium and gas_value < high):
+        return "High"
