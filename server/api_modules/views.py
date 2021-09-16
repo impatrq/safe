@@ -205,10 +205,11 @@ def get_door_status(request):
                 'people_inside': door.people_inside.count(),
                 'sanitizer_perc': door.sanitizer_perc,
                 'is_safe': door.is_safe,
-                'co2_level': door.get_gases_values['co2_level'],
-                'co_level': door.get_gases_values['co_level'],
-                'metano_level': door.get_gases_values['metano_level'],
-                'lpg_level': door.get_gases_values['lpg_level'],
+                'co2_level': get_gases_level(door.get_gases_values['co2_level'], 600, 700, 10000),
+                'co_level': get_gases_level(door.get_gases_values['co_level'], 120, 185, 10000),
+                'metano_level': get_gases_level(door.get_gases_values['metano_level', 300, 550, 10000]),
+                'lpg_level': get_gases_level(door.get_gases_values['lpg_level'], 450, 600, 10000),
+
             })
 
         except ObjectDoesNotExist:
