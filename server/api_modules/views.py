@@ -168,7 +168,7 @@ def env_update(request):
         try:                                
             door = Door.objects.get(mac=door_mac)                                                       #Obtenemos la instancia del objeto al que corresponda ese mac
 
-            door.update_env(co2_level, co_level, metano_level, lpg_level)                               #Guardamos los valores de los sensores en servidor 
+            door.update_env(int(co2_level), int(co_level), int(metano_level), int(lpg_level))                               #Guardamos los valores de los sensores en servidor 
 
             # Enviamos la informacion en formato JSON de que todo salio bien y los valores de cada gas
             return JsonResponse({                                                                                                       
@@ -177,7 +177,7 @@ def env_update(request):
                 'is_safe': door.is_safe,
                 'co2_level': get_gases_level(door.get_gases_values['co2_level'], 600, 700, 10000),
                 'co_level': get_gases_level(door.get_gases_values['co_level'], 120, 185, 10000),
-                'metano_level': get_gases_level(door.get_gases_values['metano_level', 300, 550, 10000]),
+                'metano_level': get_gases_level(door.get_gases_values['metano_level'], 300, 550, 10000),
                 'lpg_level': get_gases_level(door.get_gases_values['lpg_level'], 450, 600, 10000),
 
             })
