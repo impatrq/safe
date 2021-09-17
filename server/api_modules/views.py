@@ -157,39 +157,43 @@ def verify(request):
 
 @csrf_exempt
 def env_update(request):
-    if request.POST.get('SECRET_KEY') and request.POST['SECRET_KEY'] == os.environ.get('SECRET_KEY'):
+    if request.method == 'POST':
+        SECRET_KEY = json.loads(request.body.decode('utf-8'))['SECRET_KEY']
+        if SECRET_KEY and SECRET_KEY == os.environ.get('SECRET_KEY'):
 
-        door_mac = request.POST['door_mac']                                                             #Obtenemos el mac de la puerta que nos llego
-        co2_level = request.POST['co2_level']                                                           #Obtenemos el nivel de co2 que nos llego
-        co_level = request.POST['co_level']                                                             #Obtenemos el nivel de co que nos llego
-        metano_level = request.POST['metano_level']                                                     #Obtenemos el nivel de metano que nos llego
-        lpg_level = request.POST['lpg_level']                                                           #Obtenemos el nivel de lpg que nos llego
-    
-        try:                                
-            door = Door.objects.get(mac=door_mac)                                                       #Obtenemos la instancia del objeto al que corresponda ese mac
+            door_mac = json.loads(request.body.decode('utf-8'))['door_mac']                                                             # Obtenemos el mac de la puerta que nos llego
+            co2_level = float(json.loads(request.body.decode('utf-8'))['co2_level'])                                                    # Obtenemos el nivel de co2 que nos llego
+            co_level = float(json.loads(request.body.decode('utf-8'))['co_level'])                                                      # Obtenemos el nivel de co que nos llego
+            metano_level = float(json.loads(request.body.decode('utf-8'))['metano_level'])                                              # Obtenemos el nivel de metano que nos llego
+            lpg_level = float(json.loads(request.body.decode('utf-8'))['lpg_level'])                                                    # Obtenemos el nivel de lpg que nos llego
+        
+            try:                                
+                door = Door.objects.get(mac=door_mac)                                                       #Obtenemos la instancia del objeto al que corresponda ese mac
 
-            door.update_env(int(co2_level), int(co_level), int(metano_level), int(lpg_level))                               #Guardamos los valores de los sensores en servidor 
+                door.update_env(int(co2_level), int(co_level), int(metano_level), int(lpg_level))                               #Guardamos los valores de los sensores en servidor 
 
-            door.save()
+                door.save()
 
-            # Enviamos la informacion en formato JSON de que todo salio bien y los valores de cada gas
-            return JsonResponse({                                                                                                       
-                'error_message': None,
-                'success_message': 'Successfully Updated',
-                'is_safe': door.is_safe,
-                'co2_level': get_gases_level(door.get_gases_values['co2_level'], 600, 700, 10000),
-                'co_level': get_gases_level(door.get_gases_values['co_level'], 120, 185, 10000),
-                'metano_level': get_gases_level(door.get_gases_values['metano_level'], 300, 550, 10000),
-                'lpg_level': get_gases_level(door.get_gases_values['lpg_level'], 450, 600, 10000),
+                # Enviamos la informacion en formato JSON de que todo salio bien y los valores de cada gas
+                return JsonResponse({                                                                                                       
+                    'error_message': None,
+                    'success_message': 'Successfully Updated',
+                    'is_safe': door.is_safe,
+                    'co2_level': get_gases_level(door.get_gases_values['co2_level'], 600, 700, 10000),
+                    'co_level': get_gases_level(door.get_gases_values['co_level'], 120, 185, 10000),
+                    'metano_level': get_gases_level(door.get_gases_values['metano_level'], 300, 550, 10000),
+                    'lpg_level': get_gases_level(door.get_gases_values['lpg_level'], 450, 600, 10000),
 
-            })
+                })
 
-        # Enviamos la informacion en formato JSON de que hubo un error
-        except Exception as e:
-            return JsonResponse({                                                                                                       
-                'error_message': f'Error: {e}',
-                'success_message': None,
-            })
+            # Enviamos la informacion en formato JSON de que hubo un error
+            except Exception as e:
+                return JsonResponse({                                                                                                       
+                    'error_message': f'Error: {e}',
+                    'success_message': None,
+                })
+        else:
+            return HttpResponseForbidden()
     else:
         return HttpResponseForbidden()
 
