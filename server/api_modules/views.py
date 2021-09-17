@@ -170,6 +170,8 @@ def env_update(request):
 
             door.update_env(int(co2_level), int(co_level), int(metano_level), int(lpg_level))                               #Guardamos los valores de los sensores en servidor 
 
+            door.save()
+
             # Enviamos la informacion en formato JSON de que todo salio bien y los valores de cada gas
             return JsonResponse({                                                                                                       
                 'error_message': None,
