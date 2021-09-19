@@ -14,11 +14,11 @@ void loop() {
 }
 
 void conect_to_wifi() {
-    Serial.prtint("a");
+    Serial.prtint("a");                                            // Para avisar que se esta iniciando la conexion wifi
     WiFi.begin(ssid, password);                                    // Conectar Wifi
 
     while(WiFi.status() != WL_CONNECTED) {                         // Mientras no este conectado al wifi
         delay(500);
     }
-    Serial.prtint("b");
+    Serial.prtint("b");                                            // Para avisar que se termino de conectar al wifi
 }
