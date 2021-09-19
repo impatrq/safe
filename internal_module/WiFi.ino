@@ -14,9 +14,11 @@ void loop() {
 }
 
 void conect_to_wifi() {
-  WiFi.begin(ssid, password);                                    // Conectar Wifi
+    Serial.prtint("a");
+    WiFi.begin(ssid, password);                                    // Conectar Wifi
 
-  while(WiFi.status() != WL_CONNECTED) {                         // Mientras no este conectado al wifi
-    delay(500);
-  }
+    while(WiFi.status() != WL_CONNECTED) {                         // Mientras no este conectado al wifi
+        delay(500);
+    }
+    Serial.prtint("b");
 }
