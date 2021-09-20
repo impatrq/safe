@@ -22,11 +22,12 @@ void loop() {
     if (response != "Post Failed") {                                                    // Si el post no fallo
         DeserializationError error = deserializeJson(response_info, response);          // Deserializamos la respuesta que nos llego en formato json y lo almacenamos en response_info 
         if (!error) {                                                                   // Si no hay ningun error en la deserializacion
-            if (response_info["success_message"] == "Successfully Updated") {
-                char* co_response_level = response_info["co_level"];
-                char* co2_response_level = response_info["co2_level"];
-                char* metano_response_level = response_info["metano_level"];
-                char* lpg_response_level = response_info["lpg_level"];        
+          String success_message = response_info["success_message"]; 
+          if (success_message == "Successfully Updated") {
+                String co_response_level = response_info["co_level"];
+                String co2_response_level = response_info["co2_level"];
+                String metano_response_level = response_info["metano_level"];
+                String lpg_response_level = response_info["lpg_level"];        
             }
         }  
     }  
