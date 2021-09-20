@@ -8,8 +8,7 @@
             "%ch4_level%" : "self.ch4_level",
             "%co_level%" : "self.co_level",
             "%co2_level%" : "self.co2_level",
-            "%lpg_level%" : "self.lpg_level",
-            "__time" : "self.time"
+            "%lpg_level%" : "self.lpg_level"
         }
     },
     "Card:":{
@@ -30,21 +29,28 @@
             "%dispenser_percentage%" : "self.dispenser_percentage"
         }
     },
+    "NeedToken":{
+        "file": "need_token.html",
+        "variables":{
+            "%qr_file%" : "self.qr_token"
+        }
+    },
     "AccessAllowed":{
         "file": "access_allowed.html",
         "variables":{
             "%first_name%": "self.first_name",
             "%last_name%": "self.last_name",
             "%card_code%": "self.card_code",
-            "%worker_image%": "self.worker_image",
-            "%__time%": "self.time"
+            "%temp%" : "self.temperature",
+            "%face_mask%" : "self.face_mask",
+            "%face_mask_image%" : "self.face_mask_image",
+            "%worker_image%": "self.worker_image"
         }
     },
     "AccessDenied_0":{
         "file": "access_denied_0.html",
         "variables":{
-            "%card_code%": "self.card_code",
-            "%__time%": "self.time"
+            "%card_code%": "self.card_code"
         }
     },
     "AccessDenied_1-2":{
@@ -55,8 +61,7 @@
             "%card_code%": "self.card_code",
             "%worker_image%": "self.worker_image",
             "%env_safe%": "self.env_safe",
-            "%message%":"self.message",
-            "%__time%": "self.time"
+            "%message%":"self.message"
         }
     },
     "Error":{

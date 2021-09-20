@@ -1,23 +1,36 @@
 import json
-from flask.wrappers import Response
 import numpy
 import requests
 import configparser
 import sched, time
-#from getmac import get_mac_address as gma
+from getmac import get_mac_address as gma
+
+import src.detect_mask as ai
+import src.take_photos as ph
+import src.qr_generator as qr
 
 class Data:
-    def __init__(self, url , init , verify , secret_key):
+    def __init__(self, url , init , verify , get_door_status , secret_key):
 
         # * ▼ WEB DATA VARIABLES ▼
         self.url = url
         self.url_init = self.url + init
         self.url_verify = self.url + verify
+        self.url_get_door_status = self.url + get_door_status
 
         self.secret_key = secret_key
 
         self.token = str()
-        #self.mac = gma()
+        self.mac = gma()
+        #self.mac = str()
+
+        # * ▼ DOOR DATA VARIABLES ▼
+        self.people_inside = int()
+        self.is_safe = bool()
+        self.co2_level = str()
+        self.co_level = str()
+        self.metano_level = str()
+        self.lpg_level = str()
 
         # * ▼ WORKER DATA VARIABLES ▼
         # ! self.email = str()
@@ -50,12 +63,14 @@ class Data:
 
     def start(self):
         self.config.read("config/settings.cfg")
-        if not self.config["START"]["NeedToken"]:
+        if self.config["START"]["NeedToken"]:
+            qr.generate(self.mac)
             self.showInfo("NeedToken")
             self.getToken()
         else:
             self.token = self.config["START"]["Token"]
-
+            self.showInfo("Default")
+    
     def getToken(self):
         if not self.sendData2Web("init"): 
             self.s.enter(10, 1 , self.getToken)   
@@ -67,20 +82,31 @@ class Data:
                 self.config.write(configfile) 
                 configfile.close()  
             self.getDoorInfo()
-    
+
     def getDoorInfo(self):
-        pass
+        r = requests.get(self.url_get_door_status + "?sk=" + self.secret_key + "&mac=" + self.mac) # * Request WEB
+        if r.status_code == 200:
+            response_dict = r.json()
+            if not response_dict['error_message']:
+                self.people_inside = response_dict['people_inside']
+                self.is_safe = response_dict['is_safe']
+                self.co2_level = response_dict['co2_level']
+                self.co_level = response_dict['co_level']
+                self.metano_level = response_dict['metano_levell']
+                self.lpg_level = response_dict['lpg_level']
+        self.s.enter(60, 1 , self.getDoorInfo)   
+        self.s.run()
 
     def analize(self, dictionary): 
 
-        if dictionary["code"] != "None":
+        if dictionary.get("code"):
             self.code = dictionary["code"]
             self.joining = dictionary["joining"]
             self.stage[0] = True
             
             pass # TODO: Show Info
 
-        elif dictionary["temperature"] != "None":
+        elif dictionary.get("temperature"):
             self.temperature = dictionary["temperature"]
             if self.stage[0]:
                 self.stage[1] = True
@@ -88,7 +114,7 @@ class Data:
             else:
                 pass # TODO: Show Only Temp
 
-        elif dictionary["dispenser"] != "None":
+        elif dictionary.get("dispenser"):
             self.dispenser = dictionary["dispenser"]
             self.dispenser_percentage = dictionary["dispenser_percentage"]
             if self.stage[0]:
@@ -101,7 +127,9 @@ class Data:
             pass # ! NOT THE MOST FUCKING IDEA
         
         if numpy.all(self.stage[0:3]):
-            pass # TODO: Face Mask Detect
+            ph.takePhotos(7)
+            output = ai.process_images()
+            print(output)
             self.sendData2Web(UrlTpye= False)     # TODO: Determine which url you are going to use as a parameter or what information you are going to send
             return True
     
@@ -142,7 +170,7 @@ class Data:
         elif UrlTpye == "init":
             values = {'SECRET_KEY': self.secret_key,
                         'mac': self.mac}
-            r = requests.post(self.url_verify, data=values) # * Request WEB
+            r = requests.post(self.url_init, data=values) # * Request WEB
             if r.status_code == 200:
                 response_dict = r.json()
                 if response_dict["success_message"] == "Successfully fetched Token.":
@@ -180,11 +208,14 @@ class Data:
                 print(r.status_code)
             pass # TODO: Http request for the other cases
     
-    def sendData2Micro(self): # TODO: Fix variable response
-        dict_response = {'allowed':self.allowed,
-                            'led_color':self.led_color}
+    def sendData2Micro(self, needData = None): # TODO: Fix variable response
+        if needData:
+            dict_response= {'need': needData}
+        else:
+            dict_response = {'allowed':self.allowed,
+                                'led_color':self.led_color}
+        
         string_response = json.dumps(dict_response) + "\n"
-
         return string_response.encode()
 
     def showInfo(self, InfoType):   # * Info Types: - Default ✓
