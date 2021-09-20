@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block body %}
+        <section class="columns">
+                <nav class="column">
+                        <div class="img">
+                                <div class="content has-text-centered">
+                                        <img class="mt-5 is-256x256" src="{{ url_for('static', filename ='img/image_0.png') }}">
+                                </div>
+                        </div>
+                </nav>
+                <div class="column has-text-centered">
+                        <figure class="image is-128x128 is-inline-block mt-5">
+                                <img class="is-rounded" src="{{ url_for('static', filename ='img/user_photo3.png') }}">
+                        </figure>
+                        <div class="mt-4">
+                                <h2 class="title is-2">Guillermo Murillo</h2>
+                        </div>
+                        <div class="mt-4">
+                                <p class="title is-3">
+                                        <span class="has-text-left">Temp.: <span class="has-text-info">36.5º</span></span> 
+                                        <span class="ml-5 title is-3 has-text-right">Barbijo: <span class="has-text-success-dark">NO</span>
+                                </p>
+                                <p>
+                                        <span class="title is-3 has-text-left">Ambiente: <span>SEGURO</span></span>
+                                </p>
+                                <h1 class="title is-2 has-text-success-dark mt-6 is-italic">ACCESO PERMITIDO</h1>
+
+                        </div>
+                </div>
+
+        </section>
+
+        <style>
+                img {
+                        border-radius: 10%;
+                      }
+        </style>
+{% endblock %}

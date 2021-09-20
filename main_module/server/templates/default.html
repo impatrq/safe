@@ -2,40 +2,40 @@
 
 {% block body %}
         <section class="section">
-                <div class="block has-text-centered">
-                        <div class="content is-center">
-                                <img src="{{ url_for('static', filename ='img/SAFE.png') }}" width="400" height="175">
-                        </div>
-                </div>
                 <nav class="level">
                         <div class="level-item has-text-centered">
                                 <div>
-                                        <h2 class="title is-2">Ambiente: <span class="title is-2 has-text-success-dark">SEGURO</span> </h2>
+                                        <h2 class="title is-2">Ambiente: <span class="title is-2 has-text-success-dark">%env_safe%</span> </h2>
+                                </div>
+                        </div>
+                        <div class="block has-text-centered">
+                                <div class="content is-center">
+                                        <img src="{{ url_for('static', filename ='img/SAFE_Logo.png') }}" width="100" height="100">
                                 </div>
                         </div>
                         <div class="level-item has-text-centered">
                                 <div>
-                                        <h2 class="title is-2">Personas dentro: <span class="title is-2 has-text-danger-dark">8</span> </h2>
+                                        <h2 class="title is-2">Personas dentro: <span class="title is-2 has-text-info">%people_inside%</span> </h2>
                                 </div>
                         </div>
                 </nav>
                 
                 <hr style="background-color:black" class="mt-5 md-5">
-                <h2 class="title is-1 has-text-centered">NIVEL DE GASES</h2>
+                <h2 class="title is-2 has-text-centered">NIVEL DE GASES</h2>
                 <div class="">
                         <div class="has-text-centered">
                                 <div class="mt-5">
-                                        <h2 class="title is-2">Metano: <span class="title is-2 has-text-success-dark">BAJO</span></h2>
+                                        <h2 class="title is-2">Metano: <span class="title is-2 has-text-success-dark">%ch4_level%</span></h2>
                                 </div>
                         </div>
                         <div class="has-text-centered">
                                 <div class="mt-5">
-                                        <h2 class="title is-2">Dióxido de Carbono: <span class="title is-2 has-text-warning">MEDIO</span></h2>
+                                        <h2 class="title is-2">Dióxido de Carbono: <span class="title is-2 has-text-warning">%co2_level%</span></h2>
                                 </div>
                         </div>
                         <div class="has-text-centered">
                                 <div class="mt-5">
-                                        <h2 class="title is-2">Monóxido de Carbono: <span class="title is-2 has-text-danger-dark">ALTO</span></h2>
+                                        <h2 class="title is-2">Monóxido de Carbono: <span class="title is-2 has-text-danger-dark">%co_level%</span></h2>
                                 </div>
                         </div>
                 </div>
