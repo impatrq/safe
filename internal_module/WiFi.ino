@@ -27,7 +27,9 @@ void loop() {
                 String co_response_level = response_info["co_level"];
                 String co2_response_level = response_info["co2_level"];
                 String metano_response_level = response_info["metano_level"];
-                String lpg_response_level = response_info["lpg_level"];        
+                String lpg_response_level = response_info["lpg_level"]; 
+
+                pic_communication_colour(co_response_level, co2_response_level, metano_response_level, lpg_response_level);       
             }
         }  
     }  
@@ -77,5 +79,21 @@ String env_update(float co_level, float co2_level, float metano_level, float lpg
     else {
       return "Post Failed";
     }        
+  }
+}
+
+void pic_communication_colour(String co_level, String co2_level, String metano_level, String lpg_level) {
+  if (co2_level == "High" || co_level == "High" || lpg_level == "High" || metano_level == "High") {
+    Serial.print("r");
+  }
+  else {
+    if (co2_level == "Medium" || co_level == "Medium" || lpg_level == "Medium" || metano_level == "Medium") {
+      Serial.print("y");
+    }
+    else {
+      if (co2_level == "Low" || co_level == "Low" || lpg_level == "Low" || metano_level == "Low") {
+        Serial.print("g");
+      }
+    }
   }
 }
