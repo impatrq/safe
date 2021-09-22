@@ -20,6 +20,7 @@ void loop() {
     String response = env_update(500, 500, 500, 500);                                   // Realizamos un post mandando los valores de los valores de los gases y almacenamos la respuesta
 
     if (response != "Post Failed") {                                                    // Si el post no fallo
+        DynamicJsonDocument response_info(1024);                                        // Creamos un domunento json dinamico
         DeserializationError error = deserializeJson(response_info, response);          // Deserializamos la respuesta que nos llego en formato json y lo almacenamos en response_info 
         if (!error) {                                                                   // Si no hay ningun error en la deserializacion
           String success_message = response_info["success_message"]; 
@@ -33,7 +34,7 @@ void loop() {
             }
         }  
     }  
-  delay(300000);                                                   // Esperamos 5 minutos 
+  delay(30000);                                                   // Esperamos 30 segundos
 }
 
 void conect_to_wifi() {
