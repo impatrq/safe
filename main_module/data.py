@@ -3,11 +3,14 @@ import numpy
 import requests
 import configparser
 import sched, time
+import os
 from getmac import get_mac_address as gma
 
 import src.detect_mask as ai
 import src.take_photos as ph
 import src.qr_generator as qr
+
+FILE_DIR = os.path.dirname(__file__) + '/'
 
 class Data:
     def __init__(self, url , init , verify , get_door_status , secret_key):
@@ -133,6 +136,14 @@ class Data:
             self.sendData2Web(UrlTpye= False)     # TODO: Determine which url you are going to use as a parameter or what information you are going to send
             return True
     
+    def aiProcess(self):
+        ph.takePhotos(7)
+        output = ai.process_images()
+        print(output)
+        self.worker_image = output['average']['file']
+        self.face_mask_image = output['average']['file']
+        self.face_mask = "SI" if output['average']['result'] else "NO"
+
     def sendData2Web(self, UrlTpye):
         if UrlTpye == "verify":
             values = {'SECRET_KEY': self.secret_key,
@@ -230,18 +241,18 @@ class Data:
                                     # ?                 > WiFi Settings
                                     # ?                 > Factory Restoration
                                     # ?                 > Need Token (QR page)
-        with open('config/info_types_data.json') as json_file:
+        with open(FILE_DIR + 'config/info_types_data.json') as json_file:
             self.info_type_data = json.load(json_file)
             json_file.close()
         file_name = self.info_type_data[InfoType].get('file')
         new_content = ""
-        with open(f'server/templates/{file_name}', 'r') as file:
+        with open(FILE_DIR + f'server/templates/{file_name}', 'r') as file:
             content = file.read()
             for variable in self.info_type_data[InfoType]['variables']:
-                content = content.replace(variable , locals()[self.info_type_data[InfoType]['variables'][variable]])
+                content = content.replace(variable , getattr(vars()["self"], self.info_type_data[InfoType]['variables'][variable]))
             new_content = content
             file.close()
-        with open(f'server/templates/index.html', 'w') as file:
+        with open(FILE_DIR + f'server/templates/index.html', 'w') as file:
             file.write(new_content)
             file.close()
     
