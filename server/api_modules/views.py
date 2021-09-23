@@ -230,6 +230,42 @@ def get_door_status(request):
     else:
         return HttpResponseForbidden()
 
+def main_door_update(request):
+
+    if request.POST.get('SECRET_KEY') and request.POST['SECRET_KEY'] == os.environ.get('SECRET_KEY'):
+
+        mac = request.POST.get('mac')
+        token = request.POST.get('token')
+        is_opened = request.POST.get('is_opened')
+
+        try:
+
+            door = Door.objects.get(mac=mac, is_active=True, user_id__token=token)
+
+            door.is_opened = is_opened
+
+            door.save()
+
+            return JsonResponse({                                                                                                       
+                'error_message': None,
+                'success_message': 'Successfully updated Door status',
+            })
+
+        except ObjectDoesNotExist:
+            return JsonResponse({                                                                                                       
+                'error_message': 'Door does not exist.',
+                'success_message': None,
+            })
+            
+        except Exception as e:
+            return JsonResponse({                                                                                                       
+                'error_message': f'Error: {e}',
+                'success_message': None,
+            })
+
+    else:
+        return HttpResponseForbidden()
+
 # Extra functions
 
 def get_gases_level(gas_value, low, medium, high):
