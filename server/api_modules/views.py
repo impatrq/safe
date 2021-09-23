@@ -246,7 +246,7 @@ def main_door_update(request):
 
         except ObjectDoesNotExist:
             return JsonResponse({                                                                                                       
-                'error_message': 'Not allowed',
+                'error_message': 'Door does not exist.',
                 'success_message': None,
             })
             
@@ -258,7 +258,7 @@ def main_door_update(request):
 
     else:
         return HttpResponseForbidden()
-        
+
 # Extra functions
 
 def get_gases_level(gas_value, low, medium, high):
