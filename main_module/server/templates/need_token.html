@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block body %}
+        <section class="columns">
+                <nav class="column">
+                        <div class="img">
+                                <div class="content has-text-centered" style="margin: 15px;">
+                                        <img class="image" src="{{ url_for('static', filename ='qr/qr_safe.png') }}">
+                                </div>
+                        </div>
+                </nav>
+                <div class="column has-text-centered">
+                        <div class="mt-6">
+                                <h2 class="title is-1">VINCULAR MÓDULO</h2>
+                                <h2 class="subtitle is-4">Usá la aplicación móvil de <strong>SAFE</strong> para escanear este código QR.</h2>
+                        </div>
+                        <div class="mt-5">
+                                <h2 class="subtitle is-3 has-text-left"> <span class="has-text-info">1-</span> Abrí SAFE Mobile en tu teléfono.</h2>
+
+                                <h2 class="subtitle is-3 has-text-left"> <span class="has-text-info">2-</span> Andá a <strong>Menú > Puertas</strong>.</h2>
+
+                                <h2 class="subtitle is-3 has-text-left"> <span class="has-text-info">3-</span> Tocá en el "<strong>+</strong>".</h2>
+
+                                <h2 class="subtitle is-3 has-text-left"> <span class="has-text-info">4-</span> Escaneá esta imagen para vincular este módulo a tu cuenta.</h2>
+
+                        </div>
+                </div>
+
+        </section>
+
+        <style>
+                img {
+                        height: 256;
+                        width: 256;
+                        border-radius: 10%;
+                      }
+        </style>
+{% endblock %}
