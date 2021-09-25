@@ -4,6 +4,8 @@ import requests
 import configparser
 import sched, time
 import os
+
+from tensorflow.python import util
 from getmac import get_mac_address as gma
 
 import src.detect_mask as ai
@@ -47,6 +49,7 @@ class Data:
         self.temperature = str()
         self.dispenser_percentage = str()
         self.joining = bool()
+        self.door_is_opened = bool()
         # ! self.dispenser = bool()
         # ! self.proximity_temp = bool()
         # ! self.proximity_dispenser = bool()
@@ -125,7 +128,10 @@ class Data:
                 pass # TODO: Show Info + Dispenser %
             else:
                 pass # TODO: Show Dispenser %
-
+        
+        elif dictionary.get("door_is_opened"):
+            self.door_is_opened = dictionary["door_is_opened"]
+            self.sendData2Web("main_door_update")
         else:
             pass # ! NOT THE MOST FUCKING IDEA
         
@@ -187,7 +193,16 @@ class Data:
                 if response_dict["success_message"] == "Successfully fetched Token.":
                     self.token = response_dict["token"]
                     return True
-                    
+        elif UrlTpye == "main_door_update":
+            values = {'SECRET_KEY': self.secret_key,
+                        'token': self.token,
+                        'mac': self.mac}
+            r = requests.post(self.url_init, data=values) # * Request WEB
+            if r.status_code == 200:
+                response_dict = r.json()
+                if response_dict["success_message"] == "Successfully fetched Token.":
+                    self.token = response_dict["token"]
+                    return True     
         else:
             values = {'SECRET_KEY': self.secret_key,
                         'token': 'hkaAJD2',
