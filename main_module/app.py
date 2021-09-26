@@ -1,14 +1,12 @@
-import time
 import json
 import serial
 from pprint import pprint
-import random
 
 
 from data import Data
 
 # * ▼ CONFIG DATA VARIABLES ▼
-url = "http://www.safe.com.ar"
+host = "http://www.safe.com.ar"
 init = "/api/modules/init"
 verify = "/api/modules/verify"
 get_door_status = "/api/modules/get_door_status"
@@ -16,15 +14,15 @@ get_door_status = "/api/modules/get_door_status"
 sk = "qlswpZD6rvyCxkd4jrAkZf2gf5pWI5zn"
 # * ▲ CONFIG DATA VARIABLES ▲
 
-# TODO: run flask web server here.
+# ? TODO: run flask web server here.
 
 if __name__ == "__main__":
     print ("Ready...")
-    serialPort  = serial.Serial("/dev/ttyUSB0", baudrate= 9600)
-    #serialString =  '{"code":12345 , "temperature": "None", "dispenser": "None", "joining": 1 }'                         # Used to hold data coming over UART
+    serialPort  = serial.Serial("/dev/ttyUSB0", baudrate= 9600) # Used to hold data coming over UART
+    #serialString =  '{"code":12345 , "temperature": "None", "dispenser": "None", "joining": 1 }'    
     serialString = ""
-    obj_data = Data(url, init, verify, get_door_status, sk)
-    #obj_data.start()
+    obj_data = Data(host, init, verify, get_door_status, sk)
+    obj_data.start()
     while(1):
 
         # Wait until there is data waiting in the serial buffer

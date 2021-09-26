@@ -2,72 +2,71 @@
     "Default":{
         "file": "default.html",
         "variables":{
-            "%people_inside%" : "self.people_inside",
-            "%dispenser_percentage%" : "self.dispenser_percentage",
-            "%env_safe%" : "self.env_safe",
-            "%ch4_level%" : "self.ch4_level",
-            "%co_level%" : "self.co_level",
-            "%co2_level%" : "self.co2_level",
-            "%lpg_level%" : "self.lpg_level"
+            "%people_inside%" : "people_inside",
+            "%dispenser_percentage%" : "dispenser_percentage",
+            "%env_safe%" : "env_safe",
+            "%ch4_level%" : "ch4_level",
+            "%co_level%" : "co_level",
+            "%co2_level%" : "co2_level",
+            "%lpg_level%" : "lpg_level"
         }
     },
     "Card:":{
         "file": "card.html",
         "variables":{
-            "%card_code%":"self.card_code"
+            "%card_code%":"code"
         }
     },
     "Temp":{
         "file": "temp.html",
         "variables":{
-            "%temp%" : "self.temperature"
+            "%temp%" : "temperature"
         }
     },
     "Disp":{
         "file": "disp.html",
         "variables":{
-            "%dispenser_percentage%" : "self.dispenser_percentage"
+            "%dispenser_percentage%" : "dispenser_percentage"
         }
     },
     "NeedToken":{
         "file": "need_token.html",
         "variables":{
-            "%qr_file%" : "self.qr_token"
         }
     },
     "AccessAllowed":{
         "file": "access_allowed.html",
         "variables":{
-            "%first_name%": "self.first_name",
-            "%last_name%": "self.last_name",
-            "%card_code%": "self.card_code",
-            "%temp%" : "self.temperature",
-            "%face_mask%" : "self.face_mask",
-            "%face_mask_image%" : "self.face_mask_image",
-            "%worker_image%": "self.worker_image"
+            "%first_name%": "first_name",
+            "%last_name%": "last_name",
+            "%card_code%": "code",
+            "%temp%" : "temperature",
+            "%env_safe%" : "is_safe",
+            "%face_mask_image%" : "face_mask_image",
+            "%worker_image%": "worker_image"
         }
     },
     "AccessDenied_0":{
         "file": "access_denied_0.html",
         "variables":{
-            "%card_code%": "self.card_code"
+            "%card_code%": "card_code"
         }
     },
     "AccessDenied_1-2":{
         "file": "access_denied_1-2.html",
         "variables":{
-            "%first_name%": "self.first_name",
-            "%last_name%": "self.last_name",
-            "%card_code%": "self.card_code",
-            "%worker_image%": "self.worker_image",
-            "%env_safe%": "self.env_safe",
-            "%message%":"self.message"
+            "%first_name%": "first_name",
+            "%last_name%": "last_name",
+            "%card_code%": "card_code",
+            "%worker_image%": "worker_image",
+            "%env_safe%": "env_safe",
+            "%message%":"message"
         }
     },
     "Error":{
         "file":"error.html",
         "variables":{
-            "%error_message%": "self.error_message"
+            "%error_message%": "error_message"
         }
     } 
 }

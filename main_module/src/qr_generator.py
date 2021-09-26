@@ -48,3 +48,4 @@ def generate(mac):
     QRimg.save( FILE_DIR + f"images/qr_img/qr_safe.png")
     
     print('QR code generated!')
+    return FILE_DIR + f"images/qr_img/qr_safe.png"

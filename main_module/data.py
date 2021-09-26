@@ -4,21 +4,22 @@ import requests
 import configparser
 import sched, time
 import os
+import shutil
 
 from tensorflow.python import util
-from getmac import get_mac_address as gma
+#from getmac import get_mac_address as gma
 
 import src.detect_mask as ai
-import src.take_photos as ph
+#import src.take_photos as ph
 import src.qr_generator as qr
 
 FILE_DIR = os.path.dirname(__file__) + '/'
 
 class Data:
-    def __init__(self, url , init , verify , get_door_status , secret_key):
+    def __init__(self, host , init , verify , get_door_status , secret_key):
 
         # * ▼ WEB DATA VARIABLES ▼
-        self.url = url
+        self.url = host
         self.url_init = self.url + init
         self.url_verify = self.url + verify
         self.url_get_door_status = self.url + get_door_status
@@ -26,23 +27,26 @@ class Data:
         self.secret_key = secret_key
 
         self.token = str()
-        self.mac = gma()
-        #self.mac = str()
+        #self.mac = gma()
+        self.mac = str()
 
         # * ▼ DOOR DATA VARIABLES ▼
-        self.people_inside = int()
-        self.is_safe = bool()
+        self.people_inside = str()
+        self.is_safe = str()
         self.co2_level = str()
         self.co_level = str()
         self.metano_level = str()
         self.lpg_level = str()
 
         # * ▼ WORKER DATA VARIABLES ▼
-        # ! self.email = str()
         self.allowed = bool()
         self.code = str()
         self.face_mask = bool()
         self.face_mask_image = str()
+
+        self.first_name = str()
+        self.last_name = str()
+        self.worker_image = str()
         
         # * ▼ MICRO DATA VARIABLES ▼
         self.led_color = str()
@@ -50,27 +54,19 @@ class Data:
         self.dispenser_percentage = str()
         self.joining = bool()
         self.door_is_opened = bool()
-        # ! self.dispenser = bool()
-        # ! self.proximity_temp = bool()
-        # ! self.proximity_dispenser = bool()
 
-
-        self.prueba = True
-
+        # * ▼ NECESSARY DATA VARIABLES ▼
         self.stage = numpy.full(4, False)
-
         self.config = configparser.ConfigParser()
-
         self.s = sched.scheduler(time.time, time.sleep)
-
         self.info_type_data = dict()
 
-        #self.__dict__.update(dict1)
-
     def start(self):
-        self.config.read("config/settings.cfg")
+        self.config.read(FILE_DIR + "config/settings.cfg")
         if self.config["START"]["NeedToken"]:
-            qr.generate(self.mac)
+            qr_image = qr.generate(self.mac)
+            save = FILE_DIR + "server/static/qr/qr_safe.png"
+            shutil.copyfile(qr_image, save)
             self.showInfo("NeedToken")
             self.getToken()
         else:
@@ -110,6 +106,9 @@ class Data:
             self.joining = dictionary["joining"]
             self.stage[0] = True
             
+            # self.showInfo("Code")
+            # self.s.enter(20, 1, self.showInfo, argument="Default")
+            # self.s.run()
             pass # TODO: Show Info
 
         elif dictionary.get("temperature"):
@@ -146,8 +145,10 @@ class Data:
         ph.takePhotos(7)
         output = ai.process_images()
         print(output)
-        self.worker_image = output['average']['file']
-        self.face_mask_image = output['average']['file']
+        file_image = output['average']['file']
+        save = FILE_DIR + "server/static/img/face_mask.jpg"
+        shutil.copyfile(file_image, save)
+        self.face_mask_image = FILE_DIR + "server/static/img/face_mask.jpg"
         self.face_mask = "SI" if output['average']['result'] else "NO"
 
     def sendData2Web(self, UrlTpye):
@@ -193,6 +194,11 @@ class Data:
                 if response_dict["success_message"] == "Successfully fetched Token.":
                     self.token = response_dict["token"]
                     return True
+                else:
+                    return False
+            else:
+                return False
+
         elif UrlTpye == "main_door_update":
             values = {'SECRET_KEY': self.secret_key,
                         'token': self.token,
@@ -252,10 +258,10 @@ class Data:
                                     # *             - Access denied ✓
                                     # ?             - Error Screen
                                     # ?             - Config
+                                    # *                 > Need Token (QR page) ✓
                                     # ?                 > Pairing Mode
                                     # ?                 > WiFi Settings
                                     # ?                 > Factory Restoration
-                                    # ?                 > Need Token (QR page)
         with open(FILE_DIR + 'config/info_types_data.json') as json_file:
             self.info_type_data = json.load(json_file)
             json_file.close()
