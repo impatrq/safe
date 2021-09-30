@@ -7,10 +7,10 @@ import os
 import shutil
 
 from tensorflow.python import util
-#from getmac import get_mac_address as gma
+from getmac import get_mac_address as gma
 
 import src.detect_mask as ai
-#import src.take_photos as ph
+import src.take_photos as ph
 import src.qr_generator as qr
 
 FILE_DIR = os.path.dirname(__file__) + '/'
@@ -27,8 +27,8 @@ class Data:
         self.secret_key = secret_key
 
         self.token = str()
-        #self.mac = gma()
-        self.mac = str()
+        self.mac = gma()
+        #self.mac = str()
 
         # * ▼ DOOR DATA VARIABLES ▼
         self.people_inside = str()
@@ -78,23 +78,25 @@ class Data:
             self.s.enter(10, 1 , self.getToken)   
             self.s.run()
         else:
-            self.config["START"]["NeedToken"] = False
+            self.config["START"]["NeedToken"] = "False"
             self.config["START"]["Token"] = self.token
-            with open('/config/settings.cfg', 'w') as configfile:
+            with open(FILE_DIR + 'config/settings.cfg', 'w') as configfile:
                 self.config.write(configfile) 
                 configfile.close()  
             self.getDoorInfo()
 
     def getDoorInfo(self):
         r = requests.get(self.url_get_door_status + "?sk=" + self.secret_key + "&mac=" + self.mac) # * Request WEB
+        print(r.status_code)
         if r.status_code == 200:
             response_dict = r.json()
+            print(response_dict)
             if not response_dict['error_message']:
                 self.people_inside = response_dict['people_inside']
                 self.is_safe = response_dict['is_safe']
                 self.co2_level = response_dict['co2_level']
                 self.co_level = response_dict['co_level']
-                self.metano_level = response_dict['metano_levell']
+                self.metano_level = response_dict['metano_level']
                 self.lpg_level = response_dict['lpg_level']
         self.s.enter(60, 1 , self.getDoorInfo)   
         self.s.run()
@@ -189,8 +191,12 @@ class Data:
             values = {'SECRET_KEY': self.secret_key,
                         'mac': self.mac}
             r = requests.post(self.url_init, data=values) # * Request WEB
+            print(self.url_init)
+            print(r.status_code)
+            print(values)
             if r.status_code == 200:
                 response_dict = r.json()
+                print(response_dict)
                 if response_dict["success_message"] == "Successfully fetched Token.":
                     self.token = response_dict["token"]
                     return True

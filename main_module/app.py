@@ -6,10 +6,10 @@ from pprint import pprint
 from data import Data
 
 # * ▼ CONFIG DATA VARIABLES ▼
-host = "http://www.safe.com.ar"
-init = "/api/modules/init"
-verify = "/api/modules/verify"
-get_door_status = "/api/modules/get_door_status"
+host = "http://safe.com.ar"
+init = "/api/modules/init/"
+verify = "/api/modules/verify/"
+get_door_status = "/api/modules/get_door_status/"
 
 sk = "qlswpZD6rvyCxkd4jrAkZf2gf5pWI5zn"
 # * ▲ CONFIG DATA VARIABLES ▲
@@ -18,7 +18,7 @@ sk = "qlswpZD6rvyCxkd4jrAkZf2gf5pWI5zn"
 
 if __name__ == "__main__":
     print ("Ready...")
-    serialPort  = serial.Serial("/dev/ttyUSB0", baudrate= 9600) # Used to hold data coming over UART
+    serialPort  = serial.Serial("/dev/ttyAMA0", baudrate= 9600) # Used to hold data coming over UART
     #serialString =  '{"code":12345 , "temperature": "None", "dispenser": "None", "joining": 1 }'    
     serialString = ""
     obj_data = Data(host, init, verify, get_door_status, sk)

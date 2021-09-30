@@ -11,8 +11,9 @@
 
 #define RELAY_LOCK P1
 
-#define PS_SANITIZER D4
+#define PS_SANITIZER   D4
 #define PS_TEMPERATURE D3
+#define PS_DOOR        P3 
 
 #define SANITIZER_LEVEL_SENSOR A0
 #define SANITIZER_LEVEL P2
@@ -29,17 +30,19 @@
 MFRC522 mfrc522_0(R0_SS_PIN, RST_PIN); // Create MFRC522 instance
 MFRC522 mfrc522_1(R1_SS_PIN, RST_PIN);
 
-PCF8574 pcf8574(0x27);
+PCF8574 pcf8574(0x27); // ! SET 0x20
 
-//Adafruit_MLX90614 mlx = Adafruit_MLX90614(); // Create Adafruit_MLX90614 instance
+Adafruit_MLX90614 mlx = Adafruit_MLX90614(); // Create Adafruit_MLX90614 instance
 
 StaticJsonDocument<200> doc;
+
+
+int previusState = 0;
 
 void setup()
 {
     Serial.begin(9600); // Initialize serial communications with the PC
-    while (!Serial)
-        ;        // Do nothing if no serial port is opened (added for Arduinos based on ATMEGA32U4)
+    while (!Serial);        // Do nothing if no serial port is opened (added for Arduinos based on ATMEGA32U4)
     SPI.begin(); // Init SPI bus
     pcf8574.pinMode(SANITIZER_LEVEL, OUTPUT);
     pcf8574.pinMode(SANITIZER_PUMP, OUTPUT);
@@ -48,20 +51,13 @@ void setup()
 
     pinMode(PS_SANITIZER, INPUT); // Sanitizer proximity sensor
     pinMode(PS_TEMPERATURE, INPUT);
+    pcf8574.pinMode(PS_DOOR, INPUT);
     pcf8574.pinMode(RELAY_LOCK, OUTPUT);
     pcf8574.pinMode(LED_RED, OUTPUT);
     pcf8574.pinMode(LED_GREEN, OUTPUT);
     pcf8574.pinMode(LED_BLUE, OUTPUT);
-    Serial.print("Init pcf8574...");
-    if (pcf8574.begin())
-    {
-        Serial.println("OK");
-    }
-    else
-    {
-        Serial.println("KO");
-    }
-
+    pcf8574.begin();
+    
     mfrc522_0.PCD_Init(); // Init MFRC522
     delay(4);
     mfrc522_1.PCD_Init();
@@ -137,15 +133,23 @@ void loop()
     value = digitalRead(PS_TEMPERATURE);
     if (value == LOW)
     {
-        //float temperature = mlx.readObjectTempC() * 1.15;
+        float temperature = mlx.readObjectTempC() * 1.15;
         Serial.print("{\"temperature\": \"");
-        //Serial.print(temperature);
+        Serial.print(temperature);
         Serial.println("\"}");
         delay(500);
     }
+    int newValue = pcf8574.digitalRead(PS_DOOR);
+    if(newValue != previusState){
+          Serial.print("{\"door_is_opened\": ");
+          Serial.print(!newValue);
+          Serial.println("}");
+          previusState = newValue;
+          delay(500);
+        
+    }
     if (Serial.available() > 0)
     {
-        Serial.println("Holis");
         String data = Serial.readStringUntil('\n');
         DeserializationError error = deserializeJson(doc, data);
         bool var = doc["allowed"];
@@ -182,8 +186,17 @@ int readSensor()
 {
     pcf8574.digitalWrite(SANITIZER_LEVEL, HIGH); // Turn the sensor ON
     delay(10);                                   // Wait 10 milliseconds
-    int val = analogRead(SANITIZER_LEVEL_SENSOR);
-    Serial.println(val);
+    int val = analogRead(SANITIZER_LEVEL_SENSOR) - 120;
+    //Serial.println(val);
     pcf8574.digitalWrite(SANITIZER_LEVEL, LOW); // Turn the sensor OFF
-    return val * 100 / 560;                     // Return current reading in percentage (0-1023 = 0%-100%)
+    int percentage = val * 100 / 410;
+    if(percentage < 0){
+        percentage = 0;
+    }
+    else if (percentage > 100)
+    {
+        percentage = 100;
+    }
+    
+    return percentage;                     // Return current reading in percentage (0-1023 = 0%-100%)
 }

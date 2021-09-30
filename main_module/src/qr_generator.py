@@ -11,7 +11,7 @@ def generate(mac):
     logo = Image.open(logo_link)
     
     # taking base width
-    basewidth = 300
+    basewidth = 400
     
     # adjust image size
     wpercent = (basewidth/float(logo.size[0]))
