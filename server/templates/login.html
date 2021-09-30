@@ -61,14 +61,19 @@
                                                     Iniciar sesión
                                                 </button>
                                             </div>
-                                            <div class="control">
+                                            <!-- <div class="control">
                                                 <a href="password-recovery.html" class="button is-outlined is-black">
                                                     ¿Olvidaste tu contraseña?
                                                 </a>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </form>
                                 </div>
+                                
+                                {% if error %}
+                                    <p style="color: red;">Error: {{ error }}</p>
+                                {% endif %}
+                                    
                             </div>
                         </div>
                     </div>

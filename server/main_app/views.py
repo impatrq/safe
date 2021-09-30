@@ -27,7 +27,7 @@ def login(request):
             auth_login(request, user)
             return redirect('main-index')
         else:
-            return HttpResponse(json_response['error_message']) # TODO CONVERTIR ESTE MENSAJE EN UN NOTIFICATION DEL DASHBOARD
+            return render(request, 'login.html', {'error': json_response['error_message']})
 
     else:
         return render(request, 'login.html', {})
