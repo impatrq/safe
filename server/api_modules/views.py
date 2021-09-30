@@ -211,8 +211,8 @@ def get_door_status(request):
                 'is_safe': door.is_safe,
                 'co2_level': get_gases_level(door.get_gases_values['co2_level'], 600, 700, 10000),
                 'co_level': get_gases_level(door.get_gases_values['co_level'], 120, 185, 10000),
-                'metano_level': get_gases_level(door.get_gases_values['metano_level', 300, 550, 10000]),
-                'lpg_level': get_gases_level(door.get_gases_values['lpg_level'], 450, 600, 10000),
+                'metano_level': get_gases_level(door.get_gases_values['metano_level', 300, 1300, 10000]),
+                'lpg_level': get_gases_level(door.get_gases_values['lpg_level'], 450, 1300, 10000),
 
             })
 
