@@ -178,10 +178,10 @@ def env_update(request):
                 'error_message': None,
                 'success_message': 'Successfully Updated',
                 'is_safe': door.is_safe,
-                'co2_level': get_gases_level(door.get_gases_values['co2_level'], 600, 700, 10000),
-                'co_level': get_gases_level(door.get_gases_values['co_level'], 120, 185, 10000),
-                'metano_level': get_gases_level(door.get_gases_values['metano_level'], 300, 1300, 10000),
-                'lpg_level': get_gases_level(door.get_gases_values['lpg_level'], 450, 1300, 10000),
+                'co2_level': get_gases_level(door.get_gases_values['co2_level'], 600, 700),
+                'co_level': get_gases_level(door.get_gases_values['co_level'], 120, 185),
+                'metano_level': get_gases_level(door.get_gases_values['metano_level'], 300, 1300),
+                'lpg_level': get_gases_level(door.get_gases_values['lpg_level'], 450, 1300),
             })
 
         # Enviamos la informacion en formato JSON de que hubo un error
@@ -209,10 +209,10 @@ def get_door_status(request):
                 'people_inside': door.people_inside.count(),
                 'sanitizer_perc': door.sanitizer_perc,
                 'is_safe': door.is_safe,
-                'co2_level': get_gases_level(door.get_gases_values['co2_level'], 600, 700, 10000),
-                'co_level': get_gases_level(door.get_gases_values['co_level'], 120, 185, 10000),
-                'metano_level': get_gases_level(door.get_gases_values['metano_level'], 300, 1300, 10000),
-                'lpg_level': get_gases_level(door.get_gases_values['lpg_level'], 450, 1300, 10000),
+                'co2_level': get_gases_level(door.get_gases_values['co2_level'], 600, 700),
+                'co_level': get_gases_level(door.get_gases_values['co_level'], 120, 185),
+                'metano_level': get_gases_level(door.get_gases_values['metano_level'], 300, 1300),
+                'lpg_level': get_gases_level(door.get_gases_values['lpg_level'], 450, 1300),
             })
 
         except ObjectDoesNotExist:
@@ -264,10 +264,10 @@ def main_door_update(request):
 
 # Extra functions
 
-def get_gases_level(gas_value, low, medium, high):
-    if (gas_value > 0 and gas_value < low):
+def get_gases_level(gas_value, low, medium):
+    if (gas_value >= 0 and gas_value <= low):
         return "Low" 
-    elif (gas_value > low and gas_value < medium):
+    elif (gas_value > low and gas_value <= medium):
         return "Medium" 
-    elif (gas_value > medium and gas_value < high):
+    elif (gas_value > medium):
         return "High"
