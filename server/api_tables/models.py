@@ -69,7 +69,7 @@ class Door(models.Model):
     #TODO investigtar los valores que determinan si es seguro o no
     @property
     def is_safe(self):
-        if(self._co2_level < 600 and self._co_level < 120 and self._metano_level < 300 and self._lpg_level < 450):
+        if(self._co2_level <= 600 and self._co_level <= 120 and self._metano_level <= 300 and self._lpg_level <= 450):
             return True
         else:
             return False
