@@ -42,7 +42,8 @@ void loop() {
         DynamicJsonDocument response_info(1024); 
         DeserializationError error = deserializeJson(response_info, response);
         if (!error) {
-            if (response_info["success_message"] == "Successfully Updated") {
+            String success = response_info["success_message"];
+            if (success == "Successfully Updated") {
                 String co_response_level = response_info["co_level"];
                 String co2_response_level = response_info["co2_level"];
                 String metano_response_level = response_info["metano_level"];
