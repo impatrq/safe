@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block body %}
+        <section class="section">
+                
+                <div class="content has-text-centered">
+                        <img class="" src="{{ url_for('static', filename ='img/SAFE.png') }}" width="600" height="600">
+                </div>
+                <div class="container has-text-centered">
+                        <h1 class="title is-3">CARGANDO...</h1>
+                        <progress class="progress is-large is-max-desktop is-info mt-4" max="100">0%</progress>     
+                </div>
+                
+        </section>
+{% endblock %}
