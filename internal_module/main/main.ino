@@ -13,17 +13,17 @@ const float factor_co = 5;                      // MQ7
 const float factor_co2 = 1.75;                  // MQ9
 
 // Informacion para el post
-const char* SECRET_KEY = "SECRET_KEY";
-const char* ENV_UPDATE_URL = "http://..../api/modules/env_update/";
-const char* DOOR_MAC = "DOOR_MAC";
+const char* SECRET_KEY = "qlswpZD6rvyCxkd4jrAkZf2gf5pWI5zn";
+const char* ENV_UPDATE_URL = "http://safe.com.ar/api/modules/env_update/";
+const char* DOOR_MAC = "1";
 
 // Datos de red
-const char* ssid = "SSID";
-const char* password = "PASSWORD";
+const char* ssid = "Telecentro-1400";
+const char* password = "H87U,vwMy7tW%@V";
 
 void setup() {
     Serial.begin(9600);
-    conect_to_wifi();
+    connect_to_wifi();
 }
 
 void loop() {
