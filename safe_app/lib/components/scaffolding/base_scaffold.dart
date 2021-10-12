@@ -10,7 +10,6 @@ import 'package:safe_app/components/customWidgets/custom_divider.dart';
 import 'package:safe_app/services/safe_app_controller.dart';
 
 class BaseScaffold extends StatelessWidget {
-
   BaseScaffold({required this.userData, required this.body, this.fab});
 
   final userData;
@@ -51,7 +50,9 @@ class BaseScaffold extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 30.0,),
+              SizedBox(
+                height: 30.0,
+              ),
               CircleAvatar(
                 radius: 50.0,
                 backgroundColor: kLogoDarkBlueColor,
@@ -60,7 +61,9 @@ class BaseScaffold extends StatelessWidget {
                   style: kButtonBoldWhiteTextStyle,
                 ),
               ),
-              SizedBox(height: 10.0,),
+              SizedBox(
+                height: 10.0,
+              ),
               Text(
                 userData['name'],
                 style: kLittleTitleTextStyle,
@@ -69,59 +72,89 @@ class BaseScaffold extends StatelessWidget {
                 userData['email'],
                 style: kLittleGreyTextStyle,
               ),
-              SizedBox(height: 30.0,),
+              SizedBox(
+                height: 30.0,
+              ),
               Expanded(
                 child: ListView(
                   physics: BouncingScrollPhysics(),
                   // itemExtent: 30.0,
                   children: [
                     CustomDivider(),
-                    MenuListTile(label: 'Dashboard', icon: Icons.tv, onTap: (){
-                      Get.back();
-                      // Get.offAllNamed('/dashboard');
-                    }),
+                    MenuListTile(
+                        label: 'Dashboard',
+                        icon: Icons.tv,
+                        onTap: () {
+                          Get.back();
+                          // Get.offAllNamed('/dashboard');
+                        }),
                     CustomDivider(),
-                    MenuListTile(label: 'Empleados', icon: FontAwesomeIcons.solidAddressBook, onTap: (){
-                      Get.back();
-                      Get.toNamed('/workers');
-                    }),
+                    MenuListTile(
+                        label: 'Trabajadores',
+                        icon: FontAwesomeIcons.solidAddressBook,
+                        onTap: () {
+                          Get.back();
+                          Get.toNamed('/workers');
+                        }),
                     CustomDivider(),
-                    MenuListTile(label: 'Puertas', icon: FontAwesomeIcons.doorOpen, onTap: (){
-                      Get.back();
-                      Get.toNamed('/doors');
-                    }),
+                    MenuListTile(
+                        label: 'Puertas',
+                        icon: FontAwesomeIcons.doorOpen,
+                        onTap: () {
+                          Get.back();
+                          Get.toNamed('/doors');
+                        }),
                     CustomDivider(),
                     NFCAvailableWidget(
                       blankResult: true,
                       availableWidget: Column(
                         children: [
-                          MenuListTile(label: 'Buscador', icon: FontAwesomeIcons.search, onTap: (){
-                            Get.back();
-                            Get.toNamed('/finder');
-                          }),
+                          MenuListTile(
+                              label: 'Buscador',
+                              icon: FontAwesomeIcons.search,
+                              onTap: () {
+                                Get.back();
+                                Get.toNamed('/finder');
+                              }),
                           CustomDivider(),
                         ],
                       ),
                     ),
-                    MenuListTile(label: 'Nosotros', icon: FontAwesomeIcons.infoCircle, onTap: (){
-                      Get.back();
-                      Get.toNamed('/about-us');
-                    }),
+                    MenuListTile(
+                        label: 'Nosotros',
+                        icon: FontAwesomeIcons.infoCircle,
+                        onTap: () {
+                          Get.back();
+                          Get.toNamed('/about-us');
+                        }),
                     CustomDivider(),
                   ],
                 ),
               ),
-              SizedBox(height: 30.0,),
+              SizedBox(
+                height: 30.0,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('assets/images/safe_logo.png', width: 40.0, height: 40.0,),
-                  SizedBox(width: 15.0,),
-                  Text('© SAFE Project 2021.', style: kLittleGreyTextStyle,),
+                  Image.asset(
+                    'assets/images/safe_logo.png',
+                    width: 40.0,
+                    height: 40.0,
+                  ),
+                  SizedBox(
+                    width: 15.0,
+                  ),
+                  Text(
+                    '© SAFE Project 2021.',
+                    style: kLittleGreyTextStyle,
+                  ),
                 ],
               ),
               // MenuListTile(label: 'Configuración', icon: FontAwesomeIcons.cog, onTap: (){}),
-              SizedBox(height: 30.0,),
+              SizedBox(
+                height: 30.0,
+              ),
             ],
           ),
         ),
@@ -137,7 +170,9 @@ class BaseScaffold extends StatelessWidget {
                   color: kLogoDarkBlueColor,
                 ),
               ),
-              SizedBox(height: 10.0,),
+              SizedBox(
+                height: 10.0,
+              ),
               Expanded(child: body),
             ],
           ),
@@ -146,5 +181,3 @@ class BaseScaffold extends StatelessWidget {
     );
   }
 }
-
-

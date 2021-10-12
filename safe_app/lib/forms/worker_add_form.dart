@@ -13,7 +13,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class WorkerBottomSheetAddForm extends StatelessWidget {
-
   final _keyForm = GlobalKey<FormState>();
 
   final SAFEApiHelper _safeApiHelper = SAFEApiHelper();
@@ -34,15 +33,16 @@ class WorkerBottomSheetAddForm extends StatelessWidget {
       init: LoadingController(),
       builder: (loadingController) => ModalProgressHUD(
         inAsyncCall: loadingController.isLoading,
-        progressIndicator: CircularProgressIndicator(color: kLogoDarkBlueColor,),
+        progressIndicator: CircularProgressIndicator(
+          color: kLogoDarkBlueColor,
+        ),
         child: Container(
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20.0),
                 topRight: Radius.circular(20.0),
-              )
-          ),
+              )),
           padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
           child: SingleChildScrollView(
             child: Form(
@@ -54,22 +54,41 @@ class WorkerBottomSheetAddForm extends StatelessWidget {
                     height: 3.0,
                     color: Colors.grey,
                   ),
-                  SizedBox(height: 10.0,),
+                  SizedBox(
+                    height: 10.0,
+                  ),
                   Text(
-                    'Agregar Empleado',
+                    'Agregar Trabajador',
                     style: kLittleTitleTextStyle,
                   ),
-                  SizedBox(height: 10.0,),
-                  CustomTextFormField(label: 'Nombre', controller: _firstNameController,),
-                  CustomTextFormField(label: 'Apellido', controller: _lastNameController,),
-                  CustomTextFormField(label: 'Número de Teléfono', controller: _phoneNumberController,),
-                  CustomTextFormField(label: 'E-mail', controller: _emailController,),
-                  CustomTextFormField(label: 'Dirección', controller: _addressController,),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  CustomTextFormField(
+                    label: 'Nombre',
+                    controller: _firstNameController,
+                  ),
+                  CustomTextFormField(
+                    label: 'Apellido',
+                    controller: _lastNameController,
+                  ),
+                  CustomTextFormField(
+                    label: 'Número de Teléfono',
+                    controller: _phoneNumberController,
+                  ),
+                  CustomTextFormField(
+                    label: 'E-mail',
+                    controller: _emailController,
+                  ),
+                  CustomTextFormField(
+                    label: 'Dirección',
+                    controller: _addressController,
+                  ),
                   CustomTextFormFieldWithIconButton(
                     controller: _cardCodeController,
                     label: 'ID Tarjeta',
                     icon: FontAwesomeIcons.caretRight,
-                    onIconPressed: (){
+                    onIconPressed: () {
                       Get.defaultDialog(
                           title: 'Instructivo',
                           content: Text(
@@ -82,10 +101,12 @@ class WorkerBottomSheetAddForm extends StatelessWidget {
                               await NFCReader.stopSession();
                               Get.back();
                             },
-                            child: Text('Cancelar', style: kLittleGreyTextStyle,),
-                          )
-                      );
-                      NFCReader.startSession((code){
+                            child: Text(
+                              'Cancelar',
+                              style: kLittleGreyTextStyle,
+                            ),
+                          ));
+                      NFCReader.startSession((code) {
                         _cardCodeController.text = code;
                         Get.back();
                       });
@@ -103,19 +124,20 @@ class WorkerBottomSheetAddForm extends StatelessWidget {
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(20.0),
                                 topRight: Radius.circular(20.0),
-                              )
-                          ),
+                              )),
                           child: SingleChildScrollView(
                             child: Column(
                               children: [
                                 ListTile(
-                                  title: Text('Seleccionar imagen desde Galería'),
+                                  title:
+                                      Text('Seleccionar imagen desde Galería'),
                                   leading: Icon(
                                     FontAwesomeIcons.image,
                                     color: kLogoDarkBlueColor,
                                   ),
                                   onTap: () async {
-                                    XFile? photo = await _imagePickerHelper.getImageFromGallery();
+                                    XFile? photo = await _imagePickerHelper
+                                        .getImageFromGallery();
                                     Get.back(result: photo?.path);
                                   },
                                 ),
@@ -126,7 +148,8 @@ class WorkerBottomSheetAddForm extends StatelessWidget {
                                     color: kLogoDarkBlueColor,
                                   ),
                                   onTap: () async {
-                                    XFile? photo = await _imagePickerHelper.getImageFromCamera();
+                                    XFile? photo = await _imagePickerHelper
+                                        .getImageFromCamera();
                                     Get.back(result: photo?.path);
                                   },
                                 ),
@@ -139,15 +162,24 @@ class WorkerBottomSheetAddForm extends StatelessWidget {
                       _imagePathController.text = path;
                     },
                   ),
-                  SizedBox(height: 5.0,),
+                  SizedBox(
+                    height: 5.0,
+                  ),
                   SizedBox(
                     width: double.infinity,
                     child: TextButton(
                       onPressed: () async {
-                        if(_keyForm.currentState!.validate()){
+                        if (_keyForm.currentState!.validate()) {
                           loadingController.toggleLoadingState();
-                          var res = await _safeApiHelper.addWorker(_firstNameController.text, _lastNameController.text, _phoneNumberController.text, _emailController.text, _addressController.text, _cardCodeController.text, _imagePathController.text);
-                          if(res == null){
+                          var res = await _safeApiHelper.addWorker(
+                              _firstNameController.text,
+                              _lastNameController.text,
+                              _phoneNumberController.text,
+                              _emailController.text,
+                              _addressController.text,
+                              _cardCodeController.text,
+                              _imagePathController.text);
+                          if (res == null) {
                             await _safeAppController.updateWorkersList();
                             Get.back();
                           } else {
@@ -155,9 +187,14 @@ class WorkerBottomSheetAddForm extends StatelessWidget {
                               'Error:',
                               res,
                               colorText: Colors.white,
-                              backgroundColor: kLogoDarkBlueColor.withOpacity(0.9),
-                              icon: Icon(FontAwesomeIcons.timesCircle, color: Colors.white,),
-                              margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
+                              backgroundColor:
+                                  kLogoDarkBlueColor.withOpacity(0.9),
+                              icon: Icon(
+                                FontAwesomeIcons.timesCircle,
+                                color: Colors.white,
+                              ),
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 5.0, horizontal: 20.0),
                             );
                           }
                           loadingController.toggleLoadingState();
