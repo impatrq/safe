@@ -4,8 +4,19 @@ import 'package:safe_app/utilities/constants.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DoorLogTile extends StatelessWidget {
-
-  DoorLogTile({required this.workerProfileImageUrl, required this.workerName, required this.email, required this.address, required this.phoneNumber, required this.doorName, required this.temperature, required this.exitDatetime, required this.entryDatetime, required this.allowed, required this.faceMask, required this.logImageUrl});
+  DoorLogTile(
+      {required this.workerProfileImageUrl,
+      required this.workerName,
+      required this.email,
+      required this.address,
+      required this.phoneNumber,
+      required this.doorName,
+      required this.temperature,
+      required this.exitDatetime,
+      required this.entryDatetime,
+      required this.allowed,
+      required this.faceMask,
+      required this.logImageUrl});
 
   final String workerProfileImageUrl;
   final String workerName;
@@ -23,7 +34,7 @@ class DoorLogTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         Get.bottomSheet(
           Container(
             padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
@@ -45,7 +56,7 @@ class DoorLogTile extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerRight,
                     child: Text(
-                      'Empleado',
+                      'Trabajador',
                       style: kLittleGreyTextStyle,
                     ),
                   ),
@@ -60,7 +71,9 @@ class DoorLogTile extends StatelessWidget {
                         backgroundColor: Colors.transparent,
                         backgroundImage: NetworkImage(workerProfileImageUrl),
                       ),
-                      SizedBox(width: 10.0,),
+                      SizedBox(
+                        width: 10.0,
+                      ),
                       Expanded(
                         child: Column(
                           children: [
@@ -71,24 +84,29 @@ class DoorLogTile extends StatelessWidget {
                             ),
                             Text(
                               address,
-                              style: kLittleGreyTextStyle.copyWith(fontSize: 13.0),
+                              style:
+                                  kLittleGreyTextStyle.copyWith(fontSize: 13.0),
                               textAlign: TextAlign.center,
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(width: 10.0,),
+                      SizedBox(
+                        width: 10.0,
+                      ),
                       Expanded(
                         child: Column(
                           children: [
                             Text(
                               phoneNumber,
-                              style: kLittleGreyTextStyle.copyWith(fontSize: 13.0),
+                              style:
+                                  kLittleGreyTextStyle.copyWith(fontSize: 13.0),
                               textAlign: TextAlign.center,
                             ),
                             Text(
                               email,
-                              style: kLittleGreyTextStyle.copyWith(fontSize: 13.0),
+                              style:
+                                  kLittleGreyTextStyle.copyWith(fontSize: 13.0),
                               textAlign: TextAlign.center,
                             ),
                           ],
@@ -107,7 +125,9 @@ class DoorLogTile extends StatelessWidget {
                     thickness: 3,
                     color: Colors.grey[300],
                   ),
-                  SizedBox(height: 15.0,),
+                  SizedBox(
+                    height: 15.0,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -117,9 +137,8 @@ class DoorLogTile extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.0),
                           image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(logImageUrl)
-                          ),
+                              fit: BoxFit.cover,
+                              image: NetworkImage(logImageUrl)),
                         ),
                       ),
                       Column(
@@ -127,28 +146,40 @@ class DoorLogTile extends StatelessWidget {
                         children: [
                           Text(
                             'Puerta: $doorName',
-                            style: kLittleGreyTextStyle.copyWith(color: Colors.black),
+                            style: kLittleGreyTextStyle.copyWith(
+                                color: Colors.black),
                           ),
-                          SizedBox(height: 10.0,),
+                          SizedBox(
+                            height: 10.0,
+                          ),
                           Text(
                             'Temperatura: $temperature°',
-                            style: kLittleGreyTextStyle.copyWith(color: Colors.black),
+                            style: kLittleGreyTextStyle.copyWith(
+                                color: Colors.black),
                           ),
-                          SizedBox(height: 10.0,),
+                          SizedBox(
+                            height: 10.0,
+                          ),
                           Text(
-                            'Barbijo: ${faceMask ? 'SI':'NO'}',
-                            style: kLittleGreyTextStyle.copyWith(color: Colors.black),
+                            'Barbijo: ${faceMask ? 'SI' : 'NO'}',
+                            style: kLittleGreyTextStyle.copyWith(
+                                color: Colors.black),
                           ),
                         ],
                       ),
                     ],
                   ),
-                  SizedBox(height: 10.0,),
+                  SizedBox(
+                    height: 10.0,
+                  ),
                   Text(
                     allowed ? 'ACCESO PERMITIDO' : 'ACCESO DENEGADO',
-                    style: kMediumTitleTextStyle.copyWith(color: allowed ? Colors.green : Colors.red),
+                    style: kMediumTitleTextStyle.copyWith(
+                        color: allowed ? Colors.green : Colors.red),
                   ),
-                  SizedBox(height: 5.0,),
+                  SizedBox(
+                    height: 5.0,
+                  ),
                   Divider(
                     thickness: 3,
                     color: Colors.grey[300],
@@ -158,20 +189,32 @@ class DoorLogTile extends StatelessWidget {
                     children: [
                       Expanded(
                           child: Column(
-                            children: [
-                              Text('Fecha de Entrada', style: kLittleTitleTextStyle.copyWith(fontSize: 14.0),),
-                              Text(entryDatetime, style: kLittleGreyTextStyle,),
-                            ],
-                          )
-                      ),
+                        children: [
+                          Text(
+                            'Fecha de Entrada',
+                            style:
+                                kLittleTitleTextStyle.copyWith(fontSize: 14.0),
+                          ),
+                          Text(
+                            entryDatetime,
+                            style: kLittleGreyTextStyle,
+                          ),
+                        ],
+                      )),
                       Expanded(
                           child: Column(
-                            children: [
-                              Text('Fecha de Salida', style: kLittleTitleTextStyle.copyWith(fontSize: 14.0),),
-                              Text(exitDatetime, style: kLittleGreyTextStyle,),
-                            ],
-                          )
-                      ),
+                        children: [
+                          Text(
+                            'Fecha de Salida',
+                            style:
+                                kLittleTitleTextStyle.copyWith(fontSize: 14.0),
+                          ),
+                          Text(
+                            exitDatetime,
+                            style: kLittleGreyTextStyle,
+                          ),
+                        ],
+                      )),
                     ],
                   ),
                 ],
@@ -195,11 +238,12 @@ class DoorLogTile extends StatelessWidget {
                     workerName,
                     style: kLittleTitleTextStyle.copyWith(fontSize: 16.0),
                     textAlign: TextAlign.center,
-                  )
-              ),
+                  )),
               Expanded(
                 child: Icon(
-                  allowed ? FontAwesomeIcons.checkCircle : FontAwesomeIcons.timesCircle,
+                  allowed
+                      ? FontAwesomeIcons.checkCircle
+                      : FontAwesomeIcons.timesCircle,
                   color: allowed ? Colors.green : Colors.red,
                 ),
               ),
@@ -209,7 +253,9 @@ class DoorLogTile extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 15.0,),
+          SizedBox(
+            height: 15.0,
+          ),
         ],
       ),
     );

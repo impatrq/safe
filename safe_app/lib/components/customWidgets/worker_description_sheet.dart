@@ -4,8 +4,12 @@ import 'package:safe_app/utilities/constants.dart';
 import 'package:safe_app/components/customWidgets/icon_text.dart';
 
 class WorkerDescriptionSheet extends StatelessWidget {
-
-  WorkerDescriptionSheet({required this.imageURL, required this.name, required this.address, required this.phoneNumber, required this.email});
+  WorkerDescriptionSheet(
+      {required this.imageURL,
+      required this.name,
+      required this.address,
+      required this.phoneNumber,
+      required this.email});
 
   final String imageURL;
   final String name;
@@ -35,7 +39,7 @@ class WorkerDescriptionSheet extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: Text(
-                'Empleado',
+                'Trabajador',
                 style: kLittleGreyTextStyle,
               ),
             ),
@@ -52,7 +56,9 @@ class WorkerDescriptionSheet extends StatelessWidget {
                     backgroundImage: NetworkImage(imageURL),
                   ),
                 ),
-                SizedBox(width: 20.0,),
+                SizedBox(
+                  width: 20.0,
+                ),
                 Expanded(
                   child: Column(
                     children: [
@@ -61,12 +67,21 @@ class WorkerDescriptionSheet extends StatelessWidget {
                         style: kLittleTitleTextStyle,
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(height: 15.0,),
-                      IconText(icon: FontAwesomeIcons.mapMarkerAlt, text: address),
-                      SizedBox(height: 15.0,),
-                      IconText(icon: FontAwesomeIcons.phoneAlt, text: phoneNumber),
-                      SizedBox(height: 15.0,),
-                      IconText(icon: FontAwesomeIcons.solidEnvelope, text: email),
+                      SizedBox(
+                        height: 15.0,
+                      ),
+                      IconText(
+                          icon: FontAwesomeIcons.mapMarkerAlt, text: address),
+                      SizedBox(
+                        height: 15.0,
+                      ),
+                      IconText(
+                          icon: FontAwesomeIcons.phoneAlt, text: phoneNumber),
+                      SizedBox(
+                        height: 15.0,
+                      ),
+                      IconText(
+                          icon: FontAwesomeIcons.solidEnvelope, text: email),
                     ],
                   ),
                 ),
