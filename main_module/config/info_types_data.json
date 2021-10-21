@@ -4,11 +4,16 @@
         "variables":{
             "%people_inside%" : "people_inside",
             "%dispenser_percentage%" : "dispenser_percentage",
-            "%env_safe%" : "env_safe",
+            "%env_safe%" : "is_safe",
             "%ch4_level%" : "ch4_level",
             "%co_level%" : "co_level",
             "%co2_level%" : "co2_level",
-            "%lpg_level%" : "lpg_level"
+            "%lpg_level%" : "lpg_level",
+            "%env_safe_color%" : "is_safe_color",
+            "%ch4_level_color%" : "ch4_color",
+            "%co_level_color%" : "co_color",
+            "%co2_level_color%" : "co2_color",
+            "%lpg_level_color%" : "lpg_color"
         }
     },
     "Card:":{
@@ -34,6 +39,12 @@
         "variables":{
         }
     },
+    "Loading":{
+        "file": "loading.html",
+        "variables":{
+            "%status%": "status"
+        }
+    },
     "AccessAllowed":{
         "file": "access_allowed.html",
         "variables":{
@@ -43,24 +54,28 @@
             "%temp%" : "temperature",
             "%env_safe%" : "is_safe",
             "%face_mask_image%" : "face_mask_image",
-            "%worker_image%": "worker_image"
+            "%url_worker_image%": "worker_image"
         }
     },
-    "AccessDenied_0":{
-        "file": "access_denied_0.html",
+    "AccessDenied":{
+        "file": "access_denied.html",
         "variables":{
-            "%card_code%": "card_code"
+            "%reason%": "reason"
         }
     },
-    "AccessDenied_1-2":{
-        "file": "access_denied_1-2.html",
+    "How2UseTemp":{
+        "file": "h2u_temp.html",
         "variables":{
-            "%first_name%": "first_name",
-            "%last_name%": "last_name",
-            "%card_code%": "card_code",
-            "%worker_image%": "worker_image",
-            "%env_safe%": "env_safe",
-            "%message%":"message"
+        }
+    },
+    "How2UseDisp":{
+        "file": "h2u_disp.html",
+        "variables":{
+        }
+    },
+    "How2UseAI":{
+        "file": "h2u_ai.html",
+        "variables":{
         }
     },
     "Error":{

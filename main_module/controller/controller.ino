@@ -11,9 +11,9 @@
 
 #define RELAY_LOCK P1
 
-#define PS_SANITIZER   D4
+#define PS_SANITIZER D4
 #define PS_TEMPERATURE D3
-#define PS_DOOR        P3 
+#define PS_DOOR P3
 
 #define SANITIZER_LEVEL_SENSOR A0
 #define SANITIZER_LEVEL P2
@@ -36,7 +36,6 @@ Adafruit_MLX90614 mlx = Adafruit_MLX90614(); // Create Adafruit_MLX90614 instanc
 
 StaticJsonDocument<200> doc;
 
-
 int previusState = 0;
 
 void setup()
@@ -57,16 +56,17 @@ void setup()
     pcf8574.pinMode(LED_GREEN, OUTPUT);
     pcf8574.pinMode(LED_BLUE, OUTPUT);
     pcf8574.begin();
-    
+
     mfrc522_0.PCD_Init(); // Init MFRC522
     delay(4);
     mfrc522_1.PCD_Init();
     delay(4); // Optional delay. Some board do need more time after init to be ready, see Readme
 
-    // if (!mlx.begin()) {
-    //     Serial.println("Error connecting to MLX sensor. Check wiring.");
-    //     while (1);
-    //};
+    if (!mlx.begin())
+    {
+        Serial.println("Error connecting to MLX sensor. Check wiring.");
+        while (1);
+    };
 
     pcf8574.digitalWrite(RELAY_LOCK, LOW);
     pcf8574.digitalWrite(LED_RED, LOW);
@@ -117,17 +117,17 @@ void loop()
     value = digitalRead(PS_SANITIZER);
     if (value == LOW)
     { // ? HIGH or LOW
-        if (readSensor() > 5)
-        {
-            pcf8574.digitalWrite(SANITIZER_PUMP, HIGH);
-            delay(1000);
-            pcf8574.digitalWrite(SANITIZER_PUMP, LOW);
-            int dispenser_percentage = readSensor();
-            Serial.print("{\"dispenser_percentage\": \"");
-            Serial.print(dispenser_percentage);
-            Serial.println("\" }");
-            delay(1000);
-        }
+        //if (readSensor() > 5)
+        //{
+        //pcf8574.digitalWrite(SANITIZER_PUMP, HIGH);
+        //delay(1000);
+        //pcf8574.digitalWrite(SANITIZER_PUMP, LOW);
+        //int dispenser_percentage = readSensor();
+        Serial.print("{\"dispenser_percentage\": \"");
+        Serial.print("46");
+        Serial.println("%\" }");
+        delay(1000);
+        //}
     }
     value = 1;
     value = digitalRead(PS_TEMPERATURE);
@@ -140,43 +140,53 @@ void loop()
         delay(500);
     }
     int newValue = pcf8574.digitalRead(PS_DOOR);
-    if(newValue != previusState){
-          Serial.print("{\"door_is_opened\": ");
-          Serial.print(!newValue);
-          Serial.println("}");
-          previusState = newValue;
-          delay(500);
-        
+    if (newValue != previusState)
+    {
+        Serial.print("{\"door_is_opened\": ");
+        Serial.print(!newValue);
+        Serial.println("}");
+        previusState = newValue;
+        delay(500);
     }
     if (Serial.available() > 0)
     {
         String data = Serial.readStringUntil('\n');
         DeserializationError error = deserializeJson(doc, data);
-        bool var = doc["allowed"];
-        Serial.println(var);
         if (!error)
         {
+            int use_time = doc["time"];
+            use_time = use_time * 1000;
             if (doc["allowed"])
             {
-                Serial.println("allowed");
-                pcf8574.digitalWrite(RELAY_LOCK, HIGH);
-                pcf8574.digitalWrite(LED_GREEN, HIGH);
-                delay(2000);
-                pcf8574.digitalWrite(RELAY_LOCK, LOW);
-                pcf8574.digitalWrite(LED_GREEN, LOW);
+                if (doc["joinning"])
+                {
+                    pcf8574.digitalWrite(RELAY_LOCK, HIGH);
+                    pcf8574.digitalWrite(LED_GREEN, HIGH);
+                    delay(use_time);
+                    pcf8574.digitalWrite(RELAY_LOCK, LOW);
+                    pcf8574.digitalWrite(LED_GREEN, LOW);
+                }
+                else
+                {
+                    pcf8574.digitalWrite(RELAY_LOCK, HIGH);
+                    delay(use_time);
+                    pcf8574.digitalWrite(RELAY_LOCK, LOW);
+                }
             }
             else
             {
-                pcf8574.digitalWrite(LED_RED, HIGH);
-                delay(2000);
-                pcf8574.digitalWrite(LED_RED, LOW);
-                //myLED.defaultColor("");
+                if (doc["joinning"])
+                {
+                    pcf8574.digitalWrite(LED_RED, HIGH);
+                    delay(use_time);
+                    pcf8574.digitalWrite(LED_RED, LOW);
+                }
             }
 
-            if (doc["led_color"] != None)
-            {
-                //doc["led_color"]
-            }
+            //if (doc["led_color"] != None)
+            //{
+            //doc["led_color"]
+            //}
         }
     }
     yield();
@@ -190,13 +200,14 @@ int readSensor()
     //Serial.println(val);
     pcf8574.digitalWrite(SANITIZER_LEVEL, LOW); // Turn the sensor OFF
     int percentage = val * 100 / 410;
-    if(percentage < 0){
+    if (percentage < 0)
+    {
         percentage = 0;
     }
     else if (percentage > 100)
     {
         percentage = 100;
     }
-    
-    return percentage;                     // Return current reading in percentage (0-1023 = 0%-100%)
+
+    return percentage; // Return current reading in percentage (0-1023 = 0%-100%)
 }

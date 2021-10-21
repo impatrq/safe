@@ -1,11 +1,46 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
 
-{% block body %}
+<html lang="es">
+
+<head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Layout</title>
+        <link rel="stylesheet" href="./static/css/bulma.css" />
+        <link rel="stylesheet" href="./static/css/main.css" />
+
+        <!-- Fonts -->
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="./static/fontawesome-free-5.15.3-web/css/all.css" />
+        <link rel="stylesheet" href="./static/css/bulma-divider.min.css" />
+</head>
+
+<body class="">
+        <section class="hero is-small is-dark is-height">
+                <div class="hero-body">
+                        <nav class="level">
+                                <div class="level-left">
+                                        <div class="level-item">
+                                                <p class="title">
+                                                        S.A.F.E
+                                                </p>
+                                        </div>
+                                </div>
+                                <div class="level-right">
+                                        <div class="level-item ">
+                                                <p class="title has-text-right" id="time">18:50</p>
+                                        </div>
+                                </div>
+                        </nav>
+                </div>
+        </section>
         <section class="columns">
                 <nav class="column">
                         <div class="img">
                                 <div class="content has-text-centered" style="margin: 15px;">
-                                        <img class="image" src="{{ url_for('static', filename ='qr/qr_safe.png') }}">
+                                        <img class="image" src="./static/qr/qr_safe.png">
                                 </div>
                         </div>
                 </nav>
@@ -35,4 +70,55 @@
                         border-radius: 10%;
                       }
         </style>
-{% endblock %}
+</body>
+
+<style>
+        body{
+                height: 600px;
+                width: 1024px;
+                overflow: hidden;
+        }
+        body::-webkit-scrollbar {
+                display: none; /* for Chrome, Safari, and Opera */
+            }
+</style>
+
+</html>
+
+<script>
+        var timeDisplay = document.getElementById("time");
+
+
+        function refreshTime() {
+                // var dateString = new Date().toLocaleString("en-GB", { timeZone: "America/Buenos_Aires" });
+
+                var dateObj = new Date();
+                var year = dateObj.getFullYear();
+                newdate = date_with_leading_zeros(dateObj) + "/" + months_with_leading_zeros(dateObj) + "/" + year;
+                var formattedString = newdate + " | " + Hours_with_leading_zeros(dateObj) + ":" + minutes_with_leading_zeros(dateObj)
+                timeDisplay.innerHTML = formattedString;
+        }
+
+        function minutes_with_leading_zeros(dt) 
+        { 
+                return (dt.getMinutes() < 10 ? '0' : '') + dt.getMinutes();
+        }
+
+        function Hours_with_leading_zeros(dt) 
+        { 
+                return (dt.getHours() < 10 ? '0' : '') + dt.getHours();
+        }
+
+        function months_with_leading_zeros(dt) 
+        { 
+                return (dt.getMonth() + 1 < 10 ? '0' : '') + (dt.getMonth() + 1);
+        }
+
+        function date_with_leading_zeros(dt) 
+        { 
+                return (dt.getDate() < 10 ? '0' : '') + dt.getDate();
+        }
+        
+        refreshTime();
+        setInterval(refreshTime, 1000);
+</script>

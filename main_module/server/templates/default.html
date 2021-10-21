@@ -1,21 +1,58 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
 
-{% block body %}
+<html lang="es">
+
+<head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Layout</title>
+        <link rel="stylesheet" href="./static/css/bulma.css" />
+        <link rel="stylesheet" href="./static/css/main.css" />
+
+        <!-- Fonts -->
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="./static/fontawesome-free-5.15.3-web/css/all.css" />
+        <link rel="stylesheet" href="./static/css/bulma-divider.min.css" />
+</head>
+
+<body class="">
+        <section class="hero is-small is-dark is-height">
+                <div class="hero-body">
+                        <nav class="level">
+                                <div class="level-left">
+                                        <div class="level-item">
+                                                <p class="title">
+                                                        S.A.F.E
+                                                </p>
+                                        </div>
+                                </div>
+                                <div class="level-right">
+                                        <div class="level-item ">
+                                                <p class="title has-text-right" id="time">18:50</p>
+                                        </div>
+                                </div>
+                        </nav>
+                </div>
+        </section>
         <section class="section">
-                <nav class="level">
-                        <div class="level-item has-text-centered">
+                <nav class="is-flex is-justify-content-space-evenly is-align-items-center">
+                        <div class="has-text-centered is-flex-grow-5">
                                 <div>
-                                        <h2 class="title is-2">Ambiente: <span class="title is-2 has-text-success-dark">%env_safe%</span> </h2>
+                                        <h2 class="title is-2">Ambiente:</h2>
+                                        <h2 class="title is-2 has-text-%env_safe_color%">%env_safe%</h2>
                                 </div>
                         </div>
-                        <div class="block has-text-centered">
-                                <div class="content is-center">
-                                        <img src="{{ url_for('static', filename ='img/SAFE_Logo.png') }}" width="100" height="100">
+                        <div class="has-text-centered is-flex-grow-5">
+                                <div>
+                                        <img src="./static/img/SAFE_Logo.png" width="100" height="100">
                                 </div>
                         </div>
-                        <div class="level-item has-text-centered">
+                        <div class="has-text-centered is-flex-grow-4">
                                 <div>
-                                        <h2 class="title is-2">Personas dentro: <span class="title is-2 has-text-info">%people_inside%</span> </h2>
+                                        <h2 class="title is-2">Personas dentro:</h2>
+                                        <h2 class="title is-2 has-text-info">%people_inside%</h2>
                                 </div>
                         </div>
                 </nav>
@@ -25,24 +62,75 @@
                 <div class="">
                         <div class="has-text-centered">
                                 <div class="mt-5">
-                                        <h2 class="title is-3">Metano: <span class="title is-3 has-text-success-dark">%ch4_level%</span></h2>
+                                        <h2 class="title is-3">Metano: <span class="title is-3 has-text-%ch4_level_color%">%ch4_level%</span></h2>
                                 </div>
                         </div>
                         <div class="has-text-centered">
                                 <div class="mt-5">
-                                        <h2 class="title is-3">Dióxido de Carbono: <span class="title is-3 has-text-warning">%co2_level%</span></h2>
+                                        <h2 class="title is-3">Dióxido de Carbono: <span class="title is-3 has-text-%co2_level_color%">%co2_level%</span></h2>
                                 </div>
                         </div>
                         <div class="has-text-centered">
                                 <div class="mt-5">
-                                        <h2 class="title is-3">Monóxido de Carbono: <span class="title is-3 has-text-danger-dark">%co_level%</span></h2>
+                                        <h2 class="title is-3">Monóxido de Carbono: <span class="title is-3 has-text-%co_level_color%">%co_level%</span></h2>
                                 </div>
                         </div>
                         <div class="has-text-centered">
                                 <div class="mt-5">
-                                        <h2 class="title is-3">LPG: <span class="title is-3 has-text-danger-dark">%lpg_level%</span></h2>
+                                        <h2 class="title is-3">LPG: <span class="title is-3 has-text-%lpg_level_color%">%lpg_level%</span></h2>
                                 </div>
                         </div>
                 </div>
         </section>
-{% endblock %}
+</body>
+
+<style>
+        body{
+                height: 600px;
+                width: 1024px;
+                overflow: hidden;
+        }
+        body::-webkit-scrollbar {
+                display: none; /* for Chrome, Safari, and Opera */
+            }
+</style>
+
+</html>
+
+<script>
+        var timeDisplay = document.getElementById("time");
+
+
+        function refreshTime() {
+                // var dateString = new Date().toLocaleString("en-GB", { timeZone: "America/Buenos_Aires" });
+
+                var dateObj = new Date();
+                var year = dateObj.getFullYear();
+                newdate = date_with_leading_zeros(dateObj) + "/" + months_with_leading_zeros(dateObj) + "/" + year;
+                var formattedString = newdate + " | " + Hours_with_leading_zeros(dateObj) + ":" + minutes_with_leading_zeros(dateObj)
+                timeDisplay.innerHTML = formattedString;
+        }
+
+        function minutes_with_leading_zeros(dt) 
+        { 
+                return (dt.getMinutes() < 10 ? '0' : '') + dt.getMinutes();
+        }
+
+        function Hours_with_leading_zeros(dt) 
+        { 
+                return (dt.getHours() < 10 ? '0' : '') + dt.getHours();
+        }
+
+        function months_with_leading_zeros(dt) 
+        { 
+                return (dt.getMonth() + 1 < 10 ? '0' : '') + (dt.getMonth() + 1);
+        }
+
+        function date_with_leading_zeros(dt) 
+        { 
+                return (dt.getDate() < 10 ? '0' : '') + dt.getDate();
+        }
+        
+        refreshTime();
+        setInterval(refreshTime, 1000);
+</script>

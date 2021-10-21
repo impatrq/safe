@@ -14,6 +14,7 @@ from os.path import isfile, join
 
 from tensorflow.python.keras.backend import print_tensor
 
+
 FILE_DIR = os.path.dirname(__file__) + "/"
 
 def detect_and_predict_mask(frame, faceNet, maskNet):
@@ -80,7 +81,6 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
 
 # load our serialized face detector model from disk
 def process_images():
-	print()
 	prototxtPath = FILE_DIR + "face_detector/deploy.prototxt"
 	weightsPath = FILE_DIR + "face_detector/res10_300x300_ssd_iter_140000.caffemodel"
 	faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
@@ -98,6 +98,9 @@ def process_images():
 	result = bool()
 	label = str()
 	percentage = str()
+	final_result = bool()
+	final_label = str()
+	final_percentage = str()
 	for file in files:
 		frame = cv2.imread(f"{path}{file}")
 		print(file)
@@ -107,7 +110,7 @@ def process_images():
 
 		# grab the frame from the threaded video stream and resize it
 		# to have a maximum width of 400 pixels
-		frame = imutils.resize(frame, width=400)
+		frame = imutils.resize(frame, width=1920)
 
 		# detect faces in the frame and determine if they are wearing a
 		# face mask or not
@@ -118,14 +121,17 @@ def process_images():
 		area = 0
 		for (box, pred) in zip(locs, preds):
 			# unpack the bounding box and predictions
+			final_result = ""
+			final_label = ""
+			final_percentage = ""
 			(startX, startY, endX, endY) = box
 			(mask, withoutMask) = pred
 			people = people + 1
 			# determine the class label and color we'll use to draw
 			# the bounding box and text
 			result = True if mask > withoutMask else False
-			label = "Mask" if mask > withoutMask else "No Mask"
-			color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
+			label = "Barbijo Detectado" if mask > withoutMask else "Barbijo NO Detectado"
+			color = (0, 255, 0) if label == "Barbijo Detectado" else (0, 0, 255)
 			percentage = "{:.2f}%".format(max(mask, withoutMask) * 100)
 			# include the probability in the label
 			# label = "{}: {:.2f}%".format(label, percentage)
@@ -133,18 +139,20 @@ def process_images():
 			# display the label and bounding box rectangle on the output
 			# frame
 			cv2.putText(frame, label, (startX, startY - 10),
-				cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
-			cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
+				cv2.FONT_HERSHEY_SIMPLEX, 1, color, 5)
+			cv2.rectangle(frame, (startX, startY), (endX, endY), color, 5)
 			x = endX - startX
 			y = endY - startY
 			if (x * y) > area:
 				area = x * y
-				print(area, label)
+				final_result = result
+				final_label = label
+				final_percentage = percentage
 		# show the output frame
-		new_file = f"image_{str(number)}.jpg"
+		new_file = f"image_{str(number)}.jpeg"
 		name = f"{path_save}{new_file}"
 		cv2.imwrite(name, frame)
-		output["files"].append({"file":name,"people":people,"result":result,"label":label, "percetage":percentage})
+		output["files"].append({"file":name,"people":people,"result":final_result,"label":final_label, "percetage":final_percentage})
 		number += 1
 		key = cv2.waitKey(1) & 0xFF
 	mask = 0

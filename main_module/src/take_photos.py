@@ -9,6 +9,7 @@ FILE_DIR = os.path.dirname(__file__) + "/"
 # initialize the camera and grab a reference to the raw camera capture
 def takePhotos(times):
     camera = PiCamera()
+    camera.resolution = (1920, 1920)
     rawCapture = PiRGBArray(camera)
     # allow the camera to warmup
     time.sleep(0.1)
@@ -17,7 +18,8 @@ def takePhotos(times):
     while count < times:
         # display the image on screen and wait for a keypress
         count = count + 1
-        name = f"images/input/picture_{count}.jpg"
+        name = FILE_DIR + f"images/input/picture_{count}.jpg"
         print(name)
         camera.capture(name)
         cv2.waitKey(10)
+    camera.close()
