@@ -1,3 +1,9 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 .bg-color1{
     background-color: #10529E !important;
 }
@@ -90,12 +96,13 @@ table > tr > td > img {
 }
 
 .about-us-image{
-    width: 30%;
+    width: 40%;
     text-align: center;
 }
 
 .about-us-image > img{
-    width: 70%;
+    /* width: 70%; */
+    /* object-fit: cover; */
 }
 
 .about-us-benefits-container{
@@ -144,4 +151,49 @@ table > tr > td > img {
 .sponsor-icon{
     color: #4A4A4A;
     text-decoration: none;
+}
+
+.custom-navbar{
+    height: 70px;
+    background-color: #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.custom-navbar-container{
+
+    width: 80%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.custom-logo{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.custom-logo > img{
+    height: 60px;
+    width: 60px;
+}
+
+.custom-logo > p{
+    color: #333;
+    font-weight: bold;
+}
+
+.custom-nav-buttons > a > button {
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    padding: 10px 30px;
+    font-weight: bold;
+    letter-spacing: 1px;
 }

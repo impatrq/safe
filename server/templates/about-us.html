@@ -1,68 +1,111 @@
-{% extends 'base.html' %}
-
 {% load static %}
 
-{% block page_name %} Nosotros {% endblock page_name %}
-{% block page_hero %} Nosotros {% endblock page_hero %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% block content %}
-    
-<div class="about-us-container">
-    <div class="about-us-info">
-        <h1 class="about-us-title">Sobre Nosotros</h1>
-        <p>
-            Somos un equipo de estudiantes de la E.E.S.T. N.º 7 "Taller Regional Quilmes" (IMPA). En el marco de las Prácticas Profesionalizantes, desarrollamos un proyecto de fin de carrera, que ofrece una solución tecnológica que previene afecciones en el ámbito laboral.
-        </p>
-        <br>
-        <p>
-            
-            S.A.F.E. (Secure Access For Environments) es un sistema que permite prevenir afecciones profesionales en el ámbito laboral.
-            S.A.F.E. ofrece un control automatizado del acceso de los trabajadores a su área laboral, monitoreando las medidas de seguridad que ellos deben cumplir. Además lleva un registro en tiempo real de la ventilación y calidad del aire del ambiente de trabajo.
-            
-            Debido a la situación sanitaria que atravesamos, decidimos implementar controles con criterios epidemiológicos a fin de evitar la propagación del SARS-COV-2.            
-        </p>
-        <br>
-        <h1 class="about-us-title">Beneficios</h1>
-        <div class="about-us-benefits-container">
-            <div class="about-us-benefits-col">
-                <li>Prevención de enfermedades laborales.</li>
-                <li>Reducción de la propagación del SARS-COV-2.</li>
-                <li>Reducción de costos.</li>
-            </div>
-            <div class="about-us-benefits-col">
-                <li>Automatización del acceso.</li>
-                <li>Mejora en la seguridad material de la empresa.</li>
-                <li>Regulación de normas de seguridad e higiene.</li>
-            </div>
-        </div>
-    </div>
-    <div class="about-us-image">
-        <img src="{% static 'img/Logo_SAFEb.png' %}" alt="">
-    </div>
-</div>
+    <!-- Bulma is included -->
+    <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}" />
 
-<div class="sponsor-container">
-    <h1 class="about-us-title">Nuestro Sponsor</h1>
-    <div class="sponsor-content">
-        <div class="sponsor-info">
-            <h1 class="sponsor-title">DAKO Trailers</h1>
-            <div class="sponsor-social-media">
-                <span class="icon is-large">
-                    <a class="sponsor-icon" href="https://www.instagram.com/dakotrailers/"><i class="fab fa-instagram fa-2x"></i></a>
-                </span>
-                <span class="icon is-large">
-                    <a class="sponsor-icon" href="https://wa.link/0588l4"><i class="fab fa-whatsapp fa-2x"></i></a>
-                </span>
-                <span class="icon is-large">
-                    <a class="sponsor-icon" href="https://www.facebook.com/DAKOTrailers/"><i class="fab fa-facebook fa-2x"></i></a>
-                </span>
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{% static 'fontawesome-free-5.15.3-web/css/all.css' %}" />
+
+    <title>SAFE Project</title>
+</head>
+<body>
+
+    <div class="custom-navbar">
+        <div class="custom-navbar-container">
+            <div class="custom-logo">
+                <img src="{% static 'img/Logo_SAFEb.png' %}" alt="Logo SAFE">
+                <p>SAFE Project</p>
+            </div>
+            <div class="custom-nav-buttons">
+                
+                {% if user.is_authenticated %}
+                    <a href="http://safe.com.ar"><button class="has-background-color-2">Panel de Control</button></a>
+                {% else %}
+                    <a href="http://safe.com.ar/login"><button class="has-background-color-2">Login</button></a>
+                {% endif %}
+                    
             </div>
         </div>
-        <div class="sponsor-image">
-            <img src="{% static 'img/dako.jpg' %}" alt="DAKO Trailers">
+    </div>
+    
+    <div class="about-us-container">
+        <div class="about-us-info">
+            <h1 class="about-us-title">Sobre Nosotros</h1>
+            <p>
+                Somos un equipo de estudiantes de la E.E.S.T. N.º 7 "Taller Regional Quilmes" (IMPA). En el marco de las Prácticas Profesionalizantes, desarrollamos un proyecto de fin de carrera, que ofrece una solución tecnológica que previene afecciones en el ámbito laboral.
+            </p>
+            <br>
+            <p>
+                
+                S.A.F.E. (Secure Access For Environments) es un sistema que permite prevenir afecciones profesionales en el ámbito laboral.
+                S.A.F.E. ofrece un control automatizado del acceso de los trabajadores a su área laboral, monitoreando las medidas de seguridad que ellos deben cumplir. Además lleva un registro en tiempo real de la ventilación y calidad del aire del ambiente de trabajo.
+                
+                Debido a la situación sanitaria que atravesamos, decidimos implementar controles con criterios epidemiológicos a fin de evitar la propagación del SARS-COV-2.            
+            </p>
+            <br>
+            <h1 class="about-us-title">Beneficios</h1>
+            <div class="about-us-benefits-container">
+                <div class="about-us-benefits-col">
+                    <li>Prevención de enfermedades laborales.</li>
+                    <li>Reducción de la propagación del SARS-COV-2.</li>
+                    <li>Reducción de costos.</li>
+                </div>
+                <div class="about-us-benefits-col">
+                    <li>Automatización del acceso.</li>
+                    <li>Mejora en la seguridad de la empresa.</li>
+                    <li>Regulación de normas de seguridad e higiene.</li>
+                </div>
+            </div>
+        </div>
+        <div class="about-us-image">
+            <img src="{% static 'img/foto_grupal.jpg' %}" alt="">
         </div>
     </div>
-</div>
     
-{% endblock content %}
-    
+    <div class="sponsor-container">
+        <h1 class="about-us-title">Nuestro Sponsor</h1>
+        <div class="sponsor-content">
+            <div class="sponsor-info">
+                <h1 class="sponsor-title">DAKO Trailers</h1>
+                <div class="sponsor-social-media">
+                    <span class="icon is-large">
+                        <a class="sponsor-icon" href="https://www.instagram.com/dakotrailers/"><i class="fab fa-instagram fa-2x"></i></a>
+                    </span>
+                    <span class="icon is-large">
+                        <a class="sponsor-icon" href="https://wa.link/0588l4"><i class="fab fa-whatsapp fa-2x"></i></a>
+                    </span>
+                    <span class="icon is-large">
+                        <a class="sponsor-icon" href="https://www.facebook.com/DAKOTrailers/"><i class="fab fa-facebook fa-2x"></i></a>
+                    </span>
+                </div>
+            </div>
+            <div class="sponsor-image">
+                <img src="{% static 'img/dako.jpg' %}" alt="DAKO Trailers">
+            </div>
+        </div>
+    </div>
+
+    <!-- Javascript -->
+    <script type="text/javascript" src="{% static 'js/main.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/report.js' %}"></script>
+
+    <script>
+        const host = `${window.location.protocol}//${window.location.host}`
+    </script>
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.9.95/css/materialdesignicons.min.css" />
+
+</body>
+</html>    
