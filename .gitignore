@@ -13,3 +13,7 @@ server/main_app/migrations/__pycache__
 server/safe_project/__pycache__
 
 server/.env
+
+./.vscode
+
+main_module/__pycache__
