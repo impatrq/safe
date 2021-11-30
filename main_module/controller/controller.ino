@@ -33,7 +33,7 @@ MFRC522 mfrc522_0(R0_SS_PIN, RST_PIN); // Create MFRC522 instance
 MFRC522 mfrc522_1(R1_SS_PIN, RST_PIN);
 
 PCF8574 pcf8574(0x27); // ! SET 0x20
-PCF8574 pcf8574_1(0x27); // ! SET 0x20
+PCF8574 pcf8574_1(0x21); 
 
 Adafruit_MLX90614 mlx = Adafruit_MLX90614(); // Create Adafruit_MLX90614 instance
 
