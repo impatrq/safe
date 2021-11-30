@@ -71,6 +71,10 @@ class Data:
         self.door_is_opened = bool()
         self.time = int()
 
+        self.weather_temp = str()
+        self.weather_text = str()
+        self.weather_icon = str()
+
         # * ▼ NECESSARY DATA VARIABLES ▼
         self.stage = numpy.full(4, False)
         self.config = configparser.ConfigParser()
@@ -109,6 +113,12 @@ class Data:
             
                
     def getDoorInfo(self):
+        r = requests.get(http://api.weatherapi.com/v1/current.json?key=5f26cc756a2a4507b2b185655213011&q=Buenos Aires&lang=es) # * Request WEB
+        if r.status_code == 200:
+            response_dict = r.json()
+            self.weather_temp = response_dict['current']['temp_c']
+            self.weather_text = response_dict['current']['condition']['text']
+            self.weather_icon = response_dict['current']['condition']['icon']
         r = requests.get(self.url_get_door_status + "?sk=" + self.secret_key + "&mac=" + self.mac) # * Request WEB
         if r.status_code == 200:
             response_dict = r.json()
