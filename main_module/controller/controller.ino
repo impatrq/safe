@@ -27,11 +27,13 @@
 #define R0_SS_PIN D8
 #define R1_SS_PIN D0
 #define LED_RFID P4
+#define LED_RFID_OUT P0
 
 MFRC522 mfrc522_0(R0_SS_PIN, RST_PIN); // Create MFRC522 instance
 MFRC522 mfrc522_1(R1_SS_PIN, RST_PIN);
 
 PCF8574 pcf8574(0x27); // ! SET 0x20
+PCF8574 pcf8574_1(0x27); // ! SET 0x20
 
 Adafruit_MLX90614 mlx = Adafruit_MLX90614(); // Create Adafruit_MLX90614 instance
 
@@ -58,6 +60,8 @@ void setup()
     pcf8574.pinMode(LED_BLUE, OUTPUT);
     pcf8574.pinMode(LED_RFID, OUTPUT);
     pcf8574.begin();
+    pcf8574_1.pinMode(LED_RFID_OUT, OUTPUT);
+    pcf8574_1.begin();
 
     mfrc522_0.PCD_Init(); // Init MFRC522
     delay(4);
@@ -75,6 +79,7 @@ void setup()
     pcf8574.digitalWrite(LED_GREEN, LOW);
     pcf8574.digitalWrite(LED_BLUE, LOW);
     pcf8574.digitalWrite(LED_RFID, LOW);
+    pcf8574_1.digitalWrite(LED_RFID_OUT, LOW);
     // Temperature proximity sensor
 }
 
