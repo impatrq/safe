@@ -26,6 +26,7 @@
 #define RST_PIN D3
 #define R0_SS_PIN D8
 #define R1_SS_PIN D0
+#define LED_RFID P4
 
 MFRC522 mfrc522_0(R0_SS_PIN, RST_PIN); // Create MFRC522 instance
 MFRC522 mfrc522_1(R1_SS_PIN, RST_PIN);
@@ -41,7 +42,7 @@ int previusState = 0;
 void setup()
 {
     Serial.begin(9600); // Initialize serial communications with the PC
-    while (!Serial);        // Do nothing if no serial port is opened (added for Arduinos based on ATMEGA32U4)
+    while (!Serial); // Do nothing if no serial port is opened (added for Arduinos based on ATMEGA32U4)
     SPI.begin(); // Init SPI bus
     pcf8574.pinMode(SANITIZER_LEVEL, OUTPUT);
     pcf8574.pinMode(SANITIZER_PUMP, OUTPUT);
@@ -55,6 +56,7 @@ void setup()
     pcf8574.pinMode(LED_RED, OUTPUT);
     pcf8574.pinMode(LED_GREEN, OUTPUT);
     pcf8574.pinMode(LED_BLUE, OUTPUT);
+    pcf8574.pinMode(LED_RFID, OUTPUT);
     pcf8574.begin();
 
     mfrc522_0.PCD_Init(); // Init MFRC522
@@ -72,6 +74,7 @@ void setup()
     pcf8574.digitalWrite(LED_RED, LOW);
     pcf8574.digitalWrite(LED_GREEN, LOW);
     pcf8574.digitalWrite(LED_BLUE, LOW);
+    pcf8574.digitalWrite(LED_RFID, LOW);
     // Temperature proximity sensor
 }
 
@@ -92,7 +95,9 @@ void loop()
             card_code.replace(" ", "");
             String code_json = "{\"code\":\"" + card_code + "\", \"joining\": 1 }";
             Serial.println(code_json);
+            pcf8574.digitalWrite(LED_RFID, HIGH);
             delay(2000);
+            pcf8574.digitalWrite(LED_RFID, LOW);
         }
     }
     if (mfrc522_1.PICC_IsNewCardPresent())
@@ -110,7 +115,9 @@ void loop()
             card_code.replace(" ", "");
             String code_json = "{\"code\":\"" + card_code + "\", \"joining\": 0 }";
             Serial.println(code_json);
+            pcf8574.digitalWrite(LED_RFID, HIGH);
             delay(2000);
+            pcf8574.digitalWrite(LED_RFID, LOW);
         }
     }
     int value = 0;
