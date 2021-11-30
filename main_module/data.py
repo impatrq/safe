@@ -78,6 +78,7 @@ class Data:
         self.s.start()
         self.info_type_data = dict()
         self.status = str()
+        self.active = bool()
 
     def start(self):
         self.status = "CARGANDO..."
@@ -85,6 +86,7 @@ class Data:
         time.sleep(2)
         self.config.read(FILE_DIR + "config/settings.cfg")
         if self.config.getboolean("START","needtoken"):
+            self.active = False
             qr_image = qr.generate(self.mac)
             save = FILE_DIR + "server/public/static/qr/qr_safe.png"
             shutil.copyfile(qr_image, save)
@@ -92,6 +94,7 @@ class Data:
             self.getToken()
             self.s.add_job(self.getToken,  "interval", seconds = 10)   
         else:
+            self.active = True
             self.token = self.config["START"]["token"]
             self.getDoorInfo()
             self.s.add_job(self.getDoorInfo, "interval", seconds = 60)
@@ -128,60 +131,60 @@ class Data:
             self.showInfo("Default")
 
     def analize(self, dictionary): 
+        if self.active:
+            if dictionary.get("code"):
+                self.code = dictionary["code"]
+                self.joining = dictionary["joining"]
+                if self.joining:
+                    self.stage[0] = True
+                    self.s.remove_all_jobs()
+                    self.showInfo("How2UseTemp")
+                else:
+                    self.sendData2Web("mini_verify")
+                    return True
 
-        if dictionary.get("code"):
-            self.code = dictionary["code"]
-            self.joining = dictionary["joining"]
-            if self.joining:
-                self.stage[0] = True
-                self.s.remove_all_jobs()
-                self.showInfo("How2UseTemp")
+            elif dictionary.get("temperature"):
+                self.temperature = dictionary["temperature"]
+                if self.stage[0]:
+                    self.stage[1] = True
+                    self.showInfo("Temp")
+                    time.sleep(3)
+                    self.showInfo("How2UseDisp")
+                else:
+                    self.s.remove_all_jobs()
+                    self.showInfo("Temp")
+                    time.sleep(3)
+                    self.showInfo("Default")
+                    self.s.add_job(self.getDoorInfo, "interval", seconds = 60)
+
+            elif dictionary.get("dispenser_percentage"):
+                self.dispenser_percentage = dictionary["dispenser_percentage"]
+                if self.stage[0]:
+                    self.stage[2] = True
+                    self.showInfo("Disp")
+                    time.sleep(3)
+                    self.showInfo("How2UseAI")
+                else:
+                    self.s.remove_all_jobs()
+                    self.showInfo("Disp")
+                    time.sleep(3)
+                    self.showInfo("Default")
+                    self.s.add_job(self.getDoorInfo, "interval", seconds = 60)
+            
+            elif dictionary.get("door_is_opened") is not None:
+                self.door_is_opened = dictionary["door_is_opened"] == 1
+                print(self.door_is_opened)
+                self.sendData2Web("main_door_update")
             else:
-                self.sendData2Web("mini_verify")
+                pass # ! NOT THE MOST FUCKING IDEA
+            
+            if numpy.all(self.stage[0:3]):
+                time.sleep(2)
+                self.status = "DETECTANDO BARBIJO..."
+                self.showInfo("Loading")
+                self.aiProcess()
+                self.sendData2Web("verify")
                 return True
-
-        elif dictionary.get("temperature"):
-            self.temperature = dictionary["temperature"]
-            if self.stage[0]:
-                self.stage[1] = True
-                self.showInfo("Temp")
-                time.sleep(3)
-                self.showInfo("How2UseDisp")
-            else:
-                self.s.remove_all_jobs()
-                self.showInfo("Temp")
-                time.sleep(3)
-                self.showInfo("Default")
-                self.s.add_job(self.getDoorInfo, "interval", seconds = 60)
-
-        elif dictionary.get("dispenser_percentage"):
-            self.dispenser_percentage = dictionary["dispenser_percentage"]
-            if self.stage[0]:
-                self.stage[2] = True
-                self.showInfo("Disp")
-                time.sleep(3)
-                self.showInfo("How2UseAI")
-            else:
-                self.s.remove_all_jobs()
-                self.showInfo("Disp")
-                time.sleep(3)
-                self.showInfo("Default")
-                self.s.add_job(self.getDoorInfo, "interval", seconds = 60)
-        
-        elif dictionary.get("door_is_opened") is not None:
-            self.door_is_opened = dictionary["door_is_opened"] == 1
-            print(self.door_is_opened)
-            self.sendData2Web("main_door_update")
-        else:
-            pass # ! NOT THE MOST FUCKING IDEA
-        
-        if numpy.all(self.stage[0:3]):
-            time.sleep(2)
-            self.status = "DETECTANDO BARBIJO..."
-            self.showInfo("Loading")
-            self.aiProcess()
-            self.sendData2Web("verify")
-            return True
     
     def aiProcess(self):
         ph.takePhotos(7)
