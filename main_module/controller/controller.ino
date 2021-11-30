@@ -120,9 +120,9 @@ void loop()
             card_code.replace(" ", "");
             String code_json = "{\"code\":\"" + card_code + "\", \"joining\": 0 }";
             Serial.println(code_json);
-            pcf8574.digitalWrite(LED_RFID, HIGH);
+            pcf8574_1.digitalWrite(LED_RFID_OUT, HIGH);
             delay(2000);
-            pcf8574.digitalWrite(LED_RFID, LOW);
+            pcf8574_1.digitalWrite(LED_RFID_OUT, LOW);
         }
     }
     int value = 0;
