@@ -29,8 +29,8 @@
 #define LED_RFID_IN P4
 #define LED_RFID_OUT P0
 
-MFRC522 mfrc522_0(R0_SS_PIN, RST_PIN); // Create MFRC522 instance
-MFRC522 mfrc522_1(R1_SS_PIN, RST_PIN);
+MFRC522 mfrc522_0(R0_SS_PIN, RST_PIN); // Create MFRC522_0 instance
+MFRC522 mfrc522_1(R1_SS_PIN, RST_PIN); // Create MFRC522_1 instance
 
 PCF8574 pcf8574(0x27); // ! SET 0x20
 PCF8574 pcf8574_1(0x21); 
@@ -43,7 +43,7 @@ int previusState = 0;
 
 void setup()
 {
-    Serial.begin(9600); // Initialize serial communications with the PC
+    Serial.begin(9600); // Initialize serial communications with the Raspberry
     while (!Serial); // Do nothing if no serial port is opened (added for Arduinos based on ATMEGA32U4)
     SPI.begin(); // Init SPI bus
     pcf8574.pinMode(SANITIZER_LEVEL, OUTPUT);
@@ -63,10 +63,10 @@ void setup()
     pcf8574_1.pinMode(LED_RFID_OUT, OUTPUT);
     pcf8574_1.begin();
 
-    mfrc522_0.PCD_Init(); // Init MFRC522
+    mfrc522_0.PCD_Init(); // Init MFRC522_0
     delay(4);
-    mfrc522_1.PCD_Init();
-    delay(4); // Optional delay. Some board do need more time after init to be ready, see Readme
+    mfrc522_1.PCD_Init(); // Init MFRC522_1
+    delay(4);
 
     if (!mlx.begin())
     {
@@ -80,7 +80,7 @@ void setup()
     pcf8574.digitalWrite(LED_BLUE, LOW);
     pcf8574.digitalWrite(LED_RFID_IN, LOW);
     pcf8574_1.digitalWrite(LED_RFID_OUT, LOW);
-    // Temperature proximity sensor
+    
 }
 
 void loop()
@@ -207,7 +207,7 @@ void loop()
 int readSensor()
 {
     pcf8574.digitalWrite(SANITIZER_LEVEL, HIGH); // Turn the sensor ON
-    delay(10);                                   // Wait 10 milliseconds
+    delay(10); // Wait 10 milliseconds
     int val = analogRead(SANITIZER_LEVEL_SENSOR) - 120;
     //Serial.println(val);
     pcf8574.digitalWrite(SANITIZER_LEVEL, LOW); // Turn the sensor OFF
