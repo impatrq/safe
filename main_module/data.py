@@ -71,9 +71,9 @@ class Data:
         self.door_is_opened = bool()
         self.time = int()
 
-        self.weather_temp = str()
-        self.weather_text = str()
-        self.weather_icon = str()
+        self.weather_temp = str()       # add variable for the temperature 
+        self.weather_text = str()       # add variable for the weather description
+        self.weather_icon = str()       # add variable for the weather icon
 
         # * ▼ NECESSARY DATA VARIABLES ▼
         self.stage = numpy.full(4, False)
