@@ -92,7 +92,7 @@ void loop()
             card_code.replace(" ", "");
             String code_json = "{\"code\":\"" + card_code + "\", \"joining\": 1 }";
             Serial.println(code_json);
-            delay(500);
+            delay(2000);
         }
     }
     if (mfrc522_1.PICC_IsNewCardPresent())
@@ -110,24 +110,24 @@ void loop()
             card_code.replace(" ", "");
             String code_json = "{\"code\":\"" + card_code + "\", \"joining\": 0 }";
             Serial.println(code_json);
-            delay(500);
+            delay(2000);
         }
     }
     int value = 0;
     value = digitalRead(PS_SANITIZER);
     if (value == LOW)
     { // ? HIGH or LOW
-        //if (readSensor() > 5)
-        //{
-        //pcf8574.digitalWrite(SANITIZER_PUMP, HIGH);
-        //delay(1000);
-        //pcf8574.digitalWrite(SANITIZER_PUMP, LOW);
-        //int dispenser_percentage = readSensor();
-        Serial.print("{\"dispenser_percentage\": \"");
-        Serial.print("46");
-        Serial.println("%\" }");
-        delay(1000);
-        //}
+        if (readSensor() > 5)
+        {
+            pcf8574.digitalWrite(SANITIZER_PUMP, HIGH);
+            delay(1500);
+            pcf8574.digitalWrite(SANITIZER_PUMP, LOW);
+            int dispenser_percentage = readSensor();
+            Serial.print("{\"dispenser_percentage\": \"");
+            Serial.print("46");
+            Serial.println("%\" }");
+            delay(3000);
+        }
     }
     value = 1;
     value = digitalRead(PS_TEMPERATURE);
@@ -137,7 +137,7 @@ void loop()
         Serial.print("{\"temperature\": \"");
         Serial.print(temperature);
         Serial.println("\"}");
-        delay(500);
+        delay(3000);
     }
     int newValue = pcf8574.digitalRead(PS_DOOR);
     if (newValue != previusState)
