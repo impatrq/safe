@@ -13,7 +13,10 @@
             "%ch4_level_color%" : "ch4_color",
             "%co_level_color%" : "co_color",
             "%co2_level_color%" : "co2_color",
-            "%lpg_level_color%" : "lpg_color"
+            "%lpg_level_color%" : "lpg_color",
+            "%weather_temp" : "weather_temp",
+            "%weather_text" : "weather_text",
+            "%weather_icon" : "weather_icon"
         }
     },
     "Card:":{
