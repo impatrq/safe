@@ -113,12 +113,12 @@ class Data:
             
                
     def getDoorInfo(self):
-        r = requests.get(http://api.weatherapi.com/v1/current.json?key=5f26cc756a2a4507b2b185655213011&q=Buenos Aires&lang=es) # * Request WEB
+        r = requests.get(http://api.weatherapi.com/v1/current.json?key=5f26cc756a2a4507b2b185655213011&q=Buenos Aires&lang=es) # request to the api to obtain certain values
         if r.status_code == 200:
             response_dict = r.json()
-            self.weather_temp = response_dict['current']['temp_c']
-            self.weather_text = response_dict['current']['condition']['text']
-            self.weather_icon = response_dict['current']['condition']['icon']
+            self.weather_temp = response_dict['current']['temp_c']                                 # get the temperature
+            self.weather_text = response_dict['current']['condition']['text']                      # get the weather description, example: soleado, nublado, etc.
+            self.weather_icon = response_dict['current']['condition']['icon']                      # get the weather icon for the description
         r = requests.get(self.url_get_door_status + "?sk=" + self.secret_key + "&mac=" + self.mac) # * Request WEB
         if r.status_code == 200:
             response_dict = r.json()
